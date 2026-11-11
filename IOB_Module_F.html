@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a2540">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IOB Prep">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Module F: Other Important Topics — IOB 2027</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#1a202c;--muted:#64748b;--primary:#0a2540;--primary-light:#1e40af;--accent:#d4a017;--success:#10b981;--warn:#f59e0b;--danger:#ef4444;--border:#e2e8f0;--highlight:#fef3c7;--important:#fee2e2;--info:#dbeafe}
+[data-theme="dark"]{--bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--muted:#94a3b8;--primary:#3b82f6;--accent:#fbbf24;--border:#334155;--highlight:#78350f;--important:#7f1d1d;--info:#1e3a8a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;font-size:14px;padding-bottom:80px}
+.header{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:14px 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.header-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.back-link{color:#fff;text-decoration:none;font-size:13px;padding:4px 8px;background:rgba(255,255,255,.15);border-radius:8px;display:inline-block}
+.header h1{font-size:16px;font-weight:700;margin-top:4px}.header-sub{font-size:11px;opacity:.85}
+.theme-btn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:8px 10px;border-radius:8px;font-size:15px;cursor:pointer}
+.progress-strip{height:4px;background:rgba(255,255,255,.2);margin-top:8px;border-radius:10px;overflow:hidden}
+.progress-strip-fill{height:100%;background:linear-gradient(90deg,var(--accent),#fbbf24);transition:width .5s}
+.tabs{background:var(--card);padding:8px;overflow-x:auto;white-space:nowrap;border-bottom:1px solid var(--border);position:sticky;top:85px;z-index:50;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-chip{display:inline-block;padding:8px 14px;margin:0 3px;border-radius:20px;background:var(--bg);color:var(--text);border:1px solid var(--border);font-size:12px;font-weight:600;cursor:pointer}
+.tab-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+[data-theme="dark"] .tab-chip.active{background:var(--accent);color:var(--primary)}
+.container{padding:14px;max-width:900px;margin:0 auto}.view{display:none}.view.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.topic{background:var(--card);border-radius:12px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid var(--border);overflow:hidden}
+.topic-head{padding:12px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(90deg,var(--card),var(--bg));user-select:none}
+.topic-title{font-weight:700;font-size:14px;color:var(--primary);display:flex;align-items:center;gap:8px}
+[data-theme="dark"] .topic-title{color:var(--accent)}
+.topic-num{background:var(--primary);color:#fff;width:24px;height:24px;border-radius:50%;text-align:center;line-height:24px;font-size:11px;font-weight:700;flex-shrink:0}
+[data-theme="dark"] .topic-num{background:var(--accent);color:var(--primary)}
+.topic-check{width:22px;height:22px;border:2px solid var(--muted);border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}
+.topic-check.done{background:var(--success);border-color:var(--success)}.topic-check.done::after{content:'✓'}
+.topic-body{display:none;padding:0 14px 14px}.topic.open .topic-body{display:block;animation:fadeIn .3s ease}
+.topic.open .topic-arrow{transform:rotate(90deg)}.topic-arrow{transition:transform .3s;color:var(--muted);font-size:14px}
+h3{margin:14px 0 8px;font-size:14px;color:var(--primary);padding-bottom:4px;border-bottom:2px solid var(--accent)}
+[data-theme="dark"] h3{color:var(--accent)}
+h4{margin:12px 0 6px;font-size:13px;color:var(--primary);font-weight:700}[data-theme="dark"] h4{color:#93c5fd}
+p{margin:4px 0 8px}ul,ol{margin:4px 0 10px;padding-left:22px}li{margin:3px 0}
+.key{background:var(--highlight);padding:2px 6px;border-radius:4px;font-weight:700;color:#92400e;font-size:13px}[data-theme="dark"] .key{color:#fde68a}
+.alert{padding:10px 12px;margin:10px 0;border-radius:8px;border-left:3px solid;font-size:13px}
+.alert-info{background:var(--info);border-color:var(--primary-light);color:var(--primary)}
+.alert-danger{background:var(--important);border-color:var(--danger);color:#991b1b}
+.alert-warn{background:var(--highlight);border-color:var(--warn);color:#92400e}
+[data-theme="dark"] .alert-info{color:#dbeafe}[data-theme="dark"] .alert-danger{color:#fecaca;background:#7f1d1d}[data-theme="dark"] .alert-warn{color:#fde68a;background:#78350f}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12.5px}
+th,td{padding:6px 8px;text-align:left;border:1px solid var(--border)}
+th{background:var(--bg);font-weight:700;color:var(--primary)}[data-theme="dark"] th{color:var(--accent)}
+tr:nth-child(even) td{background:var(--bg)}
+.flashcard-deck{display:flex;flex-direction:column;gap:12px}
+.flashcard{perspective:1000px;height:180px;cursor:pointer}
+.flashcard-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}
+.flashcard-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;padding:18px;display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.flashcard-front{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;font-size:15px;font-weight:600}
+.flashcard-back{background:linear-gradient(135deg,var(--accent),#d97706);color:#1a202c;font-size:13px;transform:rotateY(180deg);font-weight:500;overflow-y:auto;line-height:1.5}
+.flashcard-hint{position:absolute;bottom:8px;left:0;right:0;font-size:10px;opacity:.7;text-align:center}
+.compare-card{background:var(--card);border-radius:12px;margin-bottom:10px;border:1px solid var(--border);overflow:hidden}
+.compare-head{padding:12px 14px;background:linear-gradient(90deg,var(--primary),var(--primary-light));color:#fff;font-weight:700;font-size:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.compare-body{display:none;padding:10px;overflow-x:auto}
+.compare-card.open .compare-body{display:block;animation:fadeIn .3s ease}
+.compare-card.open .compare-head .arrow{transform:rotate(180deg)}.compare-head .arrow{transition:transform .3s;font-size:14px}
+.num-card{background:var(--card);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.num-badge{background:var(--accent);color:var(--primary);padding:6px 10px;border-radius:8px;font-family:monospace;font-weight:700;font-size:13px;min-width:90px;text-align:center;flex-shrink:0}
+.num-desc{font-size:13px;flex:1}.num-cat{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.quiz-intro{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:20px;border-radius:14px;margin-bottom:14px;text-align:center}
+.quiz-intro h2{font-size:20px;margin-bottom:8px}.quiz-intro p{font-size:13px;opacity:.9;margin-bottom:14px}
+.quiz-btn{padding:10px 20px;background:var(--accent);color:var(--primary);border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px;font-family:inherit}
+.quiz-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.quiz-stat{background:var(--card);padding:10px;border-radius:10px;text-align:center;border:1px solid var(--border)}
+.quiz-stat .v{font-size:20px;font-weight:700;color:var(--primary)}[data-theme="dark"] .quiz-stat .v{color:var(--accent)}
+.quiz-stat .l{font-size:10px;color:var(--muted);text-transform:uppercase}
+.question-card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.q-num{font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:600}
+.q-text{font-size:14px;font-weight:600;margin-bottom:12px;line-height:1.45}
+.option{padding:10px 12px;margin-bottom:6px;background:var(--bg);border-radius:8px;border:2px solid transparent;cursor:pointer;font-size:13px;transition:all .2s}
+.option:hover{background:var(--card);border-color:var(--primary)}
+.option.correct{background:#d1fae5;border-color:var(--success);color:#065f46}
+.option.wrong{background:#fee2e2;border-color:var(--danger);color:#991b1b}
+[data-theme="dark"] .option.correct{background:#065f46;color:#d1fae5}[data-theme="dark"] .option.wrong{background:#7f1d1d;color:#fecaca}
+.explanation{background:var(--info);padding:10px 12px;margin-top:10px;border-radius:8px;font-size:12.5px;border-left:3px solid var(--primary-light);display:none}
+.explanation.show{display:block;animation:fadeIn .3s}[data-theme="dark"] .explanation{background:#1e3a8a;color:#dbeafe}
+.nav-btns{display:flex;gap:8px;margin-top:14px}
+.nav-btns button{flex:1;padding:10px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit}
+.btn-prev{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.btn-next{background:var(--primary);color:#fff}[data-theme="dark"] .btn-next{background:var(--accent);color:var(--primary)}
+.case-card{background:var(--card);border-radius:14px;margin-bottom:14px;border:1px solid var(--border);overflow:hidden}
+.case-head{padding:12px 14px;background:linear-gradient(135deg,var(--accent),#d97706);color:#1a202c;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:700}
+.case-body{display:none;padding:14px}.case-card.open .case-body{display:block;animation:fadeIn .3s}
+.case-card.open .case-head .arrow{transform:rotate(180deg)}
+.case-scenario{background:var(--info);padding:10px 12px;border-radius:8px;margin-bottom:10px;font-size:13px;border-left:3px solid var(--primary-light)}
+[data-theme="dark"] .case-scenario{background:#1e3a8a;color:#dbeafe}
+.case-solution{background:var(--highlight);padding:10px 12px;border-radius:8px;font-size:13px;border-left:3px solid var(--accent);display:none}
+.case-solution.show{display:block;animation:fadeIn .3s}[data-theme="dark"] .case-solution{background:#78350f;color:#fde68a}
+.reveal-btn{padding:8px 14px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;margin-top:8px}
+.result-card{background:var(--card);padding:20px;border-radius:14px;text-align:center;border:1px solid var(--border)}
+.result-score{font-size:44px;font-weight:800;color:var(--primary);margin:10px 0}[data-theme="dark"] .result-score{color:var(--accent)}
+.result-msg{font-size:14px;color:var(--muted);margin-bottom:16px}.result-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.float-btn{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;width:48px;height:48px;border-radius:50%;font-size:22px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:200}
+[data-theme="dark"] .float-btn{background:var(--accent);color:var(--primary)}
+.search-box{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px;margin-bottom:10px;font-family:inherit}
+.btn{padding:10px 14px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;background:var(--primary);color:#fff;font-family:inherit}
+.btn-sec{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="header"><div class="header-row"><div><a href="IOB_Study_Hub.html" class="back-link">← Hub</a><h1>Module F: Other Important Topics</h1><div class="header-sub">Companies Act • EASE • LoG • Valuation • 40 MCQs</div></div><button class="theme-btn" onclick="toggleTheme()">🌙</button></div><div class="progress-strip"><div class="progress-strip-fill" id="pbar" style="width:0%"></div></div></div>
+<div class="tabs"><div class="tab-chip active" onclick="showTab('content',this)">📖 Content</div><div class="tab-chip" onclick="showTab('flash',this)">🎴 Flashcards</div><div class="tab-chip" onclick="showTab('compare',this)">⚖️ Compare</div><div class="tab-chip" onclick="showTab('numbers',this)">🔢 Numbers</div><div class="tab-chip" onclick="showTab('mcq',this)">❓ Quiz</div><div class="tab-chip" onclick="showTab('cases',this)">📋 Cases</div></div>
+<div class="container">
+<div id="content" class="view active">
+<input class="search-box" placeholder="🔍 Search..." oninput="filterTopics(this.value)">
+
+<div class="topic" id="t1"><div class="topic-head" onclick="toggleTopic('t1')"><div class="topic-title"><span class="topic-num">1</span>Staff Matters</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t1',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Bipartite Settlement (BPS)</h3>
+<ul>
+<li>Periodic wage revision between IBA + Bank Unions.</li>
+<li>Currently: 12th BPS (ongoing/recently concluded).</li>
+<li>Covers workmen + officers.</li>
+<li>Includes: salary structure, DA formula, HRA, LFC, perquisites.</li>
+</ul>
+
+<h3>IOBOSR (IOB Officer Service Regulations)</h3>
+<ul>
+<li>Governs service conditions of officers.</li>
+<li>Covers: recruitment, promotion, transfer, pay scales, leave, LFC, retirement.</li>
+</ul>
+
+<h3>Leaves</h3>
+<table>
+<tr><th>Leave Type</th><th>Period / Entitlement</th></tr>
+<tr><td>Casual Leave (CL)</td><td>12 days/year</td></tr>
+<tr><td>Sick Leave (SL)</td><td>30 days/year accumulating up to 540 days</td></tr>
+<tr><td>Privilege Leave (PL)</td><td>33 days/year (max accumulation 240 days)</td></tr>
+<tr><td>Earned Leave</td><td>Part of PL</td></tr>
+<tr><td>Maternity Leave</td><td>180 days (26 weeks)</td></tr>
+<tr><td>Paternity Leave</td><td>15 days</td></tr>
+<tr><td>Study Leave</td><td>As per policy</td></tr>
+<tr><td>Extraordinary Leave (EOL)</td><td>As per approval</td></tr>
+</table>
+
+<h3>LFC (Leave Fare Concession)</h3>
+<ul>
+<li>Once in 2 years (Short) / 4 years (Long).</li>
+<li>Reimbursement of travel (self + family).</li>
+<li>LTC also available to Govt employees — similar.</li>
+</ul>
+
+<h3>Pension & NPS</h3>
+<ul>
+<li>Officers joined after 01.04.2010: NPS mandatory.</li>
+<li>Officers joined before 01.04.2010: Pension scheme eligible.</li>
+<li>Family pension: dependent on service rules.</li>
+</ul>
+
+<h3>Transfer Policy</h3>
+<ul>
+<li>Scale-wise tenure at a station typically 3-5 years.</li>
+<li>Tribal/difficult area posting: compensatory benefits.</li>
+<li>Married couple: joint posting preferred.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t2"><div class="topic-head" onclick="toggleTopic('t2')"><div class="topic-title"><span class="topic-num">2</span>Companies Act 2013</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t2',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>Replaces Companies Act 1956 — enacted August 2013. Enforced via MCA.</p>
+
+<h3>Key Types of Companies</h3>
+<table>
+<tr><th>Type</th><th>Min / Max Members</th></tr>
+<tr><td>Private Company</td><td>Min 2 / Max 200</td></tr>
+<tr><td>Public Company</td><td>Min 7 / No Max</td></tr>
+<tr><td>OPC (One Person Company)</td><td>1 member</td></tr>
+<tr><td>Small Company</td><td>Paid-up ≤ ₹4 Cr OR Turnover ≤ ₹40 Cr (revised)</td></tr>
+<tr><td>LLP</td><td>Min 2 partners; No Max (separate Act)</td></tr>
+</table>
+
+<h3>Key Documents</h3>
+<ul>
+<li><b>MOA (Memorandum of Association):</b> Company's constitution; objectives, state of registered office, capital.</li>
+<li><b>AOA (Articles of Association):</b> Internal rules and bye-laws.</li>
+<li><b>CIN (Corporate Identity Number):</b> 21-digit unique identifier.</li>
+<li><b>Certificate of Incorporation:</b> Issued by RoC.</li>
+</ul>
+
+<h3>Key Sections</h3>
+<ul>
+<li><b>Sec 2(62):</b> One Person Company.</li>
+<li><b>Sec 2(68):</b> Private Company definition.</li>
+<li><b>Sec 2(71):</b> Public Company definition.</li>
+<li><b>Sec 2(87):</b> Subsidiary Company.</li>
+<li><b>Sec 73-76:</b> Deposits.</li>
+<li><b>Sec 77:</b> Registration of Charge — within <span class="key">30 days</span>.</li>
+<li><b>Sec 78:</b> Registration of charge by charge-holder.</li>
+<li><b>Sec 180:</b> Board restrictions — no sale/lease of undertaking or borrowing > paid-up + free reserves without shareholder approval.</li>
+<li><b>Sec 185:</b> Loans to directors — generally prohibited (except conditions).</li>
+<li><b>Sec 186:</b> Loans and investments by company.</li>
+<li><b>Sec 139-146:</b> Audit provisions.</li>
+<li><b>Sec 135:</b> CSR.</li>
+<li><b>Sec 447:</b> Fraud punishment — imprisonment 6 months to 10 years + fine.</li>
+</ul>
+
+<h3>CSR (Sec 135)</h3>
+<ul>
+<li>Applicable if any of: Net worth ≥ ₹500 Cr OR Turnover ≥ ₹1000 Cr OR Net Profit ≥ ₹5 Cr (in any of preceding 3 FYs).</li>
+<li>Spend: 2% of average net profit of 3 preceding FYs.</li>
+<li>Schedule VII: permitted CSR activities.</li>
+<li>Unspent amount: transfer to CSR Unspent Account / Unspent Fund.</li>
+</ul>
+
+<h3>Independent Directors</h3>
+<ul>
+<li>Mandatory for listed companies.</li>
+<li>At least 1/3rd of Board as Independent.</li>
+<li>Qualifications: Integrity + relevant expertise.</li>
+<li>Databank maintained by IICA (Indian Institute of Corporate Affairs).</li>
+</ul>
+
+<h3>Committees Required</h3>
+<ul>
+<li>Audit Committee (Sec 177).</li>
+<li>Nomination & Remuneration Committee (Sec 178).</li>
+<li>CSR Committee (Sec 135).</li>
+<li>Stakeholders Relationship Committee (listed).</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t3"><div class="topic-head" onclick="toggleTopic('t3')"><div class="topic-title"><span class="topic-num">3</span>Registration of Charge on Co Asset</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t3',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p><b>Section 77, Companies Act 2013.</b></p>
+
+<h3>Timeline</h3>
+<ul>
+<li>Create / modify / satisfy charge → file with ROC within <span class="key">30 days</span>.</li>
+<li>Extension: another 30 days (total 60 days) with additional fee.</li>
+<li>Further extension (60 to 120 days): by Regional Director on condonation + higher fee.</li>
+</ul>
+
+<h3>Forms</h3>
+<table>
+<tr><th>Form</th><th>Purpose</th></tr>
+<tr><td>CHG-1</td><td>Creation / Modification of charge</td></tr>
+<tr><td>CHG-2</td><td>Certificate of registration (issued by RoC)</td></tr>
+<tr><td>CHG-4</td><td>Satisfaction of charge</td></tr>
+<tr><td>CHG-6</td><td>Notice by charge-holder</td></tr>
+<tr><td>CHG-8</td><td>Application for extension/condonation</td></tr>
+<tr><td>CHG-9</td><td>Creation/modification of charge by debenture issue</td></tr>
+</table>
+
+<h3>Consequences of Non-Registration</h3>
+<ul>
+<li>Charge void against liquidator / creditors.</li>
+<li>Charge still enforceable against borrower (Companies Act).</li>
+<li>Bank's priority lost — ranks as unsecured.</li>
+<li>Penalty on company + officers.</li>
+</ul>
+
+<h3>Priority</h3>
+<ul>
+<li>First registered charge has priority over subsequent.</li>
+<li>Also relevant: CERSAI registration under SARFAESI.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t4"><div class="topic-head" onclick="toggleTopic('t4')"><div class="topic-title"><span class="topic-num">4</span>Letter of Guarantee (BG)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t4',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Types</h3>
+<ul>
+<li><b>Financial Guarantee:</b> Guarantee for payment of money.</li>
+<li><b>Performance Guarantee:</b> Guarantee for performance of contract.</li>
+<li><b>Deferred Payment Guarantee (DPG):</b> Guarantee for payment at future dates.</li>
+</ul>
+
+<h3>Common Sub-Types</h3>
+<ul>
+<li>Bid Bond (EMD) — tender participation.</li>
+<li>Advance Payment Guarantee — advance paid to contractor.</li>
+<li>Retention Money Guarantee — in lieu of retention amount.</li>
+<li>Customs Duty Guarantee — for duty payment.</li>
+<li>Earnest Money Deposit Guarantee.</li>
+</ul>
+
+<h3>Features</h3>
+<ul>
+<li><b>Margin:</b> Typically 10-25% (based on risk, borrower rating).</li>
+<li><b>Commission:</b> 0.5% to 3% p.a. (based on tenure, risk).</li>
+<li><b>Tenure:</b> As per contract — typically 1-5 years.</li>
+<li><b>Claim Period:</b> Must be clearly defined (date beyond which claim becomes invalid).</li>
+<li>Governed by ICC URDG 758 (international) + Contract Act (domestic).</li>
+<li>Bank's obligation:
+<ul>
+<li>Financial Guarantee: unconditional, pay on first demand.</li>
+<li>Performance Guarantee: conditional on default being established.</li>
+</ul></li>
+</ul>
+
+<h3>Invocation</h3>
+<ul>
+<li>Beneficiary issues invocation letter within validity.</li>
+<li>Bank pays upon invocation (financial) / after verifying default (performance).</li>
+<li>Bank debits borrower's account; if insufficient, debits CC/OD.</li>
+<li>If still default: recovery as per loan account rules.</li>
+</ul>
+
+<h3>Non-Fund Based Limit (NFBL)</h3>
+<ul>
+<li>LoG + LC fall under NFBL.</li>
+<li>Appraisal includes borrower's TOL/TNW, operating cycle.</li>
+<li>Within bank's exposure to borrower.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t5"><div class="topic-head" onclick="toggleTopic('t5')"><div class="topic-title"><span class="topic-num">5</span>PSB Reforms — EASE 7.0</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t5',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>EASE = Enhanced Access and Service Excellence. PSB Reforms Agenda launched 2018.</p>
+
+<h3>Evolution</h3>
+<ul>
+<li>EASE 1.0 (2018-19): Responsible banking, financial inclusion.</li>
+<li>EASE 2.0 (2019-20): Technology-enabled ease.</li>
+<li>EASE 3.0 (2020-21): Digital transformation.</li>
+<li>EASE 4.0 (2021-22): Smart banking.</li>
+<li>EASE 5.0 (2022-23): Inclusive customer-centric banking.</li>
+<li>EASE 6.0 (2023-24): Digital, HR, risk.</li>
+<li>EASE 7.0 (2024-25): Current — emphasizing cyber security, risk governance, digital-first.</li>
+</ul>
+
+<h3>Six Themes of EASE 6.0 / 7.0 (illustrative)</h3>
+<ol>
+<li>Responsible Banking.</li>
+<li>Customer Responsiveness.</li>
+<li>Credit Off-Take.</li>
+<li>PSBs as Udyami Mitra for MSMEs.</li>
+<li>Deepening Financial Inclusion & Digitalisation.</li>
+<li>Governance & HR.</li>
+</ol>
+
+<h3>Key Initiatives</h3>
+<ul>
+<li>Digital lending platforms.</li>
+<li>End-to-end digitization of customer journeys.</li>
+<li>Real-time analytics-driven decisioning.</li>
+<li>Co-lending frameworks.</li>
+<li>Sustainability / ESG integration.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t6"><div class="topic-head" onclick="toggleTopic('t6')"><div class="topic-title"><span class="topic-num">6</span>NSFDC — National SC Finance Dev Corporation</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t6',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Established 1989 under Ministry of Social Justice & Empowerment.</li>
+<li>Apex corporation for financing SCs.</li>
+</ul>
+
+<h3>Target Beneficiaries</h3>
+<ul>
+<li>SC community members.</li>
+<li>Income cap: Below Poverty Line (DPL) + 2× DPL.</li>
+</ul>
+
+<h3>Schemes</h3>
+<ul>
+<li><b>Term Loan:</b> up to ₹30 lakh (viable projects).</li>
+<li><b>Mahila Samridhi Yojana:</b> ₹2.5 lakh for SC women.</li>
+<li><b>Micro Credit Finance:</b> ₹50,000.</li>
+<li><b>Education Loan:</b> ₹30 lakh (abroad) / ₹20 lakh (domestic).</li>
+<li><b>Mahila Samriddhi:</b> ₹50,000 micro finance for SC women.</li>
+</ul>
+
+<h3>Interest Rates</h3>
+<ul>
+<li>4% to 8% depending on amount + scheme.</li>
+<li>Concessional rates lower than market.</li>
+</ul>
+
+<h3>Channel</h3>
+<ul>
+<li>State Channelising Agencies (SCAs): SC Finance Corporations at state level.</li>
+<li>Banks as Channel Partners (CPs).</li>
+<li>Co-op banks, NBFCs also partner.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t7"><div class="topic-head" onclick="toggleTopic('t7')"><div class="topic-title"><span class="topic-num">7</span>Valuation of Land & Building</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t7',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Valuation Methods</h3>
+<ol>
+<li><b>Market Comparison (Direct Comparison):</b> Compared with recent sales of similar properties in the area.</li>
+<li><b>Depreciated Replacement Cost (DRC):</b> Cost of similar construction less depreciation + land value.</li>
+<li><b>Rental Income Capitalization:</b> Annual rent ÷ Yield rate.</li>
+<li><b>Development Method:</b> For land awaiting development.</li>
+</ol>
+
+<h3>Valuer Qualifications</h3>
+<ul>
+<li>Civil Engineer (Degree + 5 years) / Architect.</li>
+<li>IBBI-registered valuer (under Companies Act).</li>
+<li>Empanelled with bank.</li>
+<li>Minimum experience as per bank policy.</li>
+</ul>
+
+<h3>IBA Format Report Contents</h3>
+<ul>
+<li>Property details (location, type, area).</li>
+<li>Title details (sale deed, encumbrances).</li>
+<li>Market analysis (recent sales in area).</li>
+<li>Valuation workings.</li>
+<li>Reasonable fair market value + distress / realization value.</li>
+<li>Photos + measurements.</li>
+<li>Any encroachment / dispute.</li>
+</ul>
+
+<h3>Validity</h3>
+<ul>
+<li>Typically 3 years for housing loan.</li>
+<li>Fresh valuation for enhancement / re-visit.</li>
+</ul>
+
+<h3>Legal Scrutiny</h3>
+<ul>
+<li>30 years back title chain minimum.</li>
+<li>EC (Encumbrance Certificate): 13 years (standard); 30 years (for high-value).</li>
+<li>Non-Encumbrance Certificate.</li>
+<li>No pending litigation.</li>
+<li>Title clear and marketable.</li>
+<li>Done by empanelled lawyer.</li>
+</ul>
+
+<h3>Two Valuations for High-Value Property</h3>
+<ul>
+<li>Single property > ₹5 Cr: two valuations.</li>
+<li>> ₹50 Cr: one from corporate/reputed firm + additional legal opinion.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t8"><div class="topic-head" onclick="toggleTopic('t8')"><div class="topic-title"><span class="topic-num">8</span>Co-Lending Model</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t8',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>RBI Framework 2020 — collaboration between Banks + NBFCs.</li>
+<li>Jointly lend to priority sector (initially; now broader).</li>
+<li>Bank: 80% share; NBFC: 20% (indicative).</li>
+<li>Rate: blended; benefits both lender and borrower.</li>
+<li>Portfolio-wise or account-wise arrangements.</li>
+<li>KYC + PSL target benefits.</li>
+<li>Outsourcing of sourcing + servicing to NBFC.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t9"><div class="topic-head" onclick="toggleTopic('t9')"><div class="topic-title"><span class="topic-num">9</span>Priority Sector Lending Certificates (PSLC)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t9',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Tradable instrument representing PSL achievement.</li>
+<li>Traded on RBI eKuber platform.</li>
+<li>4 types:
+<ul>
+<li>PSLC — General</li>
+<li>PSLC — Agriculture</li>
+<li>PSLC — SF/MF (Small & Marginal Farmers)</li>
+<li>PSLC — Micro</li>
+</ul></li>
+<li>Minimum lot: ₹25 lakh.</li>
+<li>Validity: till 31 March of issue year (financial year).</li>
+<li>Buyer counts for PSL achievement; Seller gets premium income.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t10"><div class="topic-head" onclick="toggleTopic('t10')"><div class="topic-title"><span class="topic-num">10</span>Large Exposure Framework (LEF)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t10',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>RBI Large Exposure Framework — effective 2019.</li>
+<li>Replaces older Exposure Norms.</li>
+</ul>
+
+<h3>Key Limits</h3>
+<ul>
+<li>Single Counterparty: 20% of Tier 1 Capital.</li>
+<li>Group of Connected Counterparties: 25% of Tier 1 Capital.</li>
+<li>In exceptional cases: additional 5% with Board approval (total 25%/30%).</li>
+<li>Large exposure = ≥ 10% of Tier 1 Capital.</li>
+<li>Sum of all large exposures: ≤ 800% of Tier 1 Capital.</li>
+</ul>
+
+<h3>Reporting</h3>
+<ul>
+<li>Quarterly to RBI.</li>
+<li>Monitored by Risk Management + Board.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t11"><div class="topic-head" onclick="toggleTopic('t11')"><div class="topic-title"><span class="topic-num">11</span>Other Important Points</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t11',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+
+<h3>Banking Ombudsman — Historical Context</h3>
+<ul>
+<li>Older schemes replaced by Integrated Ombudsman Scheme 2021.</li>
+</ul>
+
+<h3>Banking Codes & Standards Board of India (BCSBI)</h3>
+<ul>
+<li>Set up 2006; wound up 2020-21.</li>
+<li>Role absorbed by RBI/IBA.</li>
+</ul>
+
+<h3>Narasimham Committee Recommendations (I & II)</h3>
+<ul>
+<li>Committee I (1991): BR reforms, SLR/CRR reduction, prudential norms.</li>
+<li>Committee II (1998): Further recommendations on NPA, provisioning, Basel.</li>
+</ul>
+
+<h3>Key Regulators</h3>
+<ul>
+<li><b>RBI:</b> Central Banking, monetary policy, regulation.</li>
+<li><b>SEBI:</b> Securities market.</li>
+<li><b>IRDAI:</b> Insurance.</li>
+<li><b>PFRDA:</b> Pension (NPS/APY).</li>
+<li><b>FSDC:</b> Financial Stability & Development Council (apex).</li>
+</ul>
+
+<h3>Digital Banking Framework</h3>
+<ul>
+<li>RBI Digital Lending Guidelines 2022.</li>
+<li>LSP (Loan Service Provider) regulation.</li>
+<li>Cooling-off period for digital loans.</li>
+<li>Transparent APR disclosure.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t12"><div class="topic-head" onclick="toggleTopic('t12')"><div class="topic-title"><span class="topic-num">12</span>Important Dept Circulars Summary</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t12',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Corporate Credit Dept</h3>
+<ul>
+<li>Large exposure management.</li>
+<li>Consortium / multiple banking arrangements.</li>
+<li>Rating migration.</li>
+</ul>
+
+<h3>Currency Administration Dept</h3>
+<ul>
+<li>Currency Chest management.</li>
+<li>Note sorting standards.</li>
+<li>Clean Note Policy implementation.</li>
+</ul>
+
+<h3>Financial Inclusion Dept</h3>
+<ul>
+<li>PMJDY, BSBDA, BC/BF network.</li>
+<li>FLC (Financial Literacy Centres).</li>
+<li>SHG linkage.</li>
+</ul>
+</div></div>
+
+</div>
+
+<div id="flash" class="view"><div class="alert alert-info"><b>💡 Tap to flip.</b></div><div class="flashcard-deck" id="flashDeck"></div></div>
+<div id="compare" class="view"><div class="alert alert-info"><b>⚖️ Compare.</b></div><div id="compareList"></div></div>
+<div id="numbers" class="view"><div class="alert alert-warn"><b>🔢 Memorize.</b></div><input class="search-box" placeholder="🔍 Search..." oninput="filterNums(this.value)"><div id="numList"></div></div>
+<div id="mcq" class="view">
+<div id="quizIntro">
+<div class="quiz-intro"><h2>📝 Module F Quiz</h2><p>40 questions • Other topics drill</p><button class="quiz-btn" onclick="startQuiz()">▶️ Start</button></div>
+<div class="quiz-stats"><div class="quiz-stat"><div class="v" id="stAtt">0</div><div class="l">Attempted</div></div><div class="quiz-stat"><div class="v" id="stCor">0</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v" id="stAcc">0%</div><div class="l">Accuracy</div></div></div>
+<div class="action-row"><button class="btn btn-sec" onclick="reviewWeak()" style="flex:1">🎯 Review Weak</button></div>
+</div>
+<div id="quizArea" style="display:none"></div>
+</div>
+<div id="cases" class="view"><div class="alert alert-info"><b>📋 Scenarios.</b></div><div id="caseList"></div></div>
+</div>
+<button class="float-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const MOD_KEY='iob_mod_F_v1';
+let state=JSON.parse(localStorage.getItem(MOD_KEY)||'{}');
+if(!state.topics)state.topics={};if(!state.quiz)state.quiz={attempted:0,correct:0,perQuestion:{}};if(!state.weak)state.weak=[];if(!state.theme)state.theme='light';
+function save(){localStorage.setItem(MOD_KEY,JSON.stringify(state))}
+function toggleTheme(){state.theme=state.theme==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',state.theme);document.querySelector('.theme-btn').textContent=state.theme==='dark'?'☀️':'🌙';save()}
+function showTab(id,el){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.tab-chip').forEach(c=>c.classList.remove('active'));document.getElementById(id).classList.add('active');el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+function toggleTopic(id){document.getElementById(id).classList.toggle('open')}
+function toggleDone(id,el){state.topics[id]=!state.topics[id];if(state.topics[id])el.classList.add('done');else el.classList.remove('done');save();updateProgressBar()}
+function updateProgressBar(){const done=Object.keys(state.topics).filter(k=>state.topics[k]).length;document.getElementById('pbar').style.width=Math.round(done/12*100)+'%'}
+function filterTopics(q){q=q.toLowerCase();document.querySelectorAll('.topic').forEach(t=>{const text=t.innerText.toLowerCase();t.style.display=(!q||text.includes(q))?'':'none';if(q&&text.includes(q))t.classList.add('open')})}
+
+const FLASHCARDS=[
+{q:"Private Company — min and max members?",a:"Min 2, Max 200"},{q:"Public Company — min and max members?",a:"Min 7, No max"},
+{q:"Small Company — paid-up capital ceiling?",a:"≤ ₹4 Cr (revised; earlier ₹2 Cr)"},
+{q:"Small Company — turnover ceiling?",a:"≤ ₹40 Cr (revised; earlier ₹20 Cr)"},
+{q:"CIN — number of digits?",a:"21-digit Corporate Identity Number"},
+{q:"Companies Act Sec 77 — charge registration timeline?",a:"Within 30 days (+30 with additional fee; +60-120 by RD condonation)"},
+{q:"Form CHG-1 — purpose?",a:"Creation / modification of charge"},
+{q:"Form CHG-4 — purpose?",a:"Satisfaction of charge"},
+{q:"Sec 135 CSR — applicable if?",a:"Net worth ≥ ₹500 Cr OR Turnover ≥ ₹1000 Cr OR Net Profit ≥ ₹5 Cr"},
+{q:"CSR spend requirement?",a:"2% of avg net profit of 3 preceding FYs"},
+{q:"Independent Directors requirement for listed companies?",a:"At least 1/3rd of Board"},
+{q:"Sec 180 Companies Act restricts?",a:"Board from sale/lease of undertaking + borrowing > paid-up+free reserves without shareholder approval"},
+{q:"Sec 185 Companies Act — relates to?",a:"Loans to directors — generally prohibited"},
+{q:"Sec 447 Companies Act — fraud punishment?",a:"6 months to 10 years imprisonment + fine"},
+{q:"BG Financial vs Performance?",a:"Financial: unconditional pay on first demand; Performance: conditional on default established"},
+{q:"BG margin typical?",a:"10-25% depending on risk/rating"},
+{q:"BG commission rate?",a:"0.5% to 3% p.a."},
+{q:"NSFDC — target beneficiaries?",a:"SC community; BPL + 2× DPL"},
+{q:"NSFDC — max term loan?",a:"₹30 lakh"},
+{q:"NSFDC — interest rate range?",a:"4% to 8% (concessional)"},
+{q:"Valuation — Depreciated Replacement Cost method?",a:"Cost of similar construction less depreciation + land value"},
+{q:"Valuation validity typical?",a:"3 years"},
+{q:"Legal scrutiny — back title chain minimum?",a:"30 years"},
+{q:"EC (Encumbrance Certificate) — standard period?",a:"13 years (standard); 30 years for high-value"},
+{q:"EASE — stands for?",a:"Enhanced Access and Service Excellence"},
+{q:"Latest EASE version (2024-25)?",a:"EASE 7.0 — Cyber security, risk governance, digital-first"},
+{q:"Co-Lending Bank:NBFC ratio?",a:"80:20 (indicative)"},
+{q:"PSLC — number of types?",a:"4: General, Agri, SF/MF, Micro"},
+{q:"PSLC — validity?",a:"Till 31 March of issue year (financial year)"},
+{q:"PSLC — minimum lot?",a:"₹25 lakh"},
+{q:"LEF (Large Exposure Framework) — single counterparty limit?",a:"20% of Tier 1 Capital"},
+{q:"LEF — group of connected counterparties limit?",a:"25% of Tier 1 Capital (+5% in exceptional cases)"},
+{q:"LEF — sum of all large exposures?",a:"≤ 800% of Tier 1 Capital"},
+{q:"Large exposure — threshold?",a:"≥ 10% of Tier 1 Capital"},
+{q:"Bipartite Settlement — current edition?",a:"12th BPS (ongoing/recently concluded)"},
+{q:"IOB Officer joined after 01.04.2010 — pension scheme?",a:"NPS (National Pension System)"},
+{q:"Casual Leave entitlement?",a:"12 days/year"},
+{q:"Privilege Leave entitlement?",a:"33 days/year (max accumulation 240 days)"},
+{q:"Maternity Leave?",a:"180 days (26 weeks)"},
+{q:"Paternity Leave?",a:"15 days"},
+{q:"Sick Leave accumulation max?",a:"540 days"}
+];
+function renderFlashcards(){document.getElementById('flashDeck').innerHTML=FLASHCARDS.map((c,i)=>`<div class="flashcard" onclick="this.classList.toggle('flipped')"><div class="flashcard-inner"><div class="flashcard-face flashcard-front">${c.q}<div class="flashcard-hint">Tap to flip • Card ${i+1}/${FLASHCARDS.length}</div></div><div class="flashcard-face flashcard-back">${c.a}</div></div></div>`).join('')}
+
+const COMPARE=[
+{title:'Private vs Public Company',rows:[['Min Members','2','7'],['Max Members','200','No max'],['Share Transfer','Restricted','Freely transferable'],['Prospectus','Not required','Required'],['Name ending','Pvt. Ltd.','Ltd.']]},
+{title:'MOA vs AOA',rows:[['Purpose','Company constitution','Internal rules'],['Contents','Name, Registered Office, Objects, Capital','Share allotment, Board meetings, Rights'],['Alterability','Can be altered by Special Resolution','Can be altered by Special Resolution'],['Scope','Relationship with outside','Relationship with members']]},
+{title:'Financial vs Performance BG',rows:[['Nature','Unconditional','Conditional'],['Trigger','On first demand','Default must be established'],['Beneficiary action','Just invoke','Prove default'],['Common example','Advance payment, Customs duty','Contract performance']]},
+{title:'Section 77, 78 Companies Act',rows:[['Who can register','Company (Sec 77)','Charge-holder (Sec 78)'],['Timeline','30 days','30 days from charge creation'],['Extension','+30 days with fee, up to 120 days by RD','Similar'],['Consequence of default','Void against liquidator/creditors','Priority lost']]},
+{title:'Valuation Methods',rows:[['Market Comparison','Based on recent sales of similar properties'],['Depreciated Replacement Cost','Construction cost less depreciation + land'],['Rental Income Capitalization','Annual rent / Yield rate'],['Development Method','For land awaiting development']]},
+{title:'LEF Limits',rows:[['Single Counterparty','20% of Tier 1'],['Group','25% of Tier 1 (+5% exceptional)'],['Sum of all large exposures','≤ 800% of Tier 1'],['Large exposure threshold','≥ 10% of Tier 1']]}
+];
+function renderCompare(){document.getElementById('compareList').innerHTML=COMPARE.map(c=>`<div class="compare-card"><div class="compare-head" onclick="this.parentElement.classList.toggle('open')"><span>${c.title}</span><span class="arrow">▼</span></div><div class="compare-body"><table>${c.rows.map(r=>`<tr>${r.map((cell,idx)=>idx===0?`<td><b>${cell}</b></td>`:`<td>${cell}</td>`).join('')}</tr>`).join('')}</table></div></div>`).join('')}
+
+const NUMBERS=[
+{v:'2 / 200',d:'Private Co — min/max members',cat:'Cos Act'},{v:'7 / No max',d:'Public Co — min/max members',cat:'Cos Act'},
+{v:'1',d:'OPC — members',cat:'Cos Act'},{v:'₹4 Cr',d:'Small Co paid-up capital ceiling',cat:'Cos Act'},
+{v:'₹40 Cr',d:'Small Co turnover ceiling',cat:'Cos Act'},{v:'21-digit',d:'CIN',cat:'Cos Act'},
+{v:'30 days',d:'Sec 77 charge registration',cat:'Charge'},{v:'60 days',d:'Charge extension with fee',cat:'Charge'},
+{v:'120 days',d:'Max extension by Regional Director',cat:'Charge'},
+{v:'₹500 Cr',d:'CSR — net worth trigger',cat:'CSR'},{v:'₹1000 Cr',d:'CSR — turnover trigger',cat:'CSR'},
+{v:'₹5 Cr',d:'CSR — net profit trigger',cat:'CSR'},{v:'2%',d:'CSR — spend % of avg net profit',cat:'CSR'},
+{v:'3',d:'Preceding FYs for CSR avg',cat:'CSR'},{v:'1/3',d:'Independent directors — listed',cat:'Governance'},
+{v:'6 mo to 10 yrs',d:'Sec 447 fraud imprisonment',cat:'Cos Act'},
+{v:'10-25%',d:'BG margin typical',cat:'BG'},{v:'0.5-3%',d:'BG commission p.a.',cat:'BG'},
+{v:'₹30 lakh',d:'NSFDC max TL',cat:'NSFDC'},{v:'4-8%',d:'NSFDC interest range',cat:'NSFDC'},
+{v:'2× DPL',d:'NSFDC income cap (BPL + 2×DPL)',cat:'NSFDC'},
+{v:'3 years',d:'Valuation validity typical',cat:'Valuation'},{v:'30 years',d:'Legal scrutiny back title',cat:'Valuation'},
+{v:'13 years',d:'EC standard period',cat:'Valuation'},{v:'₹5 Cr',d:'Two valuations threshold',cat:'Valuation'},
+{v:'₹50 Cr',d:'Corporate valuer + extra legal opinion',cat:'Valuation'},
+{v:'80:20',d:'Co-Lending Bank:NBFC',cat:'Co-Lend'},
+{v:'4',d:'Number of PSLC types',cat:'PSLC'},{v:'₹25 lakh',d:'PSLC minimum lot',cat:'PSLC'},
+{v:'31 March',d:'PSLC validity end',cat:'PSLC'},
+{v:'20%',d:'LEF — single counterparty of Tier 1',cat:'LEF'},
+{v:'25%',d:'LEF — group of connected of Tier 1',cat:'LEF'},
+{v:'10%',d:'Large exposure threshold',cat:'LEF'},
+{v:'800%',d:'LEF — sum of large exposures max',cat:'LEF'},
+{v:'12 days',d:'CL entitlement',cat:'Staff'},
+{v:'33 days',d:'PL per year',cat:'Staff'},{v:'180 days',d:'Maternity Leave',cat:'Staff'},
+{v:'15 days',d:'Paternity Leave',cat:'Staff'},{v:'540 days',d:'Sick Leave max accumulation',cat:'Staff'},
+{v:'240 days',d:'Privilege Leave max accumulation',cat:'Staff'},
+{v:'01.04.2010',d:'IOB officers — NPS cutoff date',cat:'Pension'}
+];
+function renderNumbers(f=''){f=f.toLowerCase();const items=NUMBERS.filter(n=>!f||n.v.toLowerCase().includes(f)||n.d.toLowerCase().includes(f)||n.cat.toLowerCase().includes(f));document.getElementById('numList').innerHTML=items.map(n=>`<div class="num-card"><div class="num-badge">${n.v}</div><div class="num-desc"><div class="num-cat">${n.cat}</div>${n.d}</div></div>`).join('')||'<p style="text-align:center;padding:30px;color:var(--muted)">No matches</p>'}
+function filterNums(v){renderNumbers(v)}
+
+const QUIZ=[
+{q:"Private Company maximum members?",o:["50","100","200","No max"],a:2,e:"Private Company: Min 2, Max 200."},
+{q:"Public Company minimum members?",o:["3","5","7","10"],a:2,e:"Public Company: Min 7, No max members."},
+{q:"OPC (One Person Company) — introduced under which Act?",o:["Companies Act 1956","Companies Act 2013","Income Tax Act","LLP Act"],a:1,e:"Companies Act 2013 — Sec 2(62). Not available in Companies Act 1956."},
+{q:"Small Company — paid-up capital ceiling?",o:["₹2 Cr","₹4 Cr","₹5 Cr","₹10 Cr"],a:1,e:"₹4 Cr paid-up capital OR ₹40 Cr turnover (revised)."},
+{q:"CIN number of digits?",o:["12","15","21","25"],a:2,e:"21-digit Corporate Identity Number assigned by MCA."},
+{q:"Section 77 Companies Act — charge registration timeline?",o:["15 days","30 days","60 days","90 days"],a:1,e:"Within 30 days of creation/modification; extension with fee up to 60 days; by RD up to 120 days."},
+{q:"CHG-1 form purpose?",o:["Satisfaction","Creation/Modification","Notice","Annual return"],a:1,e:"CHG-1 for creation/modification. CHG-4 for satisfaction."},
+{q:"CSR — applicability trigger?",o:["Only Net Profit ≥ ₹5 Cr","Only Turnover ≥ ₹500 Cr","Any of: Net Worth ₹500 Cr, Turnover ₹1000 Cr, Net Profit ₹5 Cr","Only listed companies"],a:2,e:"Sec 135: Any of Net Worth ≥ ₹500 Cr OR Turnover ≥ ₹1000 Cr OR Net Profit ≥ ₹5 Cr."},
+{q:"CSR spend requirement?",o:["1%","1.5%","2%","3%"],a:2,e:"2% of avg net profit of 3 preceding FYs."},
+{q:"Independent Directors — min % of Board (listed)?",o:["1/4","1/3","1/2","2/3"],a:1,e:"At least 1/3rd of Board as Independent Directors for listed companies."},
+{q:"Section 447 Companies Act — fraud imprisonment?",o:["Up to 3 years","Up to 5 years","6 months to 10 years","Life imprisonment"],a:2,e:"6 months to 10 years + fine for fraud."},
+{q:"Sec 180 Companies Act — restriction?",o:["Loans to directors","Sale of undertaking/borrowing > paid-up+free reserves without shareholder approval","CSR compliance","Audit"],a:1,e:"Board cannot sell/lease undertaking or borrow beyond paid-up+free reserves without shareholder approval."},
+{q:"Sec 185 Companies Act — restricts?",o:["Public deposits","Loans to directors","Share buyback","Acquisition"],a:1,e:"Loans to directors — generally prohibited (with exceptions)."},
+{q:"Financial BG — nature?",o:["Conditional","Unconditional, pay on first demand","Case-by-case","Advisory"],a:1,e:"Financial Guarantee: unconditional, pays on first demand. Performance: conditional on default."},
+{q:"BG margin typical?",o:["5%","10-25%","40%","50%"],a:1,e:"Margin typically 10-25% based on risk/rating. Commission 0.5-3% p.a."},
+{q:"NSFDC — target community?",o:["SC","ST","OBC","Minorities"],a:0,e:"NSFDC — National SC Finance Development Corporation. For SC community."},
+{q:"NSFDC — max term loan?",o:["₹15 lakh","₹30 lakh","₹50 lakh","₹1 Cr"],a:1,e:"Up to ₹30 lakh for viable projects."},
+{q:"Legal scrutiny — back title chain minimum years?",o:["10","13","20","30"],a:3,e:"30 years back title chain minimum."},
+{q:"EC (Encumbrance Certificate) — standard period?",o:["7 years","10 years","13 years","20 years"],a:2,e:"13 years standard; 30 years for high-value (above ₹5 Cr)."},
+{q:"Valuation validity typical?",o:["1 year","2 years","3 years","5 years"],a:2,e:"3 years typical for housing loan; fresh valuation for enhancement."},
+{q:"EASE 7.0 — focus areas?",o:["Only MSME","Only digital","Cyber security, risk governance, digital-first","Only treasury"],a:2,e:"EASE 7.0 (2024-25) focuses on cyber security, risk governance, digital-first banking."},
+{q:"Co-Lending Model — bank share?",o:["50%","60%","80%","100%"],a:2,e:"Bank 80% / NBFC 20% (indicative split)."},
+{q:"PSLC — types?",o:["2","3","4","5"],a:2,e:"4 types: General, Agriculture, SF/MF, Micro."},
+{q:"PSLC — validity?",o:["Lifetime","Till 31 March of issue year","1 year","5 years"],a:1,e:"Till 31 March of issue year (financial year)."},
+{q:"PSLC minimum lot size?",o:["₹5 lakh","₹10 lakh","₹25 lakh","₹50 lakh"],a:2,e:"₹25 lakh minimum; multiples thereof."},
+{q:"LEF single counterparty limit?",o:["10% Tier 1","15% Tier 1","20% Tier 1","25% Tier 1"],a:2,e:"20% of Tier 1 Capital. Group: 25%. +5% exceptional."},
+{q:"LEF group of connected counterparties limit?",o:["15% Tier 1","20% Tier 1","25% Tier 1","30% Tier 1"],a:2,e:"25% of Tier 1 Capital for group."},
+{q:"LEF — sum of all large exposures max?",o:["200% Tier 1","400% Tier 1","600% Tier 1","800% Tier 1"],a:3,e:"Sum of all large exposures: ≤ 800% of Tier 1 Capital."},
+{q:"LEF — large exposure threshold?",o:["5% Tier 1","10% Tier 1","15% Tier 1","20% Tier 1"],a:1,e:"≥ 10% of Tier 1 Capital qualifies as 'large exposure'."},
+{q:"IOB officer pension cutoff date (NPS vs Pension)?",o:["01.04.2004","01.04.2005","01.04.2010","01.04.2015"],a:2,e:"Officers joined after 01.04.2010: NPS. Before: Pension scheme eligible."},
+{q:"Casual Leave (CL) per year?",o:["7","10","12","15"],a:2,e:"12 days of CL per year."},
+{q:"Privilege Leave entitlement per year?",o:["24","30","33","36"],a:2,e:"33 days of PL per year. Max accumulation: 240 days."},
+{q:"Maternity Leave in India?",o:["84 days","120 days","180 days","210 days"],a:2,e:"180 days (26 weeks) under Maternity Benefit (Amendment) Act 2017."},
+{q:"Paternity Leave for male bank officers?",o:["5 days","10 days","15 days","30 days"],a:2,e:"15 days typically for bank officers (as per Bipartite Settlement)."},
+{q:"Sick Leave maximum accumulation?",o:["120 days","240 days","365 days","540 days"],a:3,e:"540 days max accumulation."},
+{q:"Who regulates insurance in India?",o:["RBI","SEBI","IRDAI","PFRDA"],a:2,e:"IRDAI = Insurance Regulatory and Development Authority of India."},
+{q:"Who regulates NPS / APY?",o:["RBI","SEBI","IRDAI","PFRDA"],a:3,e:"PFRDA = Pension Fund Regulatory and Development Authority."},
+{q:"FSDC — stands for?",o:["Financial Stability Development Council","Finance Services Development Council","Financial Services Dev Corp","Finance Supervisory Dev Council"],a:0,e:"Financial Stability and Development Council — apex body chaired by Finance Minister."},
+{q:"Narasimham Committee — focus?",o:["Agriculture","Banking Reforms","Taxation","Industrial Policy"],a:1,e:"Banking Reforms. Committee I (1991): SLR/CRR, Basel. Committee II (1998): NPA, provisioning."},
+{q:"BCSBI — status?",o:["Active","Wound up 2020-21; role absorbed by RBI/IBA","Operating","Will be formed"],a:1,e:"BCSBI set up 2006; wound up 2020-21. Role absorbed by RBI/IBA."}
+];
+
+let quizIndex=0;let currentOrder=[];
+function startQuiz(){currentOrder=QUIZ.map((_,i)=>i).sort(()=>Math.random()-0.5);quizIndex=0;document.getElementById('quizIntro').style.display='none';document.getElementById('quizArea').style.display='block';renderQuestion()}
+function renderQuestion(){if(quizIndex>=currentOrder.length){renderResult();return}const qid=currentOrder[quizIndex];const q=QUIZ[qid];const prev=state.quiz.perQuestion[qid];document.getElementById('quizArea').innerHTML=`<div class="quiz-stats"><div class="quiz-stat"><div class="v">${quizIndex+1}/${currentOrder.length}</div><div class="l">Progress</div></div><div class="quiz-stat"><div class="v">${state.quiz.correct}</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v">${state.quiz.attempted?Math.round(state.quiz.correct/state.quiz.attempted*100):0}%</div><div class="l">Accuracy</div></div></div><div class="question-card"><div class="q-num">Question ${quizIndex+1} of ${currentOrder.length}</div><div class="q-text">${q.q}</div>${q.o.map((opt,i)=>`<div class="option" onclick="pickOption(${qid},${i},this)" id="opt-${i}">${String.fromCharCode(65+i)}) ${opt}</div>`).join('')}<div class="explanation" id="exp"><b>💡 ${q.o[q.a]}</b><br>${q.e}</div><div class="nav-btns"><button class="btn-prev" onclick="prevQuestion()">← Prev</button><button class="btn-next" onclick="nextQuestion()">Next →</button></div></div>`;if(prev!==undefined){const sel=prev;document.getElementById('opt-'+sel).classList.add(sel===q.a?'correct':'wrong');if(sel!==q.a)document.getElementById('opt-'+q.a).classList.add('correct');document.getElementById('exp').classList.add('show')}}
+function pickOption(qid,idx,el){const q=QUIZ[qid];if(state.quiz.perQuestion[qid]!==undefined)return;state.quiz.perQuestion[qid]=idx;state.quiz.attempted++;if(idx===q.a){state.quiz.correct++;el.classList.add('correct')}else{el.classList.add('wrong');document.getElementById('opt-'+q.a).classList.add('correct');if(!state.weak.includes(qid))state.weak.push(qid)}document.getElementById('exp').classList.add('show');save();updateStatBoxes()}
+function nextQuestion(){quizIndex++;renderQuestion()}
+function prevQuestion(){if(quizIndex>0)quizIndex--;renderQuestion()}
+function renderResult(){const s=state.quiz.correct,t=state.quiz.attempted,p=t?Math.round(s/t*100):0;let m='Good effort!';if(p>=80)m='🎉 Excellent!';else if(p>=60)m='👍 Solid.';else if(p>=40)m='📚 More practice.';else m='💪 Keep going.';document.getElementById('quizArea').innerHTML=`<div class="result-card"><div style="font-size:50px">${p>=60?'🏆':'📖'}</div><div class="result-score">${p}%</div><div class="result-msg">${m}</div><div class="result-row"><div class="quiz-stat"><div class="v">${s}</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v">${t-s}</div><div class="l">Wrong</div></div></div><div class="action-row"><button class="btn" onclick="resetQuiz()">🔄 Retake</button><button class="btn btn-sec" onclick="reviewWeak()">🎯 Weak</button></div></div>`}
+function resetQuiz(){state.quiz={attempted:0,correct:0,perQuestion:{}};state.weak=[];save();document.getElementById('quizArea').style.display='none';document.getElementById('quizIntro').style.display='block';updateStatBoxes()}
+function reviewWeak(){if(state.weak.length===0){alert('No weak topics yet!');return}currentOrder=[...state.weak];quizIndex=0;document.getElementById('quizIntro').style.display='none';document.getElementById('quizArea').style.display='block';state.weak.forEach(w=>{delete state.quiz.perQuestion[w]});state.quiz.attempted=Math.max(0,state.quiz.attempted-state.weak.length);state.weak=[];save();renderQuestion()}
+function updateStatBoxes(){const a=state.quiz.attempted,c=state.quiz.correct,ac=a?Math.round(c/a*100):0;if(document.getElementById('stAtt'))document.getElementById('stAtt').textContent=a;if(document.getElementById('stCor'))document.getElementById('stCor').textContent=c;if(document.getElementById('stAcc'))document.getElementById('stAcc').textContent=ac+'%'}
+
+const CASES=[
+{t:'1. Charge Registration Delay',scenario:'Bank sanctioned ₹2 Cr loan to XYZ Pvt Ltd on 01-Jan-2026 with hypothecation of plant & machinery. Bank forgot to register charge with RoC. On 15-Mar-2026 (73 days later), they realize. What now?',solution:'<b>Step 1:</b> Sec 77 — 30 days. Elapsed: 30 days expired on 31-Jan-2026.<br><b>Step 2:</b> Extension: +30 days with additional fee — up to 60 days (02-Mar-2026). ALSO MISSED.<br><b>Step 3:</b> Beyond 60 days → application to Regional Director for condonation + higher fee (up to 120 days = 01-May-2026).<br><b>Step 4:</b> File Form CHG-8 for condonation.<br><b>Step 5:</b> If RD grants condonation → register charge now.<br><b>Step 6:</b> If charge not registered:<br>• VOID against liquidator/creditors.<br>• Still enforceable against borrower.<br>• Bank loses priority.<br>• In insolvency, bank treated as unsecured creditor.<br><b>Step 7:</b> Also CERSAI (SARFAESI) — register within 30 days there too.<br><b>Key learning:</b> Timely charge registration is CRITICAL. Delay = loss of priority.'},
+{t:'2. CSR Applicability',scenario:'ABC Ltd — Net worth ₹400 Cr, Turnover ₹600 Cr, Net Profit ₹7 Cr in FY2025-26. Is CSR applicable? If yes, spend?',solution:'<b>Test: Any one trigger matters.</b><br>• Net worth ≥ ₹500 Cr? NO (₹400 Cr).<br>• Turnover ≥ ₹1000 Cr? NO (₹600 Cr).<br>• Net Profit ≥ ₹5 Cr? YES (₹7 Cr).<br><b>Conclusion:</b> CSR APPLICABLE (3rd trigger met).<br><b>Spend:</b> 2% of avg net profit of 3 preceding FYs.<br>If avg net profit = ₹6 Cr → CSR spend = ₹12 lakh.<br><b>Compliance:</b><br>• Form CSR committee.<br>• Policy as per Schedule VII.<br>• Report in Director\'s Report.<br>• Unspent → CSR Unspent Account.<br><b>Key learning:</b> Even one trigger = CSR applies.'},
+{t:'3. BG Invocation',scenario:'Mr. Chandra\'s company obtained a Performance BG of ₹10 lakh from your bank for a construction contract. Beneficiary invokes BG claiming non-performance on 15-Oct-2026. BG validity till 31-Dec-2026. What is the process?',solution:'<b>Step 1:</b> Performance BG = conditional on default being established.<br><b>Step 2:</b> Invocation within validity ✓.<br><b>Step 3:</b> Beneficiary must provide written invocation + proof of default.<br><b>Step 4:</b> Bank gives notice to borrower (Mr. Chandra).<br><b>Step 5:</b> Investigate:<br>• Was default genuine?<br>• Is BG wording "unconditional" even for performance?<br>• Has beneficiary complied with terms?<br><b>Step 6:</b> If BG is strictly unconditional (sometimes performance BGs are) → pay on first demand.<br><b>Step 7:</b> If BG allows bank to verify → investigate; decline fraudulent invocation.<br><b>Step 8:</b> On payment:<br>• Debit Mr. Chandra\'s CC/OD.<br>• If insufficient → recover as per loan terms.<br>• If Mr. Chandra disputes → he can go to court for stay on invocation.<br><b>Note:</b> Court generally does NOT grant stay unless "egregious fraud" is proven.<br><b>Key learning:</b> Performance BG wording matters; most modern BGs are unconditional.'},
+{t:'4. Valuation Dispute — High-Value Property',scenario:'Property mortgaged value ₹60 Cr. Mandated:',solution:'<b>Requirements for Property > ₹50 Cr:</b><br>1. <b>Two valuations</b> from different empanelled valuers.<br>2. One of these must be from a <b>corporate/reputed valuation firm</b>.<br>3. <b>Additional legal opinion</b> from a corporate law firm beyond empanelled lawyer.<br>4. Joint visit by Credit Dept RO + Branch Manager.<br>5. BM uploads location to IOB SAHAYAK app.<br>6. If variance > 10% → third valuer; take lowest.<br>7. LTV applied as per housing/general rules.<br><b>Documentation:</b><br>• Two valuation reports (one corporate).<br>• Two legal opinions (one corporate).<br>• Property visit report.<br>• Photographs + geo-location.<br>• Encumbrance Certificate (30 years for ₹50 Cr+).<br>• Title deed chain 30 years.<br><b>Key learning:</b> Higher value = more scrutiny + two valuations + additional legal opinion.'},
+{t:'5. LEF Breach Scenario',scenario:'Bank\'s Tier 1 Capital = ₹10,000 Cr. Credit facility of ₹2,500 Cr to a single corporate borrower. Is this LEF-compliant?',solution:'<b>Step 1:</b> LEF limit for single counterparty = 20% of Tier 1 = ₹2,000 Cr.<br><b>Step 2:</b> Exposure ₹2,500 Cr > ₹2,000 Cr → BREACH by ₹500 Cr (5% excess).<br><b>Step 3:</b> Options:<br>• In exceptional cases: +5% with Board approval (total 25%) = ₹2,500 Cr → ALLOWED with Board approval.<br>• Without Board approval: BREACH; RBI reporting + corrective action.<br><b>Step 4:</b> Group test: If borrower is part of group, aggregate group exposure limit = 25% = ₹2,500 Cr.<br><b>Step 5:</b> If > 25%: must reduce.<br><b>Step 6:</b> Corrective actions:<br>• Syndicate / sell down.<br>• PSLC trading if PSL category.<br>• Sale to ARC.<br>• Wait for natural runoff.<br><b>Step 7:</b> Classification as "Large Exposure" (≥10% Tier 1 = ₹1,000 Cr+).<br><b>Step 8:</b> Sum of all large exposures: ≤ 800% of Tier 1 = ₹80,000 Cr.<br><b>Key learning:</b> Single counterparty 20%, Group 25%, with 5% exceptional buffer.'}
+];
+function renderCases(){document.getElementById('caseList').innerHTML=CASES.map((c,i)=>`<div class="case-card"><div class="case-head" onclick="this.parentElement.classList.toggle('open')"><span>${c.t}</span><span class="arrow">▼</span></div><div class="case-body"><div class="case-scenario"><b>📍 Scenario:</b> ${c.scenario}</div><button class="reveal-btn" onclick="this.nextElementSibling.classList.add('show'); this.style.display='none'">👁️ Reveal Solution</button><div class="case-solution">${c.solution}</div></div></div>`).join('')}
+
+function init(){document.documentElement.setAttribute('data-theme',state.theme);document.querySelector('.theme-btn').textContent=state.theme==='dark'?'☀️':'🌙';Object.keys(state.topics).forEach(id=>{const el=document.querySelector(`#${id} .topic-check`);if(el&&state.topics[id])el.classList.add('done')});updateProgressBar();renderFlashcards();renderCompare();renderNumbers();renderCases();updateStatBoxes()}
+init();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(e => console.log('SW failed:', e));
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a2540">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IOB Prep">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Module D: Credit Monitoring — IOB 2027</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#1a202c;--muted:#64748b;--primary:#0a2540;--primary-light:#1e40af;--accent:#d4a017;--success:#10b981;--warn:#f59e0b;--danger:#ef4444;--border:#e2e8f0;--highlight:#fef3c7;--important:#fee2e2;--info:#dbeafe}
+[data-theme="dark"]{--bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--muted:#94a3b8;--primary:#3b82f6;--accent:#fbbf24;--border:#334155;--highlight:#78350f;--important:#7f1d1d;--info:#1e3a8a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;font-size:14px;padding-bottom:80px}
+.header{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:14px 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.header-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.back-link{color:#fff;text-decoration:none;font-size:13px;padding:4px 8px;background:rgba(255,255,255,.15);border-radius:8px;display:inline-block}
+.header h1{font-size:16px;font-weight:700;margin-top:4px}
+.header-sub{font-size:11px;opacity:.85}
+.theme-btn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:8px 10px;border-radius:8px;font-size:15px;cursor:pointer}
+.progress-strip{height:4px;background:rgba(255,255,255,.2);margin-top:8px;border-radius:10px;overflow:hidden}
+.progress-strip-fill{height:100%;background:linear-gradient(90deg,var(--accent),#fbbf24);transition:width .5s}
+.tabs{background:var(--card);padding:8px;overflow-x:auto;white-space:nowrap;border-bottom:1px solid var(--border);position:sticky;top:85px;z-index:50;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-chip{display:inline-block;padding:8px 14px;margin:0 3px;border-radius:20px;background:var(--bg);color:var(--text);border:1px solid var(--border);font-size:12px;font-weight:600;cursor:pointer}
+.tab-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+[data-theme="dark"] .tab-chip.active{background:var(--accent);color:var(--primary)}
+.container{padding:14px;max-width:900px;margin:0 auto}
+.view{display:none}.view.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.topic{background:var(--card);border-radius:12px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid var(--border);overflow:hidden}
+.topic-head{padding:12px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(90deg,var(--card),var(--bg));user-select:none}
+.topic-title{font-weight:700;font-size:14px;color:var(--primary);display:flex;align-items:center;gap:8px}
+[data-theme="dark"] .topic-title{color:var(--accent)}
+.topic-num{background:var(--primary);color:#fff;width:24px;height:24px;border-radius:50%;text-align:center;line-height:24px;font-size:11px;font-weight:700;flex-shrink:0}
+[data-theme="dark"] .topic-num{background:var(--accent);color:var(--primary)}
+.topic-check{width:22px;height:22px;border:2px solid var(--muted);border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}
+.topic-check.done{background:var(--success);border-color:var(--success)}.topic-check.done::after{content:'✓'}
+.topic-body{display:none;padding:0 14px 14px}
+.topic.open .topic-body{display:block;animation:fadeIn .3s ease}
+.topic.open .topic-arrow{transform:rotate(90deg)}
+.topic-arrow{transition:transform .3s;color:var(--muted);font-size:14px}
+h3{margin:14px 0 8px;font-size:14px;color:var(--primary);padding-bottom:4px;border-bottom:2px solid var(--accent)}
+[data-theme="dark"] h3{color:var(--accent)}
+h4{margin:12px 0 6px;font-size:13px;color:var(--primary);font-weight:700}
+[data-theme="dark"] h4{color:#93c5fd}
+p{margin:4px 0 8px}
+ul,ol{margin:4px 0 10px;padding-left:22px}li{margin:3px 0}
+.key{background:var(--highlight);padding:2px 6px;border-radius:4px;font-weight:700;color:#92400e;font-size:13px}
+[data-theme="dark"] .key{color:#fde68a}
+.imp{background:var(--important);padding:2px 6px;border-radius:4px;font-weight:600;color:#991b1b}
+[data-theme="dark"] .imp{color:#fecaca}
+.alert{padding:10px 12px;margin:10px 0;border-radius:8px;border-left:3px solid;font-size:13px}
+.alert-info{background:var(--info);border-color:var(--primary-light);color:var(--primary)}
+.alert-danger{background:var(--important);border-color:var(--danger);color:#991b1b}
+.alert-warn{background:var(--highlight);border-color:var(--warn);color:#92400e}
+[data-theme="dark"] .alert-info{color:#dbeafe}
+[data-theme="dark"] .alert-danger{color:#fecaca;background:#7f1d1d}
+[data-theme="dark"] .alert-warn{color:#fde68a;background:#78350f}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12.5px}
+th,td{padding:6px 8px;text-align:left;border:1px solid var(--border)}
+th{background:var(--bg);font-weight:700;color:var(--primary)}
+[data-theme="dark"] th{color:var(--accent)}
+tr:nth-child(even) td{background:var(--bg)}
+.flashcard-deck{display:flex;flex-direction:column;gap:12px}
+.flashcard{perspective:1000px;height:180px;cursor:pointer}
+.flashcard-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}
+.flashcard-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;padding:18px;display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.flashcard-front{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;font-size:16px;font-weight:600}
+.flashcard-back{background:linear-gradient(135deg,var(--accent),#d97706);color:#1a202c;font-size:13.5px;transform:rotateY(180deg);font-weight:500;overflow-y:auto;line-height:1.5}
+.flashcard-hint{position:absolute;bottom:8px;left:0;right:0;font-size:10px;opacity:.7;text-align:center}
+.compare-card{background:var(--card);border-radius:12px;margin-bottom:10px;border:1px solid var(--border);overflow:hidden}
+.compare-head{padding:12px 14px;background:linear-gradient(90deg,var(--primary),var(--primary-light));color:#fff;font-weight:700;font-size:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.compare-body{display:none;padding:10px;overflow-x:auto}
+.compare-card.open .compare-body{display:block;animation:fadeIn .3s ease}
+.compare-card.open .compare-head .arrow{transform:rotate(180deg)}
+.compare-head .arrow{transition:transform .3s;font-size:14px}
+.num-card{background:var(--card);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.num-badge{background:var(--accent);color:var(--primary);padding:6px 10px;border-radius:8px;font-family:monospace;font-weight:700;font-size:13px;min-width:90px;text-align:center;flex-shrink:0}
+.num-desc{font-size:13px;flex:1}
+.num-cat{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.quiz-intro{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:20px;border-radius:14px;margin-bottom:14px;text-align:center}
+.quiz-intro h2{font-size:20px;margin-bottom:8px}
+.quiz-intro p{font-size:13px;opacity:.9;margin-bottom:14px}
+.quiz-btn{padding:10px 20px;background:var(--accent);color:var(--primary);border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px;font-family:inherit}
+.quiz-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.quiz-stat{background:var(--card);padding:10px;border-radius:10px;text-align:center;border:1px solid var(--border)}
+.quiz-stat .v{font-size:20px;font-weight:700;color:var(--primary)}
+[data-theme="dark"] .quiz-stat .v{color:var(--accent)}
+.quiz-stat .l{font-size:10px;color:var(--muted);text-transform:uppercase}
+.question-card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.q-num{font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:600}
+.q-text{font-size:14px;font-weight:600;margin-bottom:12px;line-height:1.45}
+.option{padding:10px 12px;margin-bottom:6px;background:var(--bg);border-radius:8px;border:2px solid transparent;cursor:pointer;font-size:13px;transition:all .2s}
+.option:hover{background:var(--card);border-color:var(--primary)}
+.option.correct{background:#d1fae5;border-color:var(--success);color:#065f46}
+.option.wrong{background:#fee2e2;border-color:var(--danger);color:#991b1b}
+[data-theme="dark"] .option.correct{background:#065f46;color:#d1fae5}
+[data-theme="dark"] .option.wrong{background:#7f1d1d;color:#fecaca}
+.explanation{background:var(--info);padding:10px 12px;margin-top:10px;border-radius:8px;font-size:12.5px;border-left:3px solid var(--primary-light);display:none}
+.explanation.show{display:block;animation:fadeIn .3s}
+[data-theme="dark"] .explanation{background:#1e3a8a;color:#dbeafe}
+.nav-btns{display:flex;gap:8px;margin-top:14px}
+.nav-btns button{flex:1;padding:10px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit}
+.btn-prev{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.btn-next{background:var(--primary);color:#fff}
+[data-theme="dark"] .btn-next{background:var(--accent);color:var(--primary)}
+.case-card{background:var(--card);border-radius:14px;margin-bottom:14px;border:1px solid var(--border);overflow:hidden}
+.case-head{padding:12px 14px;background:linear-gradient(135deg,var(--accent),#d97706);color:#1a202c;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:700}
+.case-body{display:none;padding:14px}.case-card.open .case-body{display:block;animation:fadeIn .3s}
+.case-card.open .case-head .arrow{transform:rotate(180deg)}
+.case-scenario{background:var(--info);padding:10px 12px;border-radius:8px;margin-bottom:10px;font-size:13px;border-left:3px solid var(--primary-light)}
+[data-theme="dark"] .case-scenario{background:#1e3a8a;color:#dbeafe}
+.case-solution{background:var(--highlight);padding:10px 12px;border-radius:8px;font-size:13px;border-left:3px solid var(--accent);display:none}
+.case-solution.show{display:block;animation:fadeIn .3s}
+[data-theme="dark"] .case-solution{background:#78350f;color:#fde68a}
+.reveal-btn{padding:8px 14px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;margin-top:8px}
+.result-card{background:var(--card);padding:20px;border-radius:14px;text-align:center;border:1px solid var(--border)}
+.result-score{font-size:44px;font-weight:800;color:var(--primary);margin:10px 0}
+[data-theme="dark"] .result-score{color:var(--accent)}
+.result-msg{font-size:14px;color:var(--muted);margin-bottom:16px}
+.result-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.float-btn{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;width:48px;height:48px;border-radius:50%;font-size:22px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:200}
+[data-theme="dark"] .float-btn{background:var(--accent);color:var(--primary)}
+.search-box{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px;margin-bottom:10px;font-family:inherit}
+.btn{padding:10px 14px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;background:var(--primary);color:#fff;font-family:inherit}
+.btn-sec{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.flow-container{background:var(--card);border-radius:12px;padding:14px;margin:10px 0;border:1px solid var(--border);overflow-x:auto}
+.flow-title{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:8px;text-align:center}
+[data-theme="dark"] .flow-title{color:var(--accent)}
+.flow-step{display:inline-flex;flex-direction:column;align-items:center;margin:0 8px;vertical-align:top;width:110px}
+.flow-circle{width:50px;height:50px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;animation:pulseStep 2s infinite}
+.flow-step:nth-child(2) .flow-circle{animation-delay:.3s;background:#1e40af}
+.flow-step:nth-child(3) .flow-circle{animation-delay:.6s;background:#2563eb}
+.flow-step:nth-child(4) .flow-circle{animation-delay:.9s;background:var(--accent);color:var(--primary)}
+.flow-step:nth-child(5) .flow-circle{animation-delay:1.2s;background:var(--success)}
+@keyframes pulseStep{0%,100%{transform:scale(1);box-shadow:0 0 0 0 currentColor}50%{transform:scale(1.1);box-shadow:0 0 0 8px rgba(10,37,64,.1)}}
+.flow-label{font-size:10px;margin-top:6px;text-align:center;line-height:1.3;color:var(--muted)}
+.flow-arrow{color:var(--muted);font-size:18px;vertical-align:top;margin-top:18px;animation:slideRight 1.5s infinite}
+@keyframes slideRight{0%,100%{transform:translateX(0);opacity:.5}50%{transform:translateX(3px);opacity:1}}
+</style>
+</head>
+<body>
+<div class="header"><div class="header-row"><div><a href="IOB_Study_Hub.html" class="back-link">← Hub</a><h1>Module D: Credit Monitoring</h1><div class="header-sub">Compliance, Audit, SMA • 40 MCQs</div></div><button class="theme-btn" onclick="toggleTheme()">🌙</button></div><div class="progress-strip"><div class="progress-strip-fill" id="pbar" style="width:0%"></div></div></div>
+<div class="tabs">
+<div class="tab-chip active" onclick="showTab('content',this)">📖 Content</div>
+<div class="tab-chip" onclick="showTab('flash',this)">🎴 Flashcards</div>
+<div class="tab-chip" onclick="showTab('compare',this)">⚖️ Compare</div>
+<div class="tab-chip" onclick="showTab('numbers',this)">🔢 Numbers</div>
+<div class="tab-chip" onclick="showTab('mcq',this)">❓ Quiz</div>
+<div class="tab-chip" onclick="showTab('cases',this)">📋 Cases</div>
+</div>
+<div class="container">
+<div id="content" class="view active">
+<input class="search-box" placeholder="🔍 Search..." oninput="filterTopics(this.value)">
+
+<div class="topic" id="t1"><div class="topic-head" onclick="toggleTopic('t1')"><div class="topic-title"><span class="topic-num">1</span>Credit Monitoring — Overview</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t1',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Three Functions</h3>
+<ul>
+<li><b>Control</b> — SMA and Slippage management.</li>
+<li><b>Monitoring</b> — CAF 1A/1/50, CSS, Renewal, EWS.</li>
+<li><b>Audit</b> — Stock Audit, Credit Audit, ASM.</li>
+</ul>
+
+<h3>Key Reports from Branches</h3>
+<ul>
+<li><b>ERI</b> (Exposure Review & Inspection) Statements — monthly for irregular advances.</li>
+<li><b>CSS</b> (Continuous Surveillance Statement) — monthly, FB WC ≥ ₹1 Cr.</li>
+<li><b>CAF 1 / 1A / 50</b> — Credit Appraisal Formats, reviewed by higher authority.</li>
+<li>SMA — daily reporting to CRILC for exposures ≥ ₹5 Cr.</li>
+</ul>
+
+<h3>Account Renewal & Verification</h3>
+<ul>
+<li>100% renewal/review for accounts with limits ≥ ₹1 lakh.</li>
+<li>Annual review of all fund-based + non-fund-based limits.</li>
+<li>Monthly stock statements for CC accounts.</li>
+<li>Quarterly inspection of borrowing units.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t2"><div class="topic-head" onclick="toggleTopic('t2')"><div class="topic-title"><span class="topic-num">2</span>SMA — Special Mention Accounts</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t2',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>SMA Classification</h3>
+<table>
+<tr><th>Category</th><th>Overdue Period</th><th>Action</th></tr>
+<tr><td><b>SMA-0</b></td><td>1 to 30 days</td><td>Early warning; follow-up</td></tr>
+<tr><td><b>SMA-1</b></td><td>31 to 60 days</td><td>Enhanced monitoring; call customer</td></tr>
+<tr><td><b>SMA-2</b></td><td>61 to 90 days</td><td>Report to CRILC daily; recovery action</td></tr>
+<tr><td><b>NPA</b></td><td>> 90 days</td><td>Classified as NPA; provisioning</td></tr>
+</table>
+
+<div class="alert alert-danger">⚠️ SMA Reporting to CRILC: all borrowers with aggregate exposure ≥ ₹5 Crore. Daily SMA reporting of these.</div>
+
+<h3>Flow</h3>
+<div class="flow-container">
+<div class="flow-title">Account Status Progression</div>
+<div style="text-align:center;white-space:nowrap">
+<div class="flow-step"><div class="flow-circle">S</div><div class="flow-label">Standard<br>0 days</div></div>
+<span class="flow-arrow">→</span>
+<div class="flow-step"><div class="flow-circle">0</div><div class="flow-label">SMA-0<br>1-30 days</div></div>
+<span class="flow-arrow">→</span>
+<div class="flow-step"><div class="flow-circle">1</div><div class="flow-label">SMA-1<br>31-60 days</div></div>
+<span class="flow-arrow">→</span>
+<div class="flow-step"><div class="flow-circle">2</div><div class="flow-label">SMA-2<br>61-90 days</div></div>
+<span class="flow-arrow">→</span>
+<div class="flow-step"><div class="flow-circle">N</div><div class="flow-label">NPA<br>>90 days</div></div>
+</div>
+</div>
+
+<h3>CRILC (Central Repository of Information on Large Credits)</h3>
+<ul>
+<li>RBI's central repository since 2014.</li>
+<li>Captures all borrowers with aggregate exposure ≥ ₹5 Cr.</li>
+<li>Daily SMA reporting mandatory.</li>
+<li>Also quarterly submission of large exposures.</li>
+<li>Enables early detection of stress across banking system.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t3"><div class="topic-head" onclick="toggleTopic('t3')"><div class="topic-title"><span class="topic-num">3</span>Property Valuation Policy (IOB)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t3',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Single property > <span class="key">₹5 Cr</span> — <b>Two valuation reports</b> from different empanelled valuers.</li>
+<li>If multiple properties — second valuation required only for property with value > ₹5 Cr.</li>
+<li><b>Variance treatment:</b>
+<ul>
+<li>≤ 10% difference — accept lower value.</li>
+<li>&gt; 10% difference — engage third valuer (borrower's cost); take lowest.</li>
+</ul></li>
+<li>Single property > ₹50 Cr: two valuations, one from corporate/reputed firm.</li>
+<li>Property > ₹50 Cr: additional legal opinion from corporate law firm (in addition to empanelled lawyer).</li>
+<li>High-value property visit: joint visit by Credit Dept RO + Branch Manager (property ≥ ₹5 Cr).</li>
+<li>BM captures property location, uploads to IOB SAHAYAK app.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t4"><div class="topic-head" onclick="toggleTopic('t4')"><div class="topic-title"><span class="topic-num">4</span>CAF — Credit Appraisal Format</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t4',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li><b>CAF-1:</b> Review of credit sanctions by sanctioning authority to immediate higher.</li>
+<li><b>CAF-1A:</b> Mid-review (interim).</li>
+<li><b>CAF-50:</b> Review of accounts beyond ₹50 lakh / specific threshold.</li>
+<li><b>Digitization:</b> From January 2026 — automated CAF system.</li>
+<li>Branch to upload sanction note on the very next day of disbursement.</li>
+<li>Higher authority reviews within specified timeline.</li>
+<li>Review findings tracked for compliance.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t5"><div class="topic-head" onclick="toggleTopic('t5')"><div class="topic-title"><span class="topic-num">5</span>Stock Audit</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t5',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>For borrowers with CC/OD limit above threshold (typically ₹5 Cr aggregate).</li>
+<li>Frequency: Annual / Half-yearly for larger accounts.</li>
+<li>Done by Chartered Accountants or empanelled stock auditors.</li>
+<li>Scope: Physical verification of stocks, reconciliation with books, aging of debtors, insurance coverage.</li>
+<li>Report placed before sanctioning authority.</li>
+<li>Adverse findings → immediate review of limits.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t6"><div class="topic-head" onclick="toggleTopic('t6')"><div class="topic-title"><span class="topic-num">6</span>Credit Audit</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t6',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>For accounts above threshold (typically ₹5 Cr).</li>
+<li>Covers: sanction, disbursement, security creation, end-use, monitoring.</li>
+<li>Annual audit by designated team.</li>
+<li>Credit Audit Risk Rating assigned.</li>
+<li>Report to Audit Committee.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t7"><div class="topic-head" onclick="toggleTopic('t7')"><div class="topic-title"><span class="topic-num">7</span>Concurrent Audit</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t7',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Objective</h3>
+<p>Substantial reduction in interval between transaction occurrence and its detection.</p>
+
+<h3>Coverage</h3>
+<ul>
+<li>Branches with aggregate deposits + advances > ₹50 Cr.</li>
+<li>All "A" category branches.</li>
+<li>Treasury, International Banking, Service branches.</li>
+<li>Credit Sanction Centres (CPCs, LPCs).</li>
+<li>Processing Centres (Cheque Processing).</li>
+</ul>
+
+<h3>Conduct</h3>
+<ul>
+<li>By CA firms OR retired bank officers.</li>
+<li>Monthly report to AGM/GM concerned.</li>
+<li>Must cover 100% of transactions in critical areas.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t8"><div class="topic-head" onclick="toggleTopic('t8')"><div class="topic-title"><span class="topic-num">8</span>Risk-Based Internal Audit (RBIA)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t8',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>RBI directive — adopted by banks.</li>
+<li>Audit based on risk profile of branch/area.</li>
+<li>Risk categories: Low, Medium, High, Very High, Extremely High.</li>
+<li>Based on: Business Risk + Control Risk.</li>
+<li>Periodicity varies: High risk — frequent; Low risk — less frequent.</li>
+<li>Three Lines of Defence (3LoD):
+<ul>
+<li>1st: Branches/offices.</li>
+<li>2nd: Compliance, Risk Management departments.</li>
+<li>3rd: Internal Audit.</li>
+</ul></li>
+</ul>
+</div></div>
+
+<div class="topic" id="t9"><div class="topic-head" onclick="toggleTopic('t9')"><div class="topic-title"><span class="topic-num">9</span>Compliance Function (RBI RBS)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t9',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>RBS = Risk-Based Supervision by RBI. Compliance Department responsible for data submission.</p>
+
+<h3>Submission Timelines</h3>
+<table>
+<tr><th>Return</th><th>Timeline</th></tr>
+<tr><td>Quarterly compliance data</td><td>15th of following month</td></tr>
+<tr><td>Annual Tranche I (audited)</td><td>14 days from finalisation of accounts</td></tr>
+<tr><td>Annual Tranche II / III</td><td>31 May</td></tr>
+<tr><td>Quarterly Compliance Risk Matrix</td><td>10th of quarter</td></tr>
+<tr><td>Penalty details (quarterly)</td><td>5th of quarter</td></tr>
+<tr><td>Other monthly/quarterly returns</td><td>15th of relevant month/quarter</td></tr>
+</table>
+
+<div class="alert alert-danger">⚠️ RBI does NOT entertain extension requests for RBS submission timelines.</div>
+
+<h3>Compliance Risk Matrix</h3>
+<ul>
+<li>Enterprise-wide tracking of compliance risks.</li>
+<li>Reported to Board + RBI.</li>
+<li>Action plan for high-risk areas.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t10"><div class="topic-head" onclick="toggleTopic('t10')"><div class="topic-title"><span class="topic-num">10</span>RBI Inspection (ISE)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t10',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>ISE — Inspection for Supervisory Evaluation</h3>
+<ul>
+<li>Annual by RBI.</li>
+<li>Issues IRAR (Inspection and Risk Assessment Report).</li>
+<li>Non-compliance + Risk Mitigation Plan (RMP) communicated.</li>
+</ul>
+
+<h3>Compliance Timelines</h3>
+<table>
+<tr><th>Observation Type</th><th>Timeline</th></tr>
+<tr><td>Majority observations in NCRG (Non-Compliance Reporting Group)</td><td>Within <span class="key">45 days</span></td></tr>
+<tr><td>Majority observations in IRAR</td><td>Within <span class="key">60 days</span></td></tr>
+</table>
+
+<h3>Procedure</h3>
+<ul>
+<li>Compliance Dept consolidates replies from concerned depts.</li>
+<li>Replies verified → administrative note to Top Management.</li>
+<li>After approval → submitted to RBI.</li>
+<li>Status reported to senior management + Board.</li>
+<li>Progress monitored monthly.</li>
+<li>Compliance verified via sampling.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t11"><div class="topic-head" onclick="toggleTopic('t11')"><div class="topic-title"><span class="topic-num">11</span>Inspection Department</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t11',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Three Lines of Defence</h3>
+<ol>
+<li>Branch/Operations level (first).</li>
+<li>Compliance & Risk Departments (second).</li>
+<li>Internal Audit / Inspection (third).</li>
+</ol>
+
+<h3>Types of Audit</h3>
+<ul>
+<li><b>Regular (Statutory):</b> Annual by SCA.</li>
+<li><b>Concurrent:</b> Continuous, monthly reports.</li>
+<li><b>Snap:</b> Surprise, unannounced.</li>
+<li><b>Credit Audit:</b> Large exposures.</li>
+<li><b>IS Audit:</b> Information Systems.</li>
+<li><b>Management Audit:</b> Overall effectiveness.</li>
+<li><b>Revenue Audit:</b> Income leakage, interest, charges.</li>
+</ul>
+
+<h3>Rectification Timelines</h3>
+<ul>
+<li>Serious irregularities: within <span class="key">3 months</span>.</li>
+<li>Others: within <span class="key">6 months</span>.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t12"><div class="topic-head" onclick="toggleTopic('t12')"><div class="topic-title"><span class="topic-num">12</span>Early Warning Signals (EWS)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t12',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Framework for early detection of stress.</li>
+<li>Signals tracked for high-value accounts (>₹25 Cr typically).</li>
+</ul>
+
+<h3>EWS Triggers</h3>
+<ul>
+<li>Overdue in interest/instalment for > 30 days.</li>
+<li>Cheque return — insufficient funds.</li>
+<li>Non-submission of stock statement for > 2 months.</li>
+<li>Non-cooperation in unit visits.</li>
+<li>Rapid decline in sales / inventory build-up.</li>
+<li>Diversion of funds suspected.</li>
+<li>Negative media reports.</li>
+<li>CIBIL / CRILC alerts.</li>
+<li>External audit qualifications.</li>
+</ul>
+
+<h3>Red Flagged Accounts (RFA)</h3>
+<ul>
+<li>Accounts with EWS triggers.</li>
+<li>Classified as potential fraud — investigate in 6 months.</li>
+<li>Reported to CRILC with "Red Flag" tag.</li>
+<li>If fraud confirmed — reported as Fraud via FMR-1.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t13"><div class="topic-head" onclick="toggleTopic('t13')"><div class="topic-title"><span class="topic-num">13</span>Branch Inspection Process</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t13',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Scheduled annually; frequency based on risk category.</li>
+<li>Pre-inspection: notice (except snap).</li>
+<li>Inspection: all areas — operations, credit, forex, cash, locker, compliance.</li>
+<li>Draft report → branch response → final report.</li>
+<li>Rating assigned: Satisfactory / Marginal / Un-Satisfactory.</li>
+<li>Rectification monitored by RO.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t14"><div class="topic-head" onclick="toggleTopic('t14')"><div class="topic-title"><span class="topic-num">14</span>Fraud Monitoring & Reporting</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t14',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li><b>FMR-1:</b> Fraud Monitoring Return — ≥ ₹1 Cr, within 21 days of detection.</li>
+<li><b>FMR-2:</b> Quarterly Progress Report on frauds.</li>
+<li><b>FMR-3:</b> Annual review of frauds.</li>
+<li><b>CFR (Central Fraud Registry):</b> RBI central database.</li>
+<li>Also reporting under PMLA (STR).</li>
+<li>Internal reporting: Branch → RO → CO → Board.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t15"><div class="topic-head" onclick="toggleTopic('t15')"><div class="topic-title"><span class="topic-num">15</span>Important Definitions & Terms</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t15',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li><b>GL Scrutiny:</b> General Ledger balances tallying with subsidiary ledgers.</li>
+<li><b>Nostro/Vostro Reconciliation:</b> Forex accounts tallying with correspondent bank.</li>
+<li><b>Suspense Reconciliation:</b> Daily zero-sum of suspense accounts.</li>
+<li><b>BRS (Bank Reconciliation Statement):</b> Branch vs CO adjustment.</li>
+<li><b>EOD (End of Day) checks:</b> Daily closure, system reconciliation.</li>
+<li><b>Preventive Vigilance:</b> Measures to prevent fraud (segregation of duties, maker-checker, periodic rotation).</li>
+<li><b>Posting Process Verification:</b> Validation of vouchers in CBS.</li>
+</ul>
+</div></div>
+
+</div>
+
+<div id="flash" class="view"><div class="alert alert-info"><b>💡 Tap to flip.</b></div><div class="flashcard-deck" id="flashDeck"></div></div>
+<div id="compare" class="view"><div class="alert alert-info"><b>⚖️ Comparisons.</b></div><div id="compareList"></div></div>
+<div id="numbers" class="view"><div class="alert alert-warn"><b>🔢 Memorize.</b></div><input class="search-box" placeholder="🔍 Search..." oninput="filterNums(this.value)"><div id="numList"></div></div>
+<div id="mcq" class="view">
+<div id="quizIntro">
+<div class="quiz-intro"><h2>📝 Module D Quiz</h2><p>40 questions • Credit Monitoring drill</p><button class="quiz-btn" onclick="startQuiz()">▶️ Start</button></div>
+<div class="quiz-stats"><div class="quiz-stat"><div class="v" id="stAtt">0</div><div class="l">Attempted</div></div><div class="quiz-stat"><div class="v" id="stCor">0</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v" id="stAcc">0%</div><div class="l">Accuracy</div></div></div>
+<div class="action-row"><button class="btn btn-sec" onclick="reviewWeak()" style="flex:1">🎯 Review Weak</button></div>
+</div>
+<div id="quizArea" style="display:none"></div>
+</div>
+<div id="cases" class="view"><div class="alert alert-info"><b>📋 Scenarios.</b></div><div id="caseList"></div></div>
+</div>
+<button class="float-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const MOD_KEY='iob_mod_D_v1';
+let state=JSON.parse(localStorage.getItem(MOD_KEY)||'{}');
+if(!state.topics)state.topics={};if(!state.quiz)state.quiz={attempted:0,correct:0,perQuestion:{}};if(!state.weak)state.weak=[];if(!state.theme)state.theme='light';
+function save(){localStorage.setItem(MOD_KEY,JSON.stringify(state))}
+function toggleTheme(){state.theme=state.theme==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',state.theme);document.querySelector('.theme-btn').textContent=state.theme==='dark'?'☀️':'🌙';save()}
+function showTab(id,el){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.tab-chip').forEach(c=>c.classList.remove('active'));document.getElementById(id).classList.add('active');el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+function toggleTopic(id){document.getElementById(id).classList.toggle('open')}
+function toggleDone(id,el){state.topics[id]=!state.topics[id];if(state.topics[id])el.classList.add('done');else el.classList.remove('done');save();updateProgressBar()}
+function updateProgressBar(){const done=Object.keys(state.topics).filter(k=>state.topics[k]).length;document.getElementById('pbar').style.width=Math.round(done/15*100)+'%'}
+function filterTopics(q){q=q.toLowerCase();document.querySelectorAll('.topic').forEach(t=>{const text=t.innerText.toLowerCase();t.style.display=(!q||text.includes(q))?'':'none';if(q&&text.includes(q))t.classList.add('open')})}
+
+const FLASHCARDS=[
+{q:"SMA-0 overdue period?",a:"1 to 30 days"},{q:"SMA-1 overdue period?",a:"31 to 60 days"},{q:"SMA-2 overdue period?",a:"61 to 90 days"},{q:"NPA — overdue classification?",a:"> 90 days"},
+{q:"CRILC reporting threshold (aggregate exposure)?",a:"≥ ₹5 Crore — daily SMA reporting"},
+{q:"CRILC — full form?",a:"Central Repository of Information on Large Credits (RBI, 2014)"},
+{q:"Property valuation — two valuations required above?",a:"Single property > ₹5 Crore (IOB policy)"},
+{q:"Valuation variance treatment if > 10% difference?",a:"Engage third valuer (borrower's cost); take lowest value"},
+{q:"Property > ₹50 Cr — one valuation to be obtained from?",a:"Corporate / reputed valuation firm + additional legal opinion from corporate law firm"},
+{q:"CAF digitization — start date?",a:"January 2026 — automated CAF system"},
+{q:"CSS — Continuous Surveillance Statement applicability?",a:"Fund Based WC limits ≥ ₹1 Crore — monthly submission"},
+{q:"Account renewal requirement — limits?",a:"100% renewal/review for accounts ≥ ₹1 lakh"},
+{q:"Concurrent audit — branch coverage?",a:"Deposits+Advances > ₹50 Cr; all 'A' branches; Treasury; International; Service branches"},
+{q:"Concurrent audit — who does?",a:"CA firms or retired bank officers; monthly report to AGM/GM"},
+{q:"Three Lines of Defence — 3rd line?",a:"Internal Audit"},
+{q:"RBIA — stands for?",a:"Risk-Based Internal Audit"},
+{q:"RBI ISE observations — compliance timeline?",a:"NCRG observations: 45 days; IRAR observations: 60 days"},
+{q:"RBI penalty details — submission?",a:"5th of every quarter"},
+{q:"Rectification of serious inspection irregularities?",a:"Within 3 months"},
+{q:"Rectification of other irregularities?",a:"Within 6 months"},
+{q:"EWS — Early Warning Signals — purpose?",a:"Early detection of stress in high-value accounts (>₹25 Cr typically)"},
+{q:"Red Flagged Accounts — investigation timeline?",a:"6 months — classified as potential fraud"},
+{q:"FMR-1 reporting threshold and timeline?",a:"Frauds ≥ ₹1 Crore within 21 days of detection"},
+{q:"Quarterly compliance data submission to RBI?",a:"15th of following month"},
+{q:"Annual Tranche I submission deadline?",a:"14 days from finalisation of audited accounts"},
+{q:"Quarterly Compliance Risk Matrix timeline?",a:"10th of every quarter"},
+{q:"Stock audit frequency (typical)?",a:"Annual (half-yearly for larger accounts > ₹5 Cr)"},
+{q:"Credit Audit applicability threshold?",a:"Accounts above ₹5 Crore typically (bank policy)"},
+{q:"CFR — Central Fraud Registry — maintained by?",a:"RBI"},
+{q:"CSS report submitted to?",a:"Regional Office / Credit Monitoring Department"},
+{q:"Can bank request extension on RBS submission?",a:"NO — RBI does not entertain extension requests"},
+{q:"Property visit above ₹5 Cr — who should visit?",a:"Joint visit by Credit Department RO official + Branch Manager"},
+{q:"IOB SAHAYAK app usage in property visit?",a:"BM captures property location; uploads for records"},
+{q:"EWS triggers — how many days of interest overdue?",a:"> 30 days"},
+{q:"Valuation difference ≤ 10% — treatment?",a:"Accept the lower of two valuations"},
+{q:"RFA conversion to Fraud — reporting?",a:"FMR-1 to RBI within 21 days of fraud confirmation"},
+{q:"Who gives rating to a property inspection?",a:"Empanelled valuer (or RO + BM for high-value visits)"},
+{q:"Branch audit rating categories?",a:"Satisfactory / Marginal / Un-Satisfactory"},
+{q:"Maker-Checker principle in banks?",a:"Segregation of duties; one creates entry, another verifies — preventive vigilance control"},
+{q:"EOD stands for?",a:"End of Day — daily system closure and reconciliation"}
+];
+function renderFlashcards(){document.getElementById('flashDeck').innerHTML=FLASHCARDS.map((c,i)=>`<div class="flashcard" onclick="this.classList.toggle('flipped')"><div class="flashcard-inner"><div class="flashcard-face flashcard-front">${c.q}<div class="flashcard-hint">Tap to flip • Card ${i+1}/${FLASHCARDS.length}</div></div><div class="flashcard-face flashcard-back">${c.a}</div></div></div>`).join('')}
+
+const COMPARE=[
+{title:'SMA Classification',rows:[['SMA-0','1-30 days overdue'],['SMA-1','31-60 days overdue'],['SMA-2','61-90 days overdue'],['NPA','> 90 days overdue']]},
+{title:'Audit Types',rows:[['Regular / Statutory','Annual by SCA'],['Concurrent','Monthly, continuous'],['Snap','Surprise, unannounced'],['Credit Audit','Large exposures'],['IS Audit','Information Systems'],['Management Audit','Overall effectiveness'],['Revenue Audit','Income leakage']]},
+{title:'Three Lines of Defence',rows:[['1st Line','Branches / Operations — day-to-day'],['2nd Line','Compliance + Risk Mgmt departments'],['3rd Line','Internal Audit / Inspection']]},
+{title:'Property Valuation Rules',rows:[['Single property > ₹5 Cr','Two valuations from different valuers'],['Multiple properties','Second valuation only for property > ₹5 Cr'],['Variance ≤ 10%','Accept lower value'],['Variance > 10%','Third valuer; take lowest'],['Property > ₹50 Cr','One from corporate firm + additional legal opinion']]},
+{title:'RBI Submission Timelines',rows:[['Quarterly compliance data','15th of following month'],['Annual Tranche I','14 days from accounts finalisation'],['Annual Tranche II/III','31 May'],['Quarterly Risk Matrix','10th of quarter'],['Penalty details','5th of quarter']]},
+{title:'RBI Inspection Timelines',rows:[['NCRG observations','45 days'],['IRAR observations','60 days'],['Serious irregularities','3 months rectification'],['Other irregularities','6 months rectification']]}
+];
+function renderCompare(){document.getElementById('compareList').innerHTML=COMPARE.map(c=>`<div class="compare-card"><div class="compare-head" onclick="this.parentElement.classList.toggle('open')"><span>${c.title}</span><span class="arrow">▼</span></div><div class="compare-body"><table>${c.rows.map(r=>`<tr>${r.map((cell,idx)=>idx===0?`<td><b>${cell}</b></td>`:`<td>${cell}</td>`).join('')}</tr>`).join('')}</table></div></div>`).join('')}
+
+const NUMBERS=[
+{v:'1-30 days',d:'SMA-0',cat:'SMA'},{v:'31-60 days',d:'SMA-1',cat:'SMA'},{v:'61-90 days',d:'SMA-2',cat:'SMA'},{v:'> 90 days',d:'NPA',cat:'SMA'},
+{v:'₹5 Cr',d:'CRILC reporting threshold (aggregate exposure)',cat:'CRILC'},
+{v:'Daily',d:'SMA reporting to CRILC',cat:'CRILC'},
+{v:'₹5 Cr',d:'Property valuation — two reports needed',cat:'Valuation'},
+{v:'₹50 Cr',d:'Property — corporate valuer + additional legal opinion',cat:'Valuation'},
+{v:'10%',d:'Valuation variance threshold',cat:'Valuation'},
+{v:'₹1 Cr',d:'CSS minimum threshold',cat:'Monitoring'},
+{v:'₹1 lakh',d:'Minimum limit for 100% renewal review',cat:'Monitoring'},
+{v:'₹50 Cr',d:'Concurrent audit — branch D+A threshold',cat:'Audit'},
+{v:'₹5 Cr',d:'Credit Audit threshold (typical)',cat:'Audit'},
+{v:'₹1 Cr',d:'FMR-1 threshold — fraud reporting',cat:'Fraud'},
+{v:'21 days',d:'FMR-1 filing timeline from detection',cat:'Fraud'},
+{v:'₹25 Cr',d:'EWS tracking threshold (typical)',cat:'EWS'},
+{v:'6 months',d:'RFA investigation timeline',cat:'EWS'},
+{v:'30 days',d:'EWS trigger — interest/instalment overdue',cat:'EWS'},
+{v:'15th',d:'Quarterly compliance data submission',cat:'RBI'},
+{v:'5th',d:'Penalty details — quarterly',cat:'RBI'},
+{v:'10th',d:'Risk Matrix — quarterly',cat:'RBI'},
+{v:'14 days',d:'Annual Tranche I submission post finalization',cat:'RBI'},
+{v:'31 May',d:'Annual Tranche II / III submission',cat:'RBI'},
+{v:'45 days',d:'NCRG observations rectification',cat:'RBI'},
+{v:'60 days',d:'IRAR observations rectification',cat:'RBI'},
+{v:'3 months',d:'Serious irregularities rectification',cat:'Audit'},
+{v:'6 months',d:'Other irregularities rectification',cat:'Audit'},
+{v:'Monthly',d:'Concurrent audit reporting frequency',cat:'Audit'},
+{v:'Monthly',d:'Stock statement for CC accounts',cat:'CC'},
+{v:'Annual',d:'Renewal cycle for CC',cat:'CC'},
+{v:'January 2026',d:'CAF digitization start',cat:'CAF'},
+{v:'Next day',d:'Sanction note upload after disbursement',cat:'CAF'}
+];
+function renderNumbers(f=''){f=f.toLowerCase();const items=NUMBERS.filter(n=>!f||n.v.toLowerCase().includes(f)||n.d.toLowerCase().includes(f)||n.cat.toLowerCase().includes(f));document.getElementById('numList').innerHTML=items.map(n=>`<div class="num-card"><div class="num-badge">${n.v}</div><div class="num-desc"><div class="num-cat">${n.cat}</div>${n.d}</div></div>`).join('')||'<p style="text-align:center;padding:30px;color:var(--muted)">No matches</p>'}
+function filterNums(v){renderNumbers(v)}
+
+const QUIZ=[
+{q:"SMA-1 overdue classification?",o:["1-30 days","31-60 days","61-90 days","> 90 days"],a:1,e:"SMA-1: 31-60 days overdue."},
+{q:"SMA-2 overdue?",o:["1-30 days","31-60 days","61-90 days","> 90 days"],a:2,e:"SMA-2: 61-90 days overdue. SMA-0 (1-30), SMA-1 (31-60), SMA-2 (61-90), NPA (>90)."},
+{q:"NPA classification happens after overdue of how many days?",o:["30","60","90","120"],a:2,e:"Beyond 90 days overdue = NPA."},
+{q:"CRILC reporting threshold for aggregate exposure?",o:["₹1 Cr","₹2 Cr","₹5 Cr","₹10 Cr"],a:2,e:"Aggregate exposure ≥ ₹5 Crore must be reported to CRILC with daily SMA updates."},
+{q:"CRILC full form?",o:["Central Repository of Information on Large Credits","Credit Repository of India Large Clients","Central Register of Industrial Loans & Credits","Common Reporting for Indian Large Companies"],a:0,e:"Central Repository of Information on Large Credits — RBI's central repository since 2014."},
+{q:"Two property valuations required for single property above?",o:["₹1 Cr","₹2 Cr","₹5 Cr","₹10 Cr"],a:2,e:"IOB policy: two valuations for single property > ₹5 Cr from different empanelled valuers."},
+{q:"If two valuations differ by > 10%, what next?",o:["Accept average","Accept higher","Accept lower","Engage third valuer and take lowest"],a:3,e:"If difference > 10% — engage third valuer at borrower's cost, take lowest of all three."},
+{q:"Property above ₹50 Cr requires additional?",o:["Nothing extra","One more valuation","Legal opinion from corporate law firm","Board approval"],a:2,e:"Property > ₹50 Cr: one valuation from corporate/reputed firm + additional legal opinion from corporate law firm."},
+{q:"CSS applicability — fund-based WC limits?",o:["≥ ₹25 lakh","≥ ₹50 lakh","≥ ₹1 Cr","≥ ₹5 Cr"],a:2,e:"Continuous Surveillance Statement for FB WC ≥ ₹1 Crore — monthly submission."},
+{q:"100% renewal/review mandatory for accounts with limit?",o:["≥ ₹10,000","≥ ₹50,000","≥ ₹1 lakh","≥ ₹5 lakh"],a:2,e:"All accounts with credit limits ≥ ₹1 lakh must be renewed/reviewed annually."},
+{q:"Concurrent audit — branches with deposits + advances above?",o:["₹25 Cr","₹50 Cr","₹100 Cr","₹250 Cr"],a:1,e:"Branches with aggregate deposits + advances > ₹50 Cr; all 'A' category; Treasury; International."},
+{q:"Who conducts concurrent audit?",o:["Only internal audit","CA firms or retired bank officers","Statutory auditors only","RBI team"],a:1,e:"External CA firms or retired bank officers conduct concurrent audit; monthly report."},
+{q:"RBIA — stands for?",o:["Risk-Based Internal Audit","Reserve Based Inspection Audit","RBI's Audit","Risk Bureau Internal Audit"],a:0,e:"Risk-Based Internal Audit — audit frequency based on risk category of branch."},
+{q:"Three Lines of Defence in banking — Internal Audit is which line?",o:["1st","2nd","3rd","Outside 3LoD"],a:2,e:"3rd Line: Internal Audit/Inspection. 1st: Branches. 2nd: Compliance & Risk Mgmt."},
+{q:"Quarterly compliance data submission to RBI by?",o:["5th","10th","15th","20th"],a:2,e:"15th of the following month for quarterly compliance data."},
+{q:"Quarterly penalty details submission to RBI by?",o:["5th","10th","15th","Last day"],a:0,e:"5th of every quarter."},
+{q:"Quarterly Compliance Risk Matrix submission by?",o:["5th","10th","15th","20th"],a:1,e:"10th of every quarter."},
+{q:"Annual Tranche I (audited) — timeline?",o:["Immediately","Within 7 days","14 days from finalisation","30 days"],a:2,e:"14 days from finalisation of audited annual accounts."},
+{q:"NCRG observations — rectification timeline?",o:["30 days","45 days","60 days","90 days"],a:1,e:"Majority of NCRG observations: within 45 days."},
+{q:"IRAR observations — rectification timeline?",o:["30 days","45 days","60 days","90 days"],a:2,e:"Majority of IRAR observations: within 60 days."},
+{q:"Does RBI entertain extension requests for RBS submission?",o:["Yes with reason","Yes with fee","Yes with Board approval","No"],a:3,e:"RBI does NOT entertain extension requests for RBS submission timelines."},
+{q:"Serious irregularities — rectification period?",o:["1 month","3 months","6 months","12 months"],a:1,e:"Serious: 3 months. Others: 6 months."},
+{q:"CAF digitization in IOB — effective from?",o:["January 2025","July 2025","January 2026","October 2026"],a:2,e:"From January 2026 — CAF review done through automated CAF; branches upload sanction note next day."},
+{q:"CSS report submission frequency?",o:["Weekly","Monthly","Quarterly","Half-yearly"],a:1,e:"Monthly submission from branches for FB WC limits ≥ ₹1 Cr."},
+{q:"EWS tracking threshold (typical)?",o:["₹5 Cr","₹10 Cr","₹25 Cr","₹50 Cr"],a:2,e:"EWS typically tracked for accounts > ₹25 Cr (bank policy may vary)."},
+{q:"RFA (Red Flagged Account) investigation period?",o:["3 months","6 months","12 months","24 months"],a:1,e:"6 months to conclude whether fraud or not. If fraud confirmed → FMR-1."},
+{q:"FMR-1 reporting — fraud threshold?",o:["₹10 lakh","₹25 lakh","₹50 lakh","₹1 Crore"],a:3,e:"Frauds ≥ ₹1 Crore reported in FMR-1 within 21 days of detection."},
+{q:"FMR-1 filing timeline?",o:["7 days","14 days","21 days","30 days"],a:2,e:"Within 21 days of fraud detection."},
+{q:"CFR — Central Fraud Registry — maintained by?",o:["IBA","RBI","Ministry of Finance","CBI"],a:1,e:"Reserve Bank of India maintains CFR — central database of frauds across banking system."},
+{q:"EWS trigger — interest/instalment overdue?",o:["> 7 days","> 14 days","> 30 days","> 60 days"],a:2,e:"Overdue > 30 days is a key EWS trigger."},
+{q:"High-value property > ₹5 Cr — who should visit jointly?",o:["Only BM","Only RO","Credit Dept RO + BM","External valuer only"],a:2,e:"Joint visit by Credit Department RO official + Branch Manager."},
+{q:"IOB SAHAYAK app purpose in property visits?",o:["Loan sanction","GPS location capture of property","CIBIL check","Quick valuation"],a:1,e:"BM captures property location coordinates and uploads to SAHAYAK app for record."},
+{q:"Second valuation report needed when multiple properties?",o:["For all properties","Only for property > ₹5 Cr","Random selection","Half of them"],a:1,e:"Only for the property whose value exceeds ₹5 Cr; others need only one valuation."},
+{q:"Three Lines of Defence — Compliance Department is which line?",o:["1st","2nd","3rd","Outside"],a:1,e:"2nd Line of Defence — Compliance + Risk Management."},
+{q:"CAF-1 refers to?",o:["Credit Audit Form","Credit Appraisal Format","Current Account Form","Cash Audit File"],a:1,e:"Credit Appraisal Format — review by sanctioning authority to higher authority."},
+{q:"Branch audit rating categories?",o:["Good/Bad","High/Low","Satisfactory/Marginal/Un-Satisfactory","1-5 scale"],a:2,e:"Rating: Satisfactory / Marginal / Un-Satisfactory."},
+{q:"Which audit covers IT systems?",o:["Concurrent","IS Audit","Revenue Audit","Credit Audit"],a:1,e:"IS Audit = Information Systems Audit — covers IT infrastructure, data security, access controls."},
+{q:"Maker-Checker is an example of?",o:["Credit risk","Preventive vigilance / segregation of duties","Audit finding","Fraud"],a:1,e:"Preventive vigilance — segregation of duties; different persons for making and checking."},
+{q:"EOD (End of Day) check includes?",o:["Lunch break","Daily closure and reconciliation","Weekly closure","Monthly P&L"],a:1,e:"Daily closure — system reconciliation of all accounts, GL, cash, inventory."},
+{q:"NABARD inspection — primarily for?",o:["Urban banks","Co-op banks + RRBs","Foreign banks","Commercial banks"],a:1,e:"NABARD inspects Co-operative Banks (StCB, DCCB, PCARDB) and Regional Rural Banks (RRBs)."}
+];
+
+let quizIndex=0;let currentOrder=[];
+function startQuiz(){currentOrder=QUIZ.map((_,i)=>i).sort(()=>Math.random()-0.5);quizIndex=0;document.getElementById('quizIntro').style.display='none';document.getElementById('quizArea').style.display='block';renderQuestion()}
+function renderQuestion(){if(quizIndex>=currentOrder.length){renderResult();return}const qid=currentOrder[quizIndex];const q=QUIZ[qid];const prev=state.quiz.perQuestion[qid];document.getElementById('quizArea').innerHTML=`<div class="quiz-stats"><div class="quiz-stat"><div class="v">${quizIndex+1}/${currentOrder.length}</div><div class="l">Progress</div></div><div class="quiz-stat"><div class="v">${state.quiz.correct}</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v">${state.quiz.attempted?Math.round(state.quiz.correct/state.quiz.attempted*100):0}%</div><div class="l">Accuracy</div></div></div><div class="question-card"><div class="q-num">Question ${quizIndex+1} of ${currentOrder.length}</div><div class="q-text">${q.q}</div>${q.o.map((opt,i)=>`<div class="option" onclick="pickOption(${qid},${i},this)" id="opt-${i}">${String.fromCharCode(65+i)}) ${opt}</div>`).join('')}<div class="explanation" id="exp"><b>💡 ${q.o[q.a]}</b><br>${q.e}</div><div class="nav-btns"><button class="btn-prev" onclick="prevQuestion()">← Prev</button><button class="btn-next" onclick="nextQuestion()">Next →</button></div></div>`;if(prev!==undefined){const sel=prev;document.getElementById('opt-'+sel).classList.add(sel===q.a?'correct':'wrong');if(sel!==q.a)document.getElementById('opt-'+q.a).classList.add('correct');document.getElementById('exp').classList.add('show')}}
+function pickOption(qid,idx,el){const q=QUIZ[qid];if(state.quiz.perQuestion[qid]!==undefined)return;state.quiz.perQuestion[qid]=idx;state.quiz.attempted++;if(idx===q.a){state.quiz.correct++;el.classList.add('correct')}else{el.classList.add('wrong');document.getElementById('opt-'+q.a).classList.add('correct');if(!state.weak.includes(qid))state.weak.push(qid)}document.getElementById('exp').classList.add('show');save();updateStatBoxes()}
+function nextQuestion(){quizIndex++;renderQuestion()}
+function prevQuestion(){if(quizIndex>0)quizIndex--;renderQuestion()}
+function renderResult(){const s=state.quiz.correct,t=state.quiz.attempted,p=t?Math.round(s/t*100):0;let m='Good effort!';if(p>=80)m='🎉 Excellent!';else if(p>=60)m='👍 Solid.';else if(p>=40)m='📚 Practice more.';else m='💪 Keep going.';document.getElementById('quizArea').innerHTML=`<div class="result-card"><div style="font-size:50px">${p>=60?'🏆':'📖'}</div><div class="result-score">${p}%</div><div class="result-msg">${m}</div><div class="result-row"><div class="quiz-stat"><div class="v">${s}</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v">${t-s}</div><div class="l">Wrong</div></div></div><div class="action-row"><button class="btn" onclick="resetQuiz()">🔄 Retake</button><button class="btn btn-sec" onclick="reviewWeak()">🎯 Weak</button></div></div>`}
+function resetQuiz(){state.quiz={attempted:0,correct:0,perQuestion:{}};state.weak=[];save();document.getElementById('quizArea').style.display='none';document.getElementById('quizIntro').style.display='block';updateStatBoxes()}
+function reviewWeak(){if(state.weak.length===0){alert('No weak topics yet!');return}currentOrder=[...state.weak];quizIndex=0;document.getElementById('quizIntro').style.display='none';document.getElementById('quizArea').style.display='block';state.weak.forEach(w=>{delete state.quiz.perQuestion[w]});state.quiz.attempted=Math.max(0,state.quiz.attempted-state.weak.length);state.weak=[];save();renderQuestion()}
+function updateStatBoxes(){const a=state.quiz.attempted,c=state.quiz.correct,ac=a?Math.round(c/a*100):0;if(document.getElementById('stAtt'))document.getElementById('stAtt').textContent=a;if(document.getElementById('stCor'))document.getElementById('stCor').textContent=c;if(document.getElementById('stAcc'))document.getElementById('stAcc').textContent=ac+'%'}
+
+const CASES=[
+{t:'1. SMA Progression',scenario:'Mr. Vishwanath has a CC account with ₹50 lakh limit. His interest for June is due on 30-June. He pays on 15-July (15 days late). What is the SMA status? What follow-up is required?',solution:'<b>Current status:</b> SMA-0 (1-30 days overdue).<br><b>Actions required:</b><br>1. Early reminder call to customer.<br>2. Note in CSS statement.<br>3. Watch for further delays.<br><br><b>If payment comes on 15-July:</b> Account becomes regular; still reportable in that month\'s CSS for reference.<br><br><b>If NOT paid even by 15-July:</b> Overdue crosses 15 days — still within SMA-0 (up to 30 days).<br><br><b>At 31 days overdue:</b> Becomes SMA-1 → enhanced monitoring; call customer.<br><b>At 61 days:</b> SMA-2 → daily CRILC reporting if exposure ≥ ₹5 Cr.<br><b>At 91 days:</b> NPA → provisioning begins.<br><br><b>Key learning:</b> SMA-0 is early warning; act quickly to prevent NPA.'},
+{t:'2. Property Valuation Dispute',scenario:'Borrower offers a Chennai property as collateral. First valuation: ₹8 Cr. Second valuation: ₹6.5 Cr. Difference = ₹1.5 Cr (18.75% variance). What is the process?',solution:'<b>Variance Analysis:</b> 18.75% > 10% threshold.<br><b>Step 1:</b> Variance > 10% → ENGAGE THIRD VALUER (at borrower\'s cost).<br><b>Step 2:</b> Say third valuation = ₹7 Cr.<br><b>Step 3:</b> Three valuations: ₹8 Cr, ₹6.5 Cr, ₹7 Cr.<br><b>Step 4:</b> Take <b>LOWEST</b> as notional fair market value = ₹6.5 Cr.<br><b>Step 5:</b> Calculate LTV / drawing power based on ₹6.5 Cr.<br><b>Alternative:</b> If property were > ₹50 Cr, need corporate valuer + extra legal opinion.<br><b>Also:</b> BM + Credit RO must jointly visit; upload location to IOB SAHAYAK.<br><b>Key learning:</b> Lowest wins; borrower bears cost of third valuation.'},
+{t:'3. Red Flagged Account',scenario:'Mr. Aggarwal, borrower of ₹30 Cr, has delayed interest for 2 months + hasn\'t submitted stock statement for 3 months + a media report claims he diverted funds to a Singapore subsidiary. Branch flags concerns. What action?',solution:'<b>Step 1:</b> Multiple EWS triggers:<br>• Interest overdue > 30 days ✓<br>• Non-submission of stock statement > 2 months ✓<br>• Negative media report + suspected diversion ✓<br><b>Step 2:</b> Classify as <b>Red Flagged Account (RFA)</b>.<br><b>Step 3:</b> Report to CRILC with "Red Flag" tag.<br><b>Step 4:</b> Investigation period = 6 months. Forensic audit if needed.<br><b>Step 5:</b> If fraud confirmed → FMR-1 to RBI within 21 days of confirmation.<br><b>Step 6:</b> Issue show cause notice to borrower; consider recall.<br><b>Step 7:</b> Account may be classified as NPA due to overdue.<br><b>Step 8:</b> Simultaneously initiate SARFAESI preparation if NPA.<br><b>Key learning:</b> Multiple triggers = RFA; 6-month investigation window.'},
+{t:'4. RBI ISE Observation Compliance',scenario:'RBI inspection reports 10 observations in IRAR for your branch. 3 are serious (non-compliance with KYC norms + high-value transaction not reported); 7 are minor. Branch Manager role?',solution:'<b>Step 1:</b> Serious observations — rectify within 3 months.<br><b>Step 2:</b> Minor observations — rectify within 6 months.<br><b>Step 3:</b> IRAR majority observations — reply to RBI within 60 days (via Compliance Dept).<br><b>Step 4:</b> Compliance Dept consolidates replies → admin note to Top Mgmt → after approval, submits to RBI.<br><b>Step 5:</b> Branch to formulate action plan with milestones.<br><b>Step 6:</b> Monthly progress review to Top Management.<br><b>Step 7:</b> Compliance officers verify via sampling.<br><b>Key learning:</b> NCRG = 45 days; IRAR = 60 days reply. Rectification = 3 or 6 months based on severity.'},
+{t:'5. Stock Audit Red Flag',scenario:'A stock auditor visits Mr. Sampath\'s unit (CC limit ₹3 Cr). Physical stock found ₹80 lakh vs ₹2 Cr reported in last stock statement. 10% stocks are obsolete. What does the auditor report mean?',solution:'<b>Finding 1:</b> Over-reporting of stock → DP was inflated.<br><b>Finding 2:</b> Obsolete stock not deducted.<br><b>Step 1:</b> Recalculate actual DP:<br>True paid stock = ₹80 lakh - 10% (obsolete ₹8L) = ₹72 lakh<br>Less margin 25% = ₹54 lakh paid stock DP<br>Compared to earlier DP of ₹1.5 Cr (based on ₹2 Cr stock).<br><b>Step 2:</b> Over-drawing of nearly ₹1 Cr → CC account becomes IRREGULAR.<br><b>Step 3:</b> Possible classification as SMA-2 or NPA depending on how long over-drawn.<br><b>Step 4:</b> Immediate action:<br>• Issue recall notice.<br>• Investigate — discrepancy may be fraud or genuine commercial decline.<br>• EWS → RFA trigger.<br><b>Step 5:</b> Report to RO + CO.<br><b>Key learning:</b> Stock audit is a critical risk check; discrepancy > 10% is a red flag.'}
+];
+function renderCases(){document.getElementById('caseList').innerHTML=CASES.map((c,i)=>`<div class="case-card"><div class="case-head" onclick="this.parentElement.classList.toggle('open')"><span>${c.t}</span><span class="arrow">▼</span></div><div class="case-body"><div class="case-scenario"><b>📍 Scenario:</b> ${c.scenario}</div><button class="reveal-btn" onclick="this.nextElementSibling.classList.add('show'); this.style.display='none'">👁️ Reveal Solution</button><div class="case-solution">${c.solution}</div></div></div>`).join('')}
+
+function init(){document.documentElement.setAttribute('data-theme',state.theme);document.querySelector('.theme-btn').textContent=state.theme==='dark'?'☀️':'🌙';Object.keys(state.topics).forEach(id=>{const el=document.querySelector(`#${id} .topic-check`);if(el&&state.topics[id])el.classList.add('done')});updateProgressBar();renderFlashcards();renderCompare();renderNumbers();renderCases();updateStatBoxes()}
+init();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(e => console.log('SW failed:', e));
+  });
+}
+</script>
+</body>
+</html>

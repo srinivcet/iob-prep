@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a2540">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IOB Prep">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Module J: Digital Banking — IOB 2027</title>
+<style>:root{--bg:#f5f7fb;--card:#fff;--text:#1a202c;--muted:#64748b;--primary:#0a2540;--primary-light:#1e40af;--accent:#d4a017;--success:#10b981;--warn:#f59e0b;--danger:#ef4444;--border:#e2e8f0;--highlight:#fef3c7;--important:#fee2e2;--info:#dbeafe}[data-theme="dark"]{--bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--muted:#94a3b8;--primary:#3b82f6;--accent:#fbbf24;--border:#334155;--highlight:#78350f;--important:#7f1d1d;--info:#1e3a8a}*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;font-size:14px;padding-bottom:80px}.header{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:14px 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.15)}.header-row{display:flex;justify-content:space-between;align-items:center;gap:10px}.back-link{color:#fff;text-decoration:none;font-size:13px;padding:4px 8px;background:rgba(255,255,255,.15);border-radius:8px;display:inline-block}.header h1{font-size:16px;font-weight:700;margin-top:4px}.header-sub{font-size:11px;opacity:.85}.theme-btn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:8px 10px;border-radius:8px;font-size:15px;cursor:pointer}.progress-strip{height:4px;background:rgba(255,255,255,.2);margin-top:8px;border-radius:10px;overflow:hidden}.progress-strip-fill{height:100%;background:linear-gradient(90deg,var(--accent),#fbbf24);transition:width .5s}.tabs{background:var(--card);padding:8px;overflow-x:auto;white-space:nowrap;border-bottom:1px solid var(--border);position:sticky;top:85px;z-index:50;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab-chip{display:inline-block;padding:8px 14px;margin:0 3px;border-radius:20px;background:var(--bg);color:var(--text);border:1px solid var(--border);font-size:12px;font-weight:600;cursor:pointer}.tab-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}[data-theme="dark"] .tab-chip.active{background:var(--accent);color:var(--primary)}.container{padding:14px;max-width:900px;margin:0 auto}.view{display:none}.view.active{display:block;animation:fadeIn .3s ease}@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.topic{background:var(--card);border-radius:12px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid var(--border);overflow:hidden}.topic-head{padding:12px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(90deg,var(--card),var(--bg));user-select:none}.topic-title{font-weight:700;font-size:14px;color:var(--primary);display:flex;align-items:center;gap:8px}[data-theme="dark"] .topic-title{color:var(--accent)}.topic-num{background:var(--primary);color:#fff;width:24px;height:24px;border-radius:50%;text-align:center;line-height:24px;font-size:11px;font-weight:700;flex-shrink:0}[data-theme="dark"] .topic-num{background:var(--accent);color:var(--primary)}.topic-check{width:22px;height:22px;border:2px solid var(--muted);border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}.topic-check.done{background:var(--success);border-color:var(--success)}.topic-check.done::after{content:'✓'}.topic-body{display:none;padding:0 14px 14px}.topic.open .topic-body{display:block;animation:fadeIn .3s ease}.topic.open .topic-arrow{transform:rotate(90deg)}.topic-arrow{transition:transform .3s;color:var(--muted);font-size:14px}h3{margin:14px 0 8px;font-size:14px;color:var(--primary);padding-bottom:4px;border-bottom:2px solid var(--accent)}[data-theme="dark"] h3{color:var(--accent)}p{margin:4px 0 8px}ul,ol{margin:4px 0 10px;padding-left:22px}li{margin:3px 0}.key{background:var(--highlight);padding:2px 6px;border-radius:4px;font-weight:700;color:#92400e;font-size:13px}[data-theme="dark"] .key{color:#fde68a}.alert{padding:10px 12px;margin:10px 0;border-radius:8px;border-left:3px solid;font-size:13px}.alert-info{background:var(--info);border-color:var(--primary-light);color:var(--primary)}.alert-warn{background:var(--highlight);border-color:var(--warn);color:#92400e}[data-theme="dark"] .alert-info{color:#dbeafe}[data-theme="dark"] .alert-warn{color:#fde68a;background:#78350f}table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12.5px}th,td{padding:6px 8px;text-align:left;border:1px solid var(--border)}th{background:var(--bg);font-weight:700;color:var(--primary)}[data-theme="dark"] th{color:var(--accent)}tr:nth-child(even) td{background:var(--bg)}.flashcard-deck{display:flex;flex-direction:column;gap:12px}.flashcard{perspective:1000px;height:180px;cursor:pointer}.flashcard-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}.flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}.flashcard-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;padding:18px;display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.1)}.flashcard-front{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;font-size:15px;font-weight:600}.flashcard-back{background:linear-gradient(135deg,var(--accent),#d97706);color:#1a202c;font-size:13px;transform:rotateY(180deg);font-weight:500;overflow-y:auto;line-height:1.5}.flashcard-hint{position:absolute;bottom:8px;left:0;right:0;font-size:10px;opacity:.7;text-align:center}.compare-card{background:var(--card);border-radius:12px;margin-bottom:10px;border:1px solid var(--border);overflow:hidden}.compare-head{padding:12px 14px;background:linear-gradient(90deg,var(--primary),var(--primary-light));color:#fff;font-weight:700;font-size:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}.compare-body{display:none;padding:10px;overflow-x:auto}.compare-card.open .compare-body{display:block;animation:fadeIn .3s ease}.compare-card.open .compare-head .arrow{transform:rotate(180deg)}.compare-head .arrow{transition:transform .3s;font-size:14px}.num-card{background:var(--card);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid var(--border);display:flex;align-items:center;gap:12px}.num-badge{background:var(--accent);color:var(--primary);padding:6px 10px;border-radius:8px;font-family:monospace;font-weight:700;font-size:13px;min-width:90px;text-align:center;flex-shrink:0}.num-desc{font-size:13px;flex:1}.num-cat{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}.quiz-intro{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:20px;border-radius:14px;margin-bottom:14px;text-align:center}.quiz-intro h2{font-size:20px;margin-bottom:8px}.quiz-intro p{font-size:13px;opacity:.9;margin-bottom:14px}.quiz-btn{padding:10px 20px;background:var(--accent);color:var(--primary);border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px;font-family:inherit}.quiz-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}.quiz-stat{background:var(--card);padding:10px;border-radius:10px;text-align:center;border:1px solid var(--border)}.quiz-stat .v{font-size:20px;font-weight:700;color:var(--primary)}[data-theme="dark"] .quiz-stat .v{color:var(--accent)}.quiz-stat .l{font-size:10px;color:var(--muted);text-transform:uppercase}.question-card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.05)}.q-num{font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:600}.q-text{font-size:14px;font-weight:600;margin-bottom:12px;line-height:1.45}.option{padding:10px 12px;margin-bottom:6px;background:var(--bg);border-radius:8px;border:2px solid transparent;cursor:pointer;font-size:13px;transition:all .2s}.option:hover{background:var(--card);border-color:var(--primary)}.option.correct{background:#d1fae5;border-color:var(--success);color:#065f46}.option.wrong{background:#fee2e2;border-color:var(--danger);color:#991b1b}[data-theme="dark"] .option.correct{background:#065f46;color:#d1fae5}[data-theme="dark"] .option.wrong{background:#7f1d1d;color:#fecaca}.explanation{background:var(--info);padding:10px 12px;margin-top:10px;border-radius:8px;font-size:12.5px;border-left:3px solid var(--primary-light);display:none}.explanation.show{display:block;animation:fadeIn .3s}[data-theme="dark"] .explanation{background:#1e3a8a;color:#dbeafe}.nav-btns{display:flex;gap:8px;margin-top:14px}.nav-btns button{flex:1;padding:10px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit}.btn-prev{background:var(--card);color:var(--text);border:1px solid var(--border)}.btn-next{background:var(--primary);color:#fff}[data-theme="dark"] .btn-next{background:var(--accent);color:var(--primary)}.case-card{background:var(--card);border-radius:14px;margin-bottom:14px;border:1px solid var(--border);overflow:hidden}.case-head{padding:12px 14px;background:linear-gradient(135deg,var(--accent),#d97706);color:#1a202c;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:700}.case-body{display:none;padding:14px}.case-card.open .case-body{display:block;animation:fadeIn .3s}.case-card.open .case-head .arrow{transform:rotate(180deg)}.case-scenario{background:var(--info);padding:10px 12px;border-radius:8px;margin-bottom:10px;font-size:13px;border-left:3px solid var(--primary-light)}[data-theme="dark"] .case-scenario{background:#1e3a8a;color:#dbeafe}.case-solution{background:var(--highlight);padding:10px 12px;border-radius:8px;font-size:13px;border-left:3px solid var(--accent);display:none}.case-solution.show{display:block;animation:fadeIn .3s}[data-theme="dark"] .case-solution{background:#78350f;color:#fde68a}.reveal-btn{padding:8px 14px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;margin-top:8px}.result-card{background:var(--card);padding:20px;border-radius:14px;text-align:center;border:1px solid var(--border)}.result-score{font-size:44px;font-weight:800;color:var(--primary);margin:10px 0}[data-theme="dark"] .result-score{color:var(--accent)}.result-msg{font-size:14px;color:var(--muted);margin-bottom:16px}.result-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.float-btn{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;width:48px;height:48px;border-radius:50%;font-size:22px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:200}[data-theme="dark"] .float-btn{background:var(--accent);color:var(--primary)}.search-box{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px;margin-bottom:10px;font-family:inherit}.btn{padding:10px 14px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;background:var(--primary);color:#fff;font-family:inherit}.btn-sec{background:var(--card);color:var(--text);border:1px solid var(--border)}.action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}</style>
+</head>
+<body>
+<div class="header"><div class="header-row"><div><a href="IOB_Study_Hub.html" class="back-link">← Hub</a><h1>Module J: Digital Banking</h1><div class="header-sub">UPI • RTGS/NEFT • Cards • 40 MCQs</div></div><button class="theme-btn" onclick="toggleTheme()">🌙</button></div><div class="progress-strip"><div class="progress-strip-fill" id="pbar" style="width:0%"></div></div></div>
+<div class="tabs"><div class="tab-chip active" onclick="showTab('content',this)">📖 Content</div><div class="tab-chip" onclick="showTab('flash',this)">🎴 Flashcards</div><div class="tab-chip" onclick="showTab('compare',this)">⚖️ Compare</div><div class="tab-chip" onclick="showTab('numbers',this)">🔢 Numbers</div><div class="tab-chip" onclick="showTab('mcq',this)">❓ Quiz</div><div class="tab-chip" onclick="showTab('cases',this)">📋 Cases</div></div>
+<div class="container">
+<div id="content" class="view active"><input class="search-box" placeholder="🔍 Search..." oninput="filterTopics(this.value)">
+
+<div class="topic" id="t1"><div class="topic-head" onclick="toggleTopic('t1')"><div class="topic-title"><span class="topic-num">1</span>RTGS (Real Time Gross Settlement)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t1',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Real-time, gross settlement per transaction.</li>
+<li>Minimum: <span class="key">₹2 lakh</span>. No maximum.</li>
+<li>24x7 since 14 Dec 2020.</li>
+<li>Settlement individually (vs NEFT batches).</li>
+<li>Charges (Online retail): NIL (RBI directive).</li>
+<li>Charges (Branch):
+<ul>
+<li>₹2L to ₹5L: ₹25 + GST.</li>
+<li>Above ₹5L: ₹50 + GST.</li>
+</ul></li>
+<li>Primarily inter-bank + high-value transactions.</li>
+<li>UTR (Unique Transaction Reference) generated for each.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t2"><div class="topic-head" onclick="toggleTopic('t2')"><div class="topic-title"><span class="topic-num">2</span>NEFT (National Electronic Fund Transfer)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t2',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Deferred Net Settlement; batches of transfers.</li>
+<li>24x7 since 16 Dec 2019.</li>
+<li>Half-hourly batches (48 batches per day).</li>
+<li>No minimum; no maximum amount.</li>
+<li>Charges (Online retail): Free.</li>
+<li>Charges (Branch):
+<ul>
+<li>Up to ₹10,000: ₹2.50.</li>
+<li>₹10,001 to ₹1 lakh: ₹5.</li>
+<li>₹1 lakh to ₹2 lakh: ₹15.</li>
+<li>Above ₹2 lakh: ₹25.</li>
+</ul></li>
+<li>UTR: unique for each transaction.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t3"><div class="topic-head" onclick="toggleTopic('t3')"><div class="topic-title"><span class="topic-num">3</span>IMPS (Immediate Payment Service)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t3',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>NPCI service. Instant, real-time, 24x7.</li>
+<li>Maximum per transaction: <span class="key">₹5 lakh</span>.</li>
+<li>Uses MMID (Mobile Money Identifier) + Mobile OR Aadhaar + name OR Account + IFSC.</li>
+<li>Charges: Nominal (around ₹5-15, bank-specific).</li>
+<li>P2P (Peer-to-Peer) + P2M (Peer-to-Merchant).</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t4"><div class="topic-head" onclick="toggleTopic('t4')"><div class="topic-title"><span class="topic-num">4</span>UPI (Unified Payments Interface)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t4',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>NPCI platform. Launched April 2016.</li>
+<li>Max per transaction: <span class="key">₹1 lakh</span> (default).</li>
+<li>Enhanced to <span class="key">₹5 lakh</span> for:
+<ul>
+<li>Capital markets (securities).</li>
+<li>Insurance.</li>
+<li>Foreign remittance / inward.</li>
+<li>Hospitals + Education (approved).</li>
+</ul></li>
+<li>VPA (Virtual Payment Address) = user@bank.</li>
+<li>Instant, 24x7.</li>
+<li>Per-transaction UPI PIN (4-6 digit).</li>
+</ul>
+<h3>UPI Variants</h3>
+<ul>
+<li><b>UPI 123Pay:</b> For feature phones (non-smart) — IVR/missed call.</li>
+<li><b>UPI Lite:</b> Offline low-value payments. Wallet up to ₹5,000 (up from ₹2,000). Per-txn ₹500.</li>
+<li><b>UPI International:</b> Live in Singapore (PayNow), UAE, Bhutan, Nepal, France, Mauritius, Sri Lanka.</li>
+<li><b>UPI AutoPay:</b> E-mandate based recurring payments.</li>
+<li><b>UPI Credit Line:</b> Access to pre-sanctioned credit via UPI (2023 launch).</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t5"><div class="topic-head" onclick="toggleTopic('t5')"><div class="topic-title"><span class="topic-num">5</span>Debit Cards</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t5',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Networks</h3>
+<ul>
+<li><b>RuPay</b> (NPCI, India).</li>
+<li>Visa.</li>
+<li>MasterCard.</li>
+</ul>
+<h3>IOB Variants</h3>
+<ul>
+<li>Classic (basic).</li>
+<li>Platinum.</li>
+<li>Select / Priority.</li>
+<li>Business / Corporate.</li>
+<li>International (globally usable).</li>
+</ul>
+<h3>Transaction Limits</h3>
+<table>
+<tr><th>Card Type</th><th>Daily ATM</th><th>POS / E-com</th></tr>
+<tr><td>Classic</td><td>₹25,000</td><td>₹50,000</td></tr>
+<tr><td>Platinum</td><td>₹50,000</td><td>₹1 lakh</td></tr>
+<tr><td>Select</td><td>₹1 lakh</td><td>₹2 lakh</td></tr>
+</table>
+<h3>Contactless (NFC)</h3>
+<ul>
+<li>Up to ₹5,000 without PIN (RBI; earlier ₹2,000).</li>
+<li>Above: PIN required.</li>
+</ul>
+<h3>ATM Charges</h3>
+<ul>
+<li>5 free transactions at own bank ATM (financial + non-financial) per month.</li>
+<li>Other bank ATMs: 3 (metro) / 5 (non-metro) free.</li>
+<li>Beyond: ₹21 + GST per financial txn; ₹10 + GST per non-financial.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t6"><div class="topic-head" onclick="toggleTopic('t6')"><div class="topic-title"><span class="topic-num">6</span>Credit Cards (IOB)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t6',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>IOB variants: Classic, Gold, Platinum, Business, RuPay Platinum.</li>
+<li>Interest rate: <span class="key">2.5% to 3.5% per month</span> on revolving credit (~30-42% p.a.).</li>
+<li>Grace period: 50 days for purchases (credit cycle).</li>
+<li>Minimum payment: 5% of outstanding (or full) — avoids default.</li>
+<li>Late payment fee + over-limit fee as per schedule.</li>
+<li>Reward points + cashback as per product.</li>
+<li>Cash withdrawal: ~2.5% + GST + interest from day 1.</li>
+<li>EMI conversion facility for large purchases.</li>
+</ul>
+<h3>Features</h3>
+<ul>
+<li>Fuel surcharge waiver (up to a limit).</li>
+<li>Insurance (lost card, personal accident).</li>
+<li>Airport lounge access (Platinum+).</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t7"><div class="topic-head" onclick="toggleTopic('t7')"><div class="topic-title"><span class="topic-num">7</span>FASTag</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t7',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>RFID (Radio Frequency Identification) tag for electronic toll payment.</li>
+<li><b>NETC:</b> National Electronic Toll Collection — NPCI platform.</li>
+<li>Mandatory for all vehicles at National Highways toll plazas (since Feb 2021).</li>
+<li>Linked to prepaid wallet or bank account.</li>
+<li>Colour-coded by vehicle class:
+<ul>
+<li>Violet — Car / Jeep / Van.</li>
+<li>Orange — LCV.</li>
+<li>Yellow — Tractor / Commercial.</li>
+<li>Green — Mini Bus.</li>
+<li>Pink — Truck.</li>
+<li>Blue — Bus.</li>
+</ul></li>
+<li>Minimum top-up: ₹100.</li>
+<li>Cashback from NETC at toll plazas (incentive to adopt).</li>
+<li>Also used for: Parking, Fuel at participating stations (expanding).</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t8"><div class="topic-head" onclick="toggleTopic('t8')"><div class="topic-title"><span class="topic-num">8</span>IOB Mobile Banking</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t8',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>App: IOB Mobile (Android + iOS).</li>
+<li>Registration: Via Debit Card + ATM PIN OR Branch.</li>
+<li>Features:
+<ul>
+<li>Balance enquiry, mini-statement.</li>
+<li>Funds transfer (NEFT/RTGS/IMPS/UPI).</li>
+<li>Bill payments (BBPS).</li>
+<li>FD opening / closure.</li>
+<li>Card blocking / hotlisting.</li>
+<li>Cheque book request.</li>
+<li>Service requests.</li>
+<li>e-passbook.</li>
+</ul></li>
+<li>Security: 2FA (MPIN + OTP).</li>
+<li>Session timeout: 5 minutes idle.</li>
+<li>Device binding.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t9"><div class="topic-head" onclick="toggleTopic('t9')"><div class="topic-title"><span class="topic-num">9</span>Internet Banking</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t9',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Types</h3>
+<ul>
+<li>Retail Internet Banking (individual + joint E/S accounts).</li>
+<li>Corporate Internet Banking (for businesses, firms, companies).</li>
+</ul>
+<h3>Features</h3>
+<ul>
+<li>View statement.</li>
+<li>Funds transfer (same + other bank).</li>
+<li>Online tax payment (challan).</li>
+<li>e-TDS / e-filing.</li>
+<li>Letter of Credit / BG issuance (corporate).</li>
+<li>Bulk payment / salary processing.</li>
+</ul>
+<h3>Security</h3>
+<ul>
+<li>User ID + Login Password + Transaction Password.</li>
+<li>OTP for transactions.</li>
+<li>Virtual Keyboard.</li>
+<li>Transaction limit set by customer.</li>
+<li>IP-based restrictions (optional).</li>
+<li>Session timeout: 5 minutes.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t10"><div class="topic-head" onclick="toggleTopic('t10')"><div class="topic-title"><span class="topic-num">10</span>UPI QR Code / IOB Pay / BHIM</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t10',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>UPI QR Code</h3>
+<ul>
+<li>Static QR: linked to one merchant account.</li>
+<li>Dynamic QR: amount pre-filled by merchant.</li>
+<li>Interoperable: Any UPI app can scan any BHIM QR.</li>
+</ul>
+<h3>IOB Pay</h3>
+<ul>
+<li>BBPS-integrated bill payment app.</li>
+<li>Pay utility bills, mobile, DTH, insurance, loan EMIs, LPG.</li>
+</ul>
+<h3>BHIM</h3>
+<ul>
+<li>NPCI's UPI app.</li>
+<li>Works with any Indian bank account.</li>
+<li>VPA creation (e.g., name@upi).</li>
+</ul>
+<h3>IOB BHIM / BHIM Aadhaar</h3>
+<ul>
+<li>BHIM IOB UPI — IOB-specific UPI service.</li>
+<li>IOB BHIM Aadhaar — Aadhaar-biometric based (for BC/micro-ATMs).</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t11"><div class="topic-head" onclick="toggleTopic('t11')"><div class="topic-title"><span class="topic-num">11</span>AePS — Aadhaar Enabled Payment System</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t11',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Biometric-based transaction (fingerprint).</li>
+<li>Done at BC (Business Correspondent) / micro-ATM.</li>
+<li>Services:
+<ul>
+<li>Cash deposit.</li>
+<li>Cash withdrawal.</li>
+<li>Balance enquiry.</li>
+<li>Mini statement.</li>
+<li>Aadhaar-to-Aadhaar fund transfer.</li>
+</ul></li>
+<li>Customer needs: Aadhaar linked to bank + biometric.</li>
+<li>Core role in financial inclusion in rural India.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t12"><div class="topic-head" onclick="toggleTopic('t12')"><div class="topic-title"><span class="topic-num">12</span>Point of Sale (PoS)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t12',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Merchant acquiring — accepts cards for payment.</li>
+<li>Types:
+<ul>
+<li>Traditional PoS (counter).</li>
+<li>mPoS (mobile; works on smartphone).</li>
+<li>QR PoS / Soft PoS (contactless on merchant's smartphone).</li>
+</ul></li>
+<li><b>MDR (Merchant Discount Rate):</b>
+<ul>
+<li>RuPay + UPI: NIL for small merchants (< ₹20L annual turnover).</li>
+<li>Credit cards: 1-3% (negotiated).</li>
+<li>Debit cards (other networks): 0.4-0.9%.</li>
+</ul></li>
+<li>Settlement typically T+1 to merchant.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t13"><div class="topic-head" onclick="toggleTopic('t13')"><div class="topic-title"><span class="topic-num">13</span>BBPS (Bharat Bill Payment System)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t13',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Operated by NPCI Bharat BillPay Ltd (NBBL).</li>
+<li>Interoperable bill payment system.</li>
+</ul>
+<h3>Categories</h3>
+<ul>
+<li>Electricity, Water, Gas (piped + LPG).</li>
+<li>DTH + Cable TV.</li>
+<li>Post-paid Mobile + Landline + Broadband.</li>
+<li>Education fees.</li>
+<li>Insurance premium.</li>
+<li>Credit Card payment.</li>
+<li>Loan EMI.</li>
+<li>FASTag recharge.</li>
+<li>Housing Society maintenance.</li>
+<li>Subscription fees.</li>
+</ul>
+<h3>Features</h3>
+<ul>
+<li>Instant / near-instant confirmation.</li>
+<li>Multiple channels: Internet banking, mobile banking, PoS, physical agent, BBPOU.</li>
+<li>Any customer of any bank / BBPOU can pay any biller.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t14"><div class="topic-head" onclick="toggleTopic('t14')"><div class="topic-title"><span class="topic-num">14</span>WhatsApp Banking + Cyber Security</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t14',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>IOB WhatsApp Banking</h3>
+<ul>
+<li>Verified WhatsApp Business (Blue Tick).</li>
+<li>Features: Balance, mini-statement, cheque book request, card blocking, nearest branch/ATM.</li>
+<li>Non-financial services only.</li>
+</ul>
+<h3>Cyber Security Framework</h3>
+<ul>
+<li>2FA (Two-Factor Authentication) mandatory for electronic transactions.</li>
+<li>Cooling period: 24 hours for beneficiary addition + first transaction.</li>
+<li>OTP, Biometric, PIN.</li>
+<li>Device binding.</li>
+<li>Risk scoring for unusual transactions.</li>
+</ul>
+<h3>Unauthorized Electronic Transactions (RBI 2017)</h3>
+<table>
+<tr><th>Reporting Delay</th><th>Liability</th></tr>
+<tr><td>Contributory fraud by bank</td><td>Nil</td></tr>
+<tr><td>Within 3 working days (customer not at fault)</td><td><b>Zero Liability</b></td></tr>
+<tr><td>4-7 days</td><td>Limited (₹5,000 to ₹25,000 per txn type)</td></tr>
+<tr><td>Beyond 7 days</td><td>As per bank policy</td></tr>
+</table>
+<h3>Cyber Fraud Prevention</h3>
+<ul>
+<li>Never share OTP, PIN, CVV.</li>
+<li>Don't click suspicious links.</li>
+<li>Verify URLs (https + bank domain).</li>
+<li>Report fraud immediately — 1930 (cybercrime helpline).</li>
+<li>National Cyber Crime Portal: cybercrime.gov.in.</li>
+</ul>
+</div></div>
+
+</div>
+
+<div id="flash" class="view"><div class="alert alert-info"><b>💡 Tap to flip.</b></div><div class="flashcard-deck" id="flashDeck"></div></div>
+<div id="compare" class="view"><div class="alert alert-info"><b>⚖️ Compare.</b></div><div id="compareList"></div></div>
+<div id="numbers" class="view"><div class="alert alert-warn"><b>🔢 Memorize.</b></div><input class="search-box" placeholder="🔍 Search..." oninput="filterNums(this.value)"><div id="numList"></div></div>
+<div id="mcq" class="view">
+<div id="quizIntro">
+<div class="quiz-intro"><h2>📝 Module J Quiz</h2><p>40 questions • Digital Banking drill</p><button class="quiz-btn" onclick="startQuiz()">▶️ Start</button></div>
+<div class="quiz-stats"><div class="quiz-stat"><div class="v" id="stAtt">0</div><div class="l">Attempted</div></div><div class="quiz-stat"><div class="v" id="stCor">0</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v" id="stAcc">0%</div><div class="l">Accuracy</div></div></div>
+<div class="action-row"><button class="btn btn-sec" onclick="reviewWeak()" style="flex:1">🎯 Review Weak</button></div>
+</div>
+<div id="quizArea" style="display:none"></div>
+</div>
+<div id="cases" class="view"><div class="alert alert-info"><b>📋 Scenarios.</b></div><div id="caseList"></div></div>
+</div>
+<button class="float-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const MOD_KEY='iob_mod_J_v1';
+let state=JSON.parse(localStorage.getItem(MOD_KEY)||'{}');
+if(!state.topics)state.topics={};if(!state.quiz)state.quiz={attempted:0,correct:0,perQuestion:{}};if(!state.weak)state.weak=[];if(!state.theme)state.theme='light';
+function save(){localStorage.setItem(MOD_KEY,JSON.stringify(state))}
+function toggleTheme(){state.theme=state.theme==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',state.theme);document.querySelector('.theme-btn').textContent=state.theme==='dark'?'☀️':'🌙';save()}
+function showTab(id,el){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.tab-chip').forEach(c=>c.classList.remove('active'));document.getElementById(id).classList.add('active');el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+function toggleTopic(id){document.getElementById(id).classList.toggle('open')}
+function toggleDone(id,el){state.topics[id]=!state.topics[id];if(state.topics[id])el.classList.add('done');else el.classList.remove('done');save();updateProgressBar()}
+function updateProgressBar(){const done=Object.keys(state.topics).filter(k=>state.topics[k]).length;document.getElementById('pbar').style.width=Math.round(done/14*100)+'%'}
+function filterTopics(q){q=q.toLowerCase();document.querySelectorAll('.topic').forEach(t=>{const text=t.innerText.toLowerCase();t.style.display=(!q||text.includes(q))?'':'none';if(q&&text.includes(q))t.classList.add('open')})}
+
+const FLASHCARDS=[
+{q:"RTGS minimum amount?",a:"₹2 lakh"},{q:"RTGS maximum amount?",a:"No maximum"},{q:"RTGS availability?",a:"24x7 (since 14 Dec 2020)"},
+{q:"RTGS online charges (retail)?",a:"NIL (RBI directive)"},{q:"NEFT minimum / maximum?",a:"No minimum, no maximum"},
+{q:"NEFT availability?",a:"24x7 (since 16 Dec 2019); half-hourly batches"},{q:"NEFT online charges (retail)?",a:"Free (RBI)"},
+{q:"IMPS maximum per transaction?",a:"₹5 lakh"},{q:"IMPS availability?",a:"Instant, 24x7, NPCI service"},
+{q:"UPI default max per transaction?",a:"₹1 lakh"},{q:"UPI enhanced limit for capital markets/insurance?",a:"₹5 lakh"},
+{q:"UPI enhanced limit for hospitals/education?",a:"₹5 lakh"},
+{q:"UPI 123Pay — for whom?",a:"Feature phone users (non-smartphone) — IVR/missed call"},
+{q:"UPI Lite wallet maximum?",a:"₹5,000 (revised up from ₹2,000)"},
+{q:"UPI Lite per-transaction?",a:"₹500"},
+{q:"UPI International countries (examples)?",a:"Singapore (PayNow), UAE, Bhutan, Nepal, France, Mauritius, Sri Lanka"},
+{q:"UPI Credit Line — launched?",a:"2023 — pre-sanctioned credit via UPI"},
+{q:"Debit Card Classic — daily ATM limit?",a:"₹25,000"},{q:"Debit Card Platinum — daily ATM limit?",a:"₹50,000"},
+{q:"Contactless Debit Card — PIN-less limit?",a:"₹5,000 per transaction (up from ₹2,000)"},
+{q:"Free ATM transactions at own bank per month?",a:"5 (financial + non-financial combined)"},
+{q:"Free ATM transactions at other bank — metro / non-metro?",a:"3 metro / 5 non-metro per month"},
+{q:"ATM charge beyond free — financial / non-financial?",a:"₹21 + GST / ₹10 + GST per txn"},
+{q:"Credit card interest rate p.a. range?",a:"~30-42% (2.5-3.5% per month on revolving credit)"},
+{q:"Credit card grace period?",a:"Up to 50 days for purchases (no interest)"},
+{q:"Credit card minimum payment of outstanding?",a:"5% of outstanding (else default)"},
+{q:"FASTag — operated under which platform?",a:"NETC (National Electronic Toll Collection) by NPCI"},
+{q:"FASTag — mandatory since when?",a:"Feb 2021 at all NH toll plazas"},
+{q:"FASTag car/jeep/van — colour?",a:"Violet"},
+{q:"FASTag commercial / LCV — colour?",a:"Orange"},
+{q:"FASTag minimum top-up?",a:"₹100"},
+{q:"UPI QR static vs dynamic?",a:"Static: fixed merchant VPA; Dynamic: amount pre-set by merchant per transaction"},
+{q:"BBPS — operated by?",a:"NPCI Bharat BillPay Ltd (NBBL)"},
+{q:"AePS — authenticator?",a:"Fingerprint biometric via BC / micro-ATM"},
+{q:"MDR (Merchant Discount Rate) — RuPay / UPI for small merchants?",a:"NIL for merchants with < ₹20 lakh annual turnover"},
+{q:"MDR for credit cards?",a:"1-3% (negotiated)"},
+{q:"Zero liability for unauthorized electronic txn?",a:"Reported within 3 working days of bank communication"},
+{q:"Limited liability for electronic txn (4-7 days)?",a:"₹5,000 to ₹25,000 per transaction type"},
+{q:"Cybercrime helpline?",a:"1930"},
+{q:"National Cyber Crime Portal?",a:"cybercrime.gov.in"},
+{q:"Beneficiary cooling period?",a:"24 hours after addition for first transaction (security check)"}
+];
+function renderFlashcards(){document.getElementById('flashDeck').innerHTML=FLASHCARDS.map((c,i)=>`<div class="flashcard" onclick="this.classList.toggle('flipped')"><div class="flashcard-inner"><div class="flashcard-face flashcard-front">${c.q}<div class="flashcard-hint">Tap to flip • Card ${i+1}/${FLASHCARDS.length}</div></div><div class="flashcard-face flashcard-back">${c.a}</div></div></div>`).join('')}
+
+const COMPARE=[
+{title:'RTGS vs NEFT vs IMPS vs UPI',rows:[['Min','₹2 lakh','No min','No min','No min'],['Max','No max','No max','₹5 lakh','₹1 lakh (₹5L special)'],['Settlement','Real-time Gross','Batch (half-hourly)','Instant','Instant'],['24x7','Yes (Dec 2020)','Yes (Dec 2019)','Yes','Yes'],['Charges (online)','Nil','Nil','Nominal','Nil'],['Operator','RBI','RBI','NPCI','NPCI']]},
+{title:'UPI Variants',rows:[['UPI (standard)','Smartphone, ₹1L max'],['UPI 123Pay','Feature phone (IVR, missed call)'],['UPI Lite','Offline, wallet ₹5K, per-txn ₹500'],['UPI International','Cross-border payments (several countries)'],['UPI AutoPay','E-mandate for recurring payments'],['UPI Credit Line','Pre-sanctioned credit via UPI (2023)']]},
+{title:'Debit Card Limits (IOB)',rows:[['Classic','ATM ₹25K; POS/e-com ₹50K'],['Platinum','ATM ₹50K; POS/e-com ₹1L'],['Select','ATM ₹1L; POS/e-com ₹2L'],['Contactless (NFC)','Up to ₹5K without PIN']]},
+{title:'Free ATM Transactions / Month',rows:[['Own bank ATM','5 (financial + non-financial)'],['Other bank metro','3 free (6 metro cities: Mumbai, Delhi, Chennai, Kolkata, Bangalore, Hyderabad)'],['Other bank non-metro','5 free'],['Beyond free (financial)','₹21 + GST'],['Beyond free (non-financial)','₹10 + GST']]},
+{title:'Unauthorized Electronic Txn Liability',rows:[['Bank fault','Nil liability'],['3 working days (customer)','Zero Liability'],['4-7 days','Limited (₹5K-₹25K per txn type)'],['Beyond 7 days','As per bank policy']]}
+];
+function renderCompare(){document.getElementById('compareList').innerHTML=COMPARE.map(c=>`<div class="compare-card"><div class="compare-head" onclick="this.parentElement.classList.toggle('open')"><span>${c.title}</span><span class="arrow">▼</span></div><div class="compare-body"><table>${c.rows.map(r=>`<tr>${r.map((cell,idx)=>idx===0?`<td><b>${cell}</b></td>`:`<td>${cell}</td>`).join('')}</tr>`).join('')}</table></div></div>`).join('')}
+
+const NUMBERS=[
+{v:'₹2 lakh',d:'RTGS minimum',cat:'RTGS'},{v:'No max',d:'RTGS maximum',cat:'RTGS'},{v:'14-Dec-2020',d:'RTGS 24x7 effective',cat:'RTGS'},{v:'Nil',d:'RTGS online retail charges',cat:'RTGS'},
+{v:'16-Dec-2019',d:'NEFT 24x7 effective',cat:'NEFT'},{v:'Half-hourly',d:'NEFT batch frequency (48 per day)',cat:'NEFT'},{v:'Nil',d:'NEFT online retail charges',cat:'NEFT'},
+{v:'₹5 lakh',d:'IMPS max per transaction',cat:'IMPS'},
+{v:'₹1 lakh',d:'UPI default max',cat:'UPI'},{v:'₹5 lakh',d:'UPI enhanced (capital markets, insurance, hospitals, education, forex)',cat:'UPI'},
+{v:'₹5,000',d:'UPI Lite wallet max',cat:'UPI'},{v:'₹500',d:'UPI Lite per-transaction',cat:'UPI'},
+{v:'7+ countries',d:'UPI International live countries',cat:'UPI'},
+{v:'₹25,000',d:'Classic DC daily ATM',cat:'Card'},{v:'₹50,000',d:'Platinum DC daily ATM',cat:'Card'},{v:'₹1 lakh',d:'Select DC daily ATM',cat:'Card'},
+{v:'₹5,000',d:'Contactless DC PIN-less limit',cat:'Card'},
+{v:'5',d:'Free own-bank ATM txns/month',cat:'ATM'},{v:'3 / 5',d:'Free other-bank ATM metro / non-metro',cat:'ATM'},
+{v:'₹21 + GST',d:'ATM beyond-free financial txn',cat:'ATM'},{v:'₹10 + GST',d:'ATM beyond-free non-financial',cat:'ATM'},
+{v:'2.5-3.5%',d:'Credit card interest per month',cat:'Card'},{v:'50 days',d:'Credit card grace period (purchases)',cat:'Card'},
+{v:'5%',d:'Credit card minimum payment',cat:'Card'},{v:'Feb-2021',d:'FASTag mandatory at NH toll',cat:'FASTag'},
+{v:'₹100',d:'FASTag minimum top-up',cat:'FASTag'},
+{v:'₹20 lakh',d:'MDR Nil threshold (small merchants) — annual turnover',cat:'MDR'},
+{v:'1-3%',d:'MDR credit cards (negotiated)',cat:'MDR'},
+{v:'3 wd',d:'Zero Liability — reporting window',cat:'Cyber'},{v:'4-7 days',d:'Limited Liability window',cat:'Cyber'},
+{v:'1930',d:'Cybercrime helpline',cat:'Cyber'},{v:'24 hours',d:'Beneficiary cooling period',cat:'Cyber'},
+{v:'5 min',d:'Mobile/Net banking idle timeout',cat:'Security'}
+];
+function renderNumbers(f=''){f=f.toLowerCase();const items=NUMBERS.filter(n=>!f||n.v.toLowerCase().includes(f)||n.d.toLowerCase().includes(f)||n.cat.toLowerCase().includes(f));document.getElementById('numList').innerHTML=items.map(n=>`<div class="num-card"><div class="num-badge">${n.v}</div><div class="num-desc"><div class="num-cat">${n.cat}</div>${n.d}</div></div>`).join('')||'<p style="text-align:center;padding:30px;color:var(--muted)">No matches</p>'}
+function filterNums(v){renderNumbers(v)}
+
+const QUIZ=[
+{q:"RTGS minimum transaction amount?",o:["₹10,000","₹1 lakh","₹2 lakh","₹5 lakh"],a:2,e:"RTGS minimum: ₹2 lakh. No maximum."},
+{q:"RTGS maximum?",o:["₹1 Cr","₹10 Cr","₹25 Cr","No maximum"],a:3,e:"No maximum limit for RTGS."},
+{q:"RTGS 24x7 operational since?",o:["Aug 2019","Dec 2019","Dec 2020","Jan 2021"],a:2,e:"14 December 2020."},
+{q:"RTGS online retail charges?",o:["₹10","₹25","₹50","Nil"],a:3,e:"Nil online charges for retail customers (RBI directive)."},
+{q:"NEFT 24x7 operational since?",o:["Oct 2018","Dec 2019","Dec 2020","Mar 2020"],a:1,e:"16 December 2019."},
+{q:"NEFT batch frequency?",o:["Every 10 minutes","Every 30 minutes","Hourly","Every 2 hours"],a:1,e:"Half-hourly (every 30 minutes) — 48 batches per day."},
+{q:"NEFT minimum amount?",o:["₹1","No minimum","₹1,000","₹10,000"],a:1,e:"No minimum. No maximum either."},
+{q:"IMPS maximum per transaction?",o:["₹1 lakh","₹2 lakh","₹5 lakh","₹10 lakh"],a:2,e:"₹5 lakh per transaction. NPCI service."},
+{q:"UPI default maximum per transaction?",o:["₹50,000","₹1 lakh","₹2 lakh","₹5 lakh"],a:1,e:"₹1 lakh default. Enhanced to ₹5 lakh for specific categories."},
+{q:"UPI enhanced limit (₹5 lakh) applies to?",o:["Only merchants","Capital markets, insurance, hospitals, education, forex remittance","P2P only","Only govt payments"],a:1,e:"Enhanced ₹5 lakh for Capital Markets, Insurance, Foreign Remittance, Hospitals, Education (approved)."},
+{q:"UPI 123Pay — for whom?",o:["Smartphone users","Feature phone users","Only NRIs","Govt employees"],a:1,e:"UPI 123Pay = for non-smartphone (feature phone) users via IVR / missed call."},
+{q:"UPI Lite wallet limit (current)?",o:["₹1,000","₹2,000","₹5,000","₹10,000"],a:2,e:"Revised up to ₹5,000 from ₹2,000. Per-txn ₹500."},
+{q:"UPI International — first country?",o:["Singapore","UAE","Bhutan","Nepal"],a:0,e:"Singapore (PayNow) was the first UPI-international link (2023)."},
+{q:"UPI Credit Line — launched?",o:["2021","2022","2023","2024"],a:2,e:"UPI Credit Line (pre-sanctioned credit access via UPI) launched 2023."},
+{q:"Debit Card Classic daily ATM limit (IOB)?",o:["₹10,000","₹25,000","₹50,000","₹1 lakh"],a:1,e:"₹25,000 Classic. Platinum: ₹50,000. Select: ₹1 lakh."},
+{q:"Contactless Debit Card PIN-less limit (current)?",o:["₹1,000","₹2,000","₹5,000","₹10,000"],a:2,e:"₹5,000 per transaction (up from ₹2,000)."},
+{q:"Free ATM transactions at own bank per month?",o:["3","5","8","Unlimited"],a:1,e:"5 free transactions (financial + non-financial combined) at own bank ATMs per month."},
+{q:"Free ATM at other bank — metro cities?",o:["2","3","5","Unlimited"],a:1,e:"3 free in metro (6 cities); 5 free in non-metro."},
+{q:"ATM beyond free — financial transaction charge?",o:["₹10 + GST","₹15 + GST","₹21 + GST","₹30 + GST"],a:2,e:"₹21 + GST per financial transaction. ₹10 + GST for non-financial."},
+{q:"Credit card interest rate per month (typical)?",o:["1-2%","2.5-3.5%","5-7%","10%+"],a:1,e:"2.5-3.5% per month = ~30-42% p.a. on revolving credit."},
+{q:"Credit card grace period?",o:["20 days","30 days","45 days","Up to 50 days"],a:3,e:"Up to 50 days for purchases (statement + grace)."},
+{q:"Credit card minimum payment (% of outstanding)?",o:["2%","5%","10%","25%"],a:1,e:"5% minimum. Below = default. Interest on remaining accrues."},
+{q:"FASTag mandatory at NH toll plazas from?",o:["Jan 2020","Nov 2020","Feb 2021","Jan 2022"],a:2,e:"16 February 2021 mandatory."},
+{q:"FASTag platform?",o:["UPI","NETC","IMPS","BBPS"],a:1,e:"NETC = National Electronic Toll Collection (NPCI platform)."},
+{q:"FASTag minimum top-up?",o:["₹50","₹100","₹500","₹1,000"],a:1,e:"₹100 minimum top-up."},
+{q:"FASTag color for car/jeep/van?",o:["Violet","Orange","Yellow","Green"],a:0,e:"Violet. Orange: LCV. Yellow: Tractor. Green: Mini bus."},
+{q:"BBPS — operated by?",o:["RBI","NPCI Bharat BillPay Ltd","Visa","MasterCard"],a:1,e:"NPCI Bharat BillPay Ltd (NBBL) operates BBPS."},
+{q:"AePS — primary authentication method?",o:["OTP","PIN","Fingerprint biometric","Password"],a:2,e:"Fingerprint biometric via BC / micro-ATM, linked to Aadhaar."},
+{q:"MDR on RuPay / UPI for small merchants (< ₹20L turnover)?",o:["1%","0.4%","Nil","2%"],a:2,e:"NIL MDR for small merchants (annual turnover < ₹20 lakh)."},
+{q:"MDR on credit cards?",o:["Nil","0.1%","1-3%","5%"],a:2,e:"Credit cards: 1-3% (negotiated with merchant)."},
+{q:"Zero liability for unauthorized electronic transaction — reporting window?",o:["Within 24 hours","Within 3 working days","Within 7 working days","Within 30 days"],a:1,e:"Within 3 working days of receipt of bank communication (RBI 2017)."},
+{q:"Limited liability window (customer at fault)?",o:["Same day","1-2 days","4-7 days","Beyond 30 days"],a:2,e:"4-7 working days — limited liability (₹5,000 to ₹25,000 per transaction type)."},
+{q:"Cybercrime helpline?",o:["100","155370","1930","1800425"],a:2,e:"1930 — National Cybercrime Helpline."},
+{q:"National Cyber Crime Portal?",o:["cert-in.org","cybercrime.gov.in","rbi.org.in","consumer.gov.in"],a:1,e:"cybercrime.gov.in — Govt of India portal to report cyber crimes."},
+{q:"Beneficiary cooling period after addition?",o:["1 hour","24 hours","7 days","48 hours"],a:1,e:"24 hours cooling period after adding new beneficiary for electronic funds transfer."},
+{q:"Mobile / Net Banking idle timeout?",o:["30 seconds","2 minutes","5 minutes","10 minutes"],a:2,e:"5 minutes typical idle timeout for session."},
+{q:"2FA — stands for?",o:["Two Factor Authentication","Two-fold Approval","Two-way Access","Two-Fund Transfer"],a:0,e:"Two Factor Authentication = PIN/Password + OTP/Biometric."},
+{q:"UPI VPA format?",o:["user@phone","user@bank.ac","user@upi (e.g., name@oksbi)","user@gmail.com"],a:2,e:"Virtual Payment Address: user@upi (e.g., name@oksbi, name@paytm, name@okiob)."},
+{q:"UPI QR — static vs dynamic difference?",o:["Static has amount; Dynamic doesn't","Dynamic has amount pre-set; Static doesn't","Both same","Dynamic needs internet"],a:1,e:"Static QR = fixed merchant VPA (user enters amount). Dynamic QR = amount pre-set by merchant."},
+{q:"CMR (for Demat) — stands for?",o:["Credit Monitoring Report","Client Master Report","Card Management Record","Cheque Movement Report"],a:1,e:"Client Master Report — Demat account's reference document."}
+];
+
+let quizIndex=0;let currentOrder=[];
+function startQuiz(){currentOrder=QUIZ.map((_,i)=>i).sort(()=>Math.random()-0.5);quizIndex=0;document.getElementById('quizIntro').style.display='none';document.getElementById('quizArea').style.display='block';renderQuestion()}
+function renderQuestion(){if(quizIndex>=currentOrder.length){renderResult();return}const qid=currentOrder[quizIndex];const q=QUIZ[qid];const prev=state.quiz.perQuestion[qid];document.getElementById('quizArea').innerHTML=`<div class="quiz-stats"><div class="quiz-stat"><div class="v">${quizIndex+1}/${currentOrder.length}</div><div class="l">Progress</div></div><div class="quiz-stat"><div class="v">${state.quiz.correct}</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v">${state.quiz.attempted?Math.round(state.quiz.correct/state.quiz.attempted*100):0}%</div><div class="l">Accuracy</div></div></div><div class="question-card"><div class="q-num">Question ${quizIndex+1} of ${currentOrder.length}</div><div class="q-text">${q.q}</div>${q.o.map((opt,i)=>`<div class="option" onclick="pickOption(${qid},${i},this)" id="opt-${i}">${String.fromCharCode(65+i)}) ${opt}</div>`).join('')}<div class="explanation" id="exp"><b>💡 ${q.o[q.a]}</b><br>${q.e}</div><div class="nav-btns"><button class="btn-prev" onclick="prevQuestion()">← Prev</button><button class="btn-next" onclick="nextQuestion()">Next →</button></div></div>`;if(prev!==undefined){const sel=prev;document.getElementById('opt-'+sel).classList.add(sel===q.a?'correct':'wrong');if(sel!==q.a)document.getElementById('opt-'+q.a).classList.add('correct');document.getElementById('exp').classList.add('show')}}
+function pickOption(qid,idx,el){const q=QUIZ[qid];if(state.quiz.perQuestion[qid]!==undefined)return;state.quiz.perQuestion[qid]=idx;state.quiz.attempted++;if(idx===q.a){state.quiz.correct++;el.classList.add('correct')}else{el.classList.add('wrong');document.getElementById('opt-'+q.a).classList.add('correct');if(!state.weak.includes(qid))state.weak.push(qid)}document.getElementById('exp').classList.add('show');save();updateStatBoxes()}
+function nextQuestion(){quizIndex++;renderQuestion()}
+function prevQuestion(){if(quizIndex>0)quizIndex--;renderQuestion()}
+function renderResult(){const s=state.quiz.correct,t=state.quiz.attempted,p=t?Math.round(s/t*100):0;let m='Good effort!';if(p>=80)m='🎉 Excellent!';else if(p>=60)m='👍 Solid.';else if(p>=40)m='📚 More practice.';else m='💪 Keep going.';document.getElementById('quizArea').innerHTML=`<div class="result-card"><div style="font-size:50px">${p>=60?'🏆':'📖'}</div><div class="result-score">${p}%</div><div class="result-msg">${m}</div><div class="result-row"><div class="quiz-stat"><div class="v">${s}</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v">${t-s}</div><div class="l">Wrong</div></div></div><div class="action-row"><button class="btn" onclick="resetQuiz()">🔄 Retake</button><button class="btn btn-sec" onclick="reviewWeak()">🎯 Weak</button></div></div>`}
+function resetQuiz(){state.quiz={attempted:0,correct:0,perQuestion:{}};state.weak=[];save();document.getElementById('quizArea').style.display='none';document.getElementById('quizIntro').style.display='block';updateStatBoxes()}
+function reviewWeak(){if(state.weak.length===0){alert('No weak topics yet!');return}currentOrder=[...state.weak];quizIndex=0;document.getElementById('quizIntro').style.display='none';document.getElementById('quizArea').style.display='block';state.weak.forEach(w=>{delete state.quiz.perQuestion[w]});state.quiz.attempted=Math.max(0,state.quiz.attempted-state.weak.length);state.weak=[];save();renderQuestion()}
+function updateStatBoxes(){const a=state.quiz.attempted,c=state.quiz.correct,ac=a?Math.round(c/a*100):0;if(document.getElementById('stAtt'))document.getElementById('stAtt').textContent=a;if(document.getElementById('stCor'))document.getElementById('stCor').textContent=c;if(document.getElementById('stAcc'))document.getElementById('stAcc').textContent=ac+'%'}
+
+const CASES=[
+{t:'1. Unauthorized Electronic Transaction',scenario:'Mrs. Lakshmi received an SMS: "₹50,000 debited from your card." She says she never made this transaction. She reports to bank on the 2nd working day. Bank\'s action?',solution:'<b>Step 1:</b> Customer reporting within 3 working days → <b>ZERO LIABILITY</b> (RBI 2017 framework).<br><b>Step 2:</b> Bank credits ₹50,000 back to account <b>within 10 working days</b> (regardless of final determination).<br><b>Step 3:</b> Investigation begins:<br>• Transaction log — where/how debited.<br>• Was it phishing, card cloning, credential theft?<br>• Device, IP, merchant ID review.<br><b>Step 4:</b> If customer at fault (shared OTP/PIN):<br>• Bank can recover after proof.<br>• Still within zero-liability period = customer has reported within window.<br><b>Step 5:</b> If genuine third-party fraud:<br>• Customer gets to keep refund.<br>• Bank absorbs loss OR recovers from fraudster via police.<br><b>Step 6:</b> File FIR at Cybercrime Portal (cybercrime.gov.in) + 1930 helpline.<br><b>Step 7:</b> Hotlist the card immediately.<br><b>Key learning:</b> 3 working days = Zero Liability. Act fast to protect customer.'},
+{t:'2. Choosing Transfer Method',scenario:'Customer wants to transfer ₹3 lakh to his son\'s SBI account. Which method is best?',solution:'<b>Options & Analysis:</b><br><b>1. UPI:</b> Max ₹1 lakh default. Would need 3 UPI transactions. Free.<br><b>2. IMPS:</b> Max ₹5 lakh. ₹3L fits. Instant. Nominal charge.<br><b>3. NEFT:</b> No limit. Free online. Half-hourly batch — slight delay.<br><b>4. RTGS:</b> Min ₹2 lakh. ₹3L fits. Real-time. Free online.<br><br><b>Best choices:</b><br>• <b>Urgency high:</b> RTGS (real-time) or IMPS (instant).<br>• <b>Cost conscious:</b> NEFT or RTGS (both free online).<br>• <b>Simplest:</b> NEFT.<br><br><b>Recommendation:</b> <b>RTGS</b> — real-time, free online, large amount support.<br><b>Key learning:</b> Choice depends on urgency + cost. RTGS for large amounts with speed.'},
+{t:'3. Credit Card Revolving Interest',scenario:'Mr. Senthil\'s credit card bill: Statement ₹50,000. Due date 15-Nov. He pays only ₹2,500 (5% minimum) on due date. Next statement will show?',solution:'<b>Step 1:</b> Minimum paid = 5% = ₹2,500 → No default on account; no late fee.<br><b>Step 2:</b> Revolving credit: ₹50,000 - ₹2,500 = ₹47,500 unpaid.<br><b>Step 3:</b> Interest accrues from statement date (not due date) on ALL purchases.<br><b>Step 4:</b> Monthly interest at 3.5% on ₹47,500 = ₹1,663.<br><b>Also:</b> Any new purchases made this cycle will attract interest from day 1 (no grace period applies once revolving).<br><b>Step 5:</b> Grace period LOST — until outstanding fully cleared.<br><b>Step 6:</b> Next statement will show:<br>• Previous balance: ₹47,500<br>• Interest: ~₹1,663+<br>• New purchases + interest from day 1.<br>• Total outstanding may spike quickly.<br><b>Advice to customer:</b> Pay full outstanding to avoid revolving interest. Consider converting to EMI at lower rate.<br><b>Key learning:</b> Paying only minimum = interest trap. Compound effect in revolving.'},
+{t:'4. UPI Transaction Decline',scenario:'Customer tries to pay ₹1.5 lakh for hospital bill via UPI. Transaction declined. Why?',solution:'<b>Step 1:</b> Default UPI max = ₹1 lakh. Customer sent ₹1.5 lakh → DECLINED.<br><b>Step 2:</b> Enhanced limit of ₹5 lakh applies to specific categories:<br>• Capital markets (securities).<br>• Insurance premium.<br>• Foreign remittance.<br>• <b>Hospitals (approved)</b>.<br>• Education.<br><b>Step 3:</b> If hospital is UPI-approved (certified by acquiring bank), ₹5L limit applies → should work.<br><b>Step 4:</b> If hospital is NOT on approved list → ₹1L cap applies.<br><b>Solutions:</b><br>• Option A: Split into 2 UPI transactions of ₹75K each.<br>• Option B: Use IMPS (₹5 lakh limit).<br>• Option C: Use NEFT (no limit; small delay).<br>• Option D: Ask hospital to register for UPI enhanced limit.<br><b>Step 5:</b> For future: maintain customer\'s preferred method for hospital bills.<br><b>Key learning:</b> UPI enhanced limits apply only to approved merchant categories.'},
+{t:'5. Cyber Fraud Prevention',scenario:'Customer calls to say he received a call asking for OTP to "upgrade his account to lifetime free." He\'s about to share OTP. What should the bank officer advise?',solution:'<b>IMMEDIATE ADVICE:</b> "DO NOT share OTP with ANYONE including bank staff."<br><br><b>Red flags in the call:</b><br>• Unsolicited call claiming to be from bank.<br>• Urgency (upgrade NOW).<br>• OTP request from "bank."<br>• No real reason to request OTP.<br><br><b>Reality:</b> Bank officials <b>NEVER</b> ask for:<br>• OTP.<br>• PIN.<br>• Card details.<br>• UPI PIN.<br>• Login credentials.<br><br><b>Likely scam type:</b> Vishing (voice phishing).<br><br><b>Action:</b><br>1. Disconnect the call.<br>2. Do NOT share OTP.<br>3. Report to the bank\'s fraud team.<br>4. If already shared — immediately block card/account.<br>5. Report to cybercrime.gov.in + 1930.<br>6. If any debit happens, report within 3 working days for zero liability.<br><br><b>Prevention tips:</b><br>• Verify caller through official bank number.<br>• Access accounts only via official app/website.<br>• Check URLs carefully (https + bank domain).<br>• Enable transaction alerts.<br><b>Key learning:</b> OTP = One Time Password = NEVER SHARE.'}
+];
+function renderCases(){document.getElementById('caseList').innerHTML=CASES.map((c,i)=>`<div class="case-card"><div class="case-head" onclick="this.parentElement.classList.toggle('open')"><span>${c.t}</span><span class="arrow">▼</span></div><div class="case-body"><div class="case-scenario"><b>📍 Scenario:</b> ${c.scenario}</div><button class="reveal-btn" onclick="this.nextElementSibling.classList.add('show'); this.style.display='none'">👁️ Reveal Solution</button><div class="case-solution">${c.solution}</div></div></div>`).join('')}
+
+function init(){document.documentElement.setAttribute('data-theme',state.theme);document.querySelector('.theme-btn').textContent=state.theme==='dark'?'☀️':'🌙';Object.keys(state.topics).forEach(id=>{const el=document.querySelector(`#${id} .topic-check`);if(el&&state.topics[id])el.classList.add('done')});updateProgressBar();renderFlashcards();renderCompare();renderNumbers();renderCases();updateStatBoxes()}
+init();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(e => console.log('SW failed:', e));
+  });
+}
+</script>
+</body>
+</html>

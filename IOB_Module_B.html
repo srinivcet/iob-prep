@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a2540">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IOB Prep">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Module B: Deposits — IOB 2027</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#1a202c;--muted:#64748b;--primary:#0a2540;--primary-light:#1e40af;--accent:#d4a017;--success:#10b981;--warn:#f59e0b;--danger:#ef4444;--border:#e2e8f0;--highlight:#fef3c7;--important:#fee2e2;--info:#dbeafe}
+[data-theme="dark"]{--bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--muted:#94a3b8;--primary:#3b82f6;--accent:#fbbf24;--border:#334155;--highlight:#78350f;--important:#7f1d1d;--info:#1e3a8a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;font-size:14px;padding-bottom:80px}
+.header{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:14px 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.header-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.back-link{color:#fff;text-decoration:none;font-size:13px;padding:4px 8px;background:rgba(255,255,255,.15);border-radius:8px;display:inline-block}
+.header h1{font-size:16px;font-weight:700;margin-top:4px}
+.header-sub{font-size:11px;opacity:.85}
+.theme-btn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:8px 10px;border-radius:8px;font-size:15px;cursor:pointer}
+.progress-strip{height:4px;background:rgba(255,255,255,.2);margin-top:8px;border-radius:10px;overflow:hidden}
+.progress-strip-fill{height:100%;background:linear-gradient(90deg,var(--accent),#fbbf24);transition:width .5s}
+.tabs{background:var(--card);padding:8px;overflow-x:auto;white-space:nowrap;border-bottom:1px solid var(--border);position:sticky;top:85px;z-index:50;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-chip{display:inline-block;padding:8px 14px;margin:0 3px;border-radius:20px;background:var(--bg);color:var(--text);border:1px solid var(--border);font-size:12px;font-weight:600;cursor:pointer}
+.tab-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+[data-theme="dark"] .tab-chip.active{background:var(--accent);color:var(--primary)}
+.container{padding:14px;max-width:900px;margin:0 auto}
+.view{display:none}
+.view.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.topic{background:var(--card);border-radius:12px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid var(--border);overflow:hidden}
+.topic-head{padding:12px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(90deg,var(--card),var(--bg));user-select:none}
+.topic-title{font-weight:700;font-size:14px;color:var(--primary);display:flex;align-items:center;gap:8px}
+[data-theme="dark"] .topic-title{color:var(--accent)}
+.topic-num{background:var(--primary);color:#fff;width:24px;height:24px;border-radius:50%;text-align:center;line-height:24px;font-size:11px;font-weight:700;flex-shrink:0}
+[data-theme="dark"] .topic-num{background:var(--accent);color:var(--primary)}
+.topic-check{width:22px;height:22px;border:2px solid var(--muted);border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}
+.topic-check.done{background:var(--success);border-color:var(--success)}
+.topic-check.done::after{content:'✓'}
+.topic-body{display:none;padding:0 14px 14px}
+.topic.open .topic-body{display:block;animation:fadeIn .3s ease}
+.topic.open .topic-arrow{transform:rotate(90deg)}
+.topic-arrow{transition:transform .3s;color:var(--muted);font-size:14px}
+h3{margin:14px 0 8px;font-size:14px;color:var(--primary);padding-bottom:4px;border-bottom:2px solid var(--accent)}
+[data-theme="dark"] h3{color:var(--accent)}
+h4{margin:12px 0 6px;font-size:13px;color:var(--primary);font-weight:700}
+[data-theme="dark"] h4{color:#93c5fd}
+p{margin:4px 0 8px}
+ul,ol{margin:4px 0 10px;padding-left:22px}
+li{margin:3px 0}
+.key{background:var(--highlight);padding:2px 6px;border-radius:4px;font-weight:700;color:#92400e;font-size:13px}
+[data-theme="dark"] .key{color:#fde68a}
+.imp{background:var(--important);padding:2px 6px;border-radius:4px;font-weight:600;color:#991b1b}
+[data-theme="dark"] .imp{color:#fecaca}
+.alert{padding:10px 12px;margin:10px 0;border-radius:8px;border-left:3px solid;font-size:13px}
+.alert-info{background:var(--info);border-color:var(--primary-light);color:var(--primary)}
+.alert-danger{background:var(--important);border-color:var(--danger);color:#991b1b}
+.alert-warn{background:var(--highlight);border-color:var(--warn);color:#92400e}
+[data-theme="dark"] .alert-info{color:#dbeafe}
+[data-theme="dark"] .alert-danger{color:#fecaca;background:#7f1d1d}
+[data-theme="dark"] .alert-warn{color:#fde68a;background:#78350f}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12.5px}
+th,td{padding:6px 8px;text-align:left;border:1px solid var(--border)}
+th{background:var(--bg);font-weight:700;color:var(--primary)}
+[data-theme="dark"] th{color:var(--accent)}
+tr:nth-child(even) td{background:var(--bg)}
+.flashcard-deck{display:flex;flex-direction:column;gap:12px}
+.flashcard{perspective:1000px;height:180px;cursor:pointer}
+.flashcard-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}
+.flashcard-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;padding:18px;display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.flashcard-front{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;font-size:16px;font-weight:600}
+.flashcard-back{background:linear-gradient(135deg,var(--accent),#d97706);color:#1a202c;font-size:13.5px;transform:rotateY(180deg);font-weight:500;overflow-y:auto;line-height:1.5}
+.flashcard-hint{position:absolute;bottom:8px;left:0;right:0;font-size:10px;opacity:.7;text-align:center}
+.compare-card{background:var(--card);border-radius:12px;margin-bottom:10px;border:1px solid var(--border);overflow:hidden}
+.compare-head{padding:12px 14px;background:linear-gradient(90deg,var(--primary),var(--primary-light));color:#fff;font-weight:700;font-size:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.compare-body{display:none;padding:10px;overflow-x:auto}
+.compare-card.open .compare-body{display:block;animation:fadeIn .3s ease}
+.compare-card.open .compare-head .arrow{transform:rotate(180deg)}
+.compare-head .arrow{transition:transform .3s;font-size:14px}
+.num-card{background:var(--card);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.num-badge{background:var(--accent);color:var(--primary);padding:6px 10px;border-radius:8px;font-family:monospace;font-weight:700;font-size:13px;min-width:90px;text-align:center;flex-shrink:0}
+.num-desc{font-size:13px;flex:1}
+.num-cat{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.quiz-intro{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:20px;border-radius:14px;margin-bottom:14px;text-align:center}
+.quiz-intro h2{font-size:20px;margin-bottom:8px}
+.quiz-intro p{font-size:13px;opacity:.9;margin-bottom:14px}
+.quiz-btn{padding:10px 20px;background:var(--accent);color:var(--primary);border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px;font-family:inherit}
+.quiz-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.quiz-stat{background:var(--card);padding:10px;border-radius:10px;text-align:center;border:1px solid var(--border)}
+.quiz-stat .v{font-size:20px;font-weight:700;color:var(--primary)}
+[data-theme="dark"] .quiz-stat .v{color:var(--accent)}
+.quiz-stat .l{font-size:10px;color:var(--muted);text-transform:uppercase}
+.question-card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.q-num{font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:600}
+.q-text{font-size:14px;font-weight:600;margin-bottom:12px;line-height:1.45}
+.option{padding:10px 12px;margin-bottom:6px;background:var(--bg);border-radius:8px;border:2px solid transparent;cursor:pointer;font-size:13px;transition:all .2s}
+.option:hover{background:var(--card);border-color:var(--primary)}
+.option.selected{border-color:var(--primary);background:var(--card)}
+.option.correct{background:#d1fae5;border-color:var(--success);color:#065f46}
+.option.wrong{background:#fee2e2;border-color:var(--danger);color:#991b1b}
+[data-theme="dark"] .option.correct{background:#065f46;color:#d1fae5}
+[data-theme="dark"] .option.wrong{background:#7f1d1d;color:#fecaca}
+.explanation{background:var(--info);padding:10px 12px;margin-top:10px;border-radius:8px;font-size:12.5px;border-left:3px solid var(--primary-light);display:none}
+.explanation.show{display:block;animation:fadeIn .3s}
+[data-theme="dark"] .explanation{background:#1e3a8a;color:#dbeafe}
+.nav-btns{display:flex;gap:8px;margin-top:14px}
+.nav-btns button{flex:1;padding:10px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit}
+.btn-prev{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.btn-next{background:var(--primary);color:#fff}
+[data-theme="dark"] .btn-next{background:var(--accent);color:var(--primary)}
+.case-card{background:var(--card);border-radius:14px;margin-bottom:14px;border:1px solid var(--border);overflow:hidden}
+.case-head{padding:12px 14px;background:linear-gradient(135deg,var(--accent),#d97706);color:#1a202c;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:700}
+.case-body{display:none;padding:14px}
+.case-card.open .case-body{display:block;animation:fadeIn .3s}
+.case-card.open .case-head .arrow{transform:rotate(180deg)}
+.case-scenario{background:var(--info);padding:10px 12px;border-radius:8px;margin-bottom:10px;font-size:13px;border-left:3px solid var(--primary-light)}
+[data-theme="dark"] .case-scenario{background:#1e3a8a;color:#dbeafe}
+.case-solution{background:var(--highlight);padding:10px 12px;border-radius:8px;font-size:13px;border-left:3px solid var(--accent);display:none}
+.case-solution.show{display:block;animation:fadeIn .3s}
+[data-theme="dark"] .case-solution{background:#78350f;color:#fde68a}
+.reveal-btn{padding:8px 14px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;margin-top:8px}
+.flow-container{background:var(--card);border-radius:12px;padding:14px;margin:10px 0;border:1px solid var(--border);overflow-x:auto}
+.flow-title{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:8px;text-align:center}
+[data-theme="dark"] .flow-title{color:var(--accent)}
+.flow-step{display:inline-flex;flex-direction:column;align-items:center;margin:0 8px;vertical-align:top;width:110px}
+.flow-circle{width:50px;height:50px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;animation:pulseStep 2s infinite}
+.flow-step:nth-child(2) .flow-circle{animation-delay:.3s;background:#1e40af}
+.flow-step:nth-child(3) .flow-circle{animation-delay:.6s;background:#2563eb}
+.flow-step:nth-child(4) .flow-circle{animation-delay:.9s;background:var(--accent);color:var(--primary)}
+.flow-step:nth-child(5) .flow-circle{animation-delay:1.2s;background:var(--success)}
+@keyframes pulseStep{0%,100%{transform:scale(1);box-shadow:0 0 0 0 currentColor}50%{transform:scale(1.1);box-shadow:0 0 0 8px rgba(10,37,64,.1)}}
+.flow-label{font-size:10px;margin-top:6px;text-align:center;line-height:1.3;color:var(--muted)}
+.flow-arrow{color:var(--muted);font-size:18px;vertical-align:top;margin-top:18px;animation:slideRight 1.5s infinite}
+@keyframes slideRight{0%,100%{transform:translateX(0);opacity:.5}50%{transform:translateX(3px);opacity:1}}
+.result-card{background:var(--card);padding:20px;border-radius:14px;text-align:center;border:1px solid var(--border)}
+.result-score{font-size:44px;font-weight:800;color:var(--primary);margin:10px 0}
+[data-theme="dark"] .result-score{color:var(--accent)}
+.result-msg{font-size:14px;color:var(--muted);margin-bottom:16px}
+.result-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.float-btn{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;width:48px;height:48px;border-radius:50%;font-size:22px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:200}
+[data-theme="dark"] .float-btn{background:var(--accent);color:var(--primary)}
+.search-box{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px;margin-bottom:10px;font-family:inherit}
+.btn{padding:10px 14px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;background:var(--primary);color:#fff;font-family:inherit}
+.btn-sec{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-row">
+    <div><a href="IOB_Study_Hub.html" class="back-link">← Hub</a><h1>Module B: Deposits</h1><div class="header-sub">10 topics • 40 MCQs • 5 Case Studies</div></div>
+    <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+  </div>
+  <div class="progress-strip"><div class="progress-strip-fill" id="pbar" style="width:0%"></div></div>
+</div>
+<div class="tabs">
+  <div class="tab-chip active" onclick="showTab('content',this)">📖 Content</div>
+  <div class="tab-chip" onclick="showTab('flash',this)">🎴 Flashcards</div>
+  <div class="tab-chip" onclick="showTab('compare',this)">⚖️ Compare</div>
+  <div class="tab-chip" onclick="showTab('numbers',this)">🔢 Numbers</div>
+  <div class="tab-chip" onclick="showTab('mcq',this)">❓ Quiz</div>
+  <div class="tab-chip" onclick="showTab('cases',this)">📋 Cases</div>
+</div>
+<div class="container">
+
+<div id="content" class="view active">
+<input class="search-box" placeholder="🔍 Search topics..." oninput="filterTopics(this.value)">
+
+<div class="topic" id="t1"><div class="topic-head" onclick="toggleTopic('t1')"><div class="topic-title"><span class="topic-num">1</span>Deposits — Overview & Classification</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t1',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>Deposits = liability products (bank's obligation to repay). Appear on LIABILITY side of balance sheet.</p>
+<h3>Two Major Types</h3>
+<ul>
+<li><b>Demand Deposits</b> — payable on demand: Savings Bank (SB) + Current Account (CA) = <b>CASA</b></li>
+<li><b>Time Deposits</b> — fixed tenure: Fixed Deposits (FD), Recurring Deposits (RD), etc.</li>
+</ul>
+<h3>Importance of CASA</h3>
+<ul>
+<li>Low-cost funds for the bank.</li>
+<li>Higher CASA ratio = better margin for the bank.</li>
+<li>Target ratio typically 40%+.</li>
+</ul>
+<h3>Deposit Insurance (DICGC)</h3>
+<ul>
+<li>All deposits covered up to <span class="key">₹5 lakh per depositor per bank</span>.</li>
+<li>Includes principal + interest.</li>
+<li>Different capacity accounts = separate cover.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t2"><div class="topic-head" onclick="toggleTopic('t2')"><div class="topic-title"><span class="topic-num">2</span>Savings Bank (SB) Account</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t2',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Who Can Open</h3>
+<ul>
+<li>Individuals (including minors through guardian; self-operated from age 10).</li>
+<li>Associations, Clubs, Trusts (not for profit).</li>
+<li>Executors/Administrators.</li>
+<li>HUF.</li>
+<li><b>Exception for NPOs and Sec 8 companies</b> (earlier Sec 25 Cos Act 1956): allowed to open SB though not individuals.</li>
+<li><b>NOT for business/trading purposes.</b></li>
+</ul>
+
+<h3>IOB SB Interest Rates (as per Cir DEP/05/2026-27 dt 08.10.2026)</h3>
+<table>
+<tr><th>Balance Slab</th><th>Rate</th><th>Linkage</th></tr>
+<tr><td>Up to ₹1 lakh</td><td><span class="key">2.50%</span></td><td>Not linked to Repo</td></tr>
+<tr><td>Above ₹1 lakh to ₹2000 Cr</td><td><span class="key">2.20%</span></td><td>Repo linked (Repo − 3.30%)</td></tr>
+<tr><td>Above ₹2000 Cr</td><td><span class="key">7.00%</span></td><td>Repo + 1.50%</td></tr>
+</table>
+
+<h3>Interest Calculation & Credit</h3>
+<ul>
+<li>Daily product basis.</li>
+<li>Credited <b>quarterly</b>.</li>
+<li>Deregulated — banks fix own rates since 2011.</li>
+</ul>
+
+<h3>Taxation</h3>
+<ul>
+<li><b>Domestic SB:</b> Interest taxable; <span class="key">Sec 80TTA</span> exemption up to ₹10,000 (resident individuals/HUF). <b>Senior citizens: Sec 80TTB ₹50,000</b>.</li>
+<li><b>No TDS</b> on SB interest unless liquid deposit (sweep) facility.</li>
+<li><b>NRE:</b> Tax-free.</li>
+<li><b>NRO:</b> TDS @ 30%.</li>
+</ul>
+
+<h3>Joint Accounts with NRIs (RBI 09.01.2014)</h3>
+<ul>
+<li>Resident can include NRI close relative on "E/S" basis.</li>
+<li>Treated as resident account; all resident regulations apply.</li>
+<li>NRI cannot credit own foreign funds / cheques.</li>
+<li>NRI operates only for resident's domestic payments.</li>
+</ul>
+
+<h3>Minimum Balance (AQB — Average Quarterly Balance)</h3>
+<ul>
+<li>Set by bank; non-maintenance charges as per policy.</li>
+<li>BSBDA (zero-balance) accounts exempt.</li>
+<li>Senior citizens / Pensioners — usually relaxed/NIL.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t3"><div class="topic-head" onclick="toggleTopic('t3')"><div class="topic-title"><span class="topic-num">3</span>Revamped SB Account Schemes (IOB)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t3',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Regular / Classic SB</h3>
+<p>Standard SB account for individuals. Basic features.</p>
+
+<h3>BSBDA — Basic Savings Bank Deposit Account (PMJDY)</h3>
+<ul>
+<li>Zero balance, no minimum.</li>
+<li>Max 4 free withdrawals per month at own-bank branch/ATM.</li>
+<li>Free RuPay Debit Card with <span class="key">₹2 lakh accidental insurance</span>.</li>
+<li>Overdraft up to <span class="key">₹10,000</span> after 6 months (age 18-65).</li>
+<li>Full KYC required.</li>
+</ul>
+
+<h3>BSBDA Small Account</h3>
+<ul>
+<li>Opened without OVD (OVD in process).</li>
+<li>Balance cap ₹50,000 at any time; credits ₹1 lakh/year; withdrawals ₹10,000/month.</li>
+<li>Valid 12 months, extendable by 12.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t4"><div class="topic-head" onclick="toggleTopic('t4')"><div class="topic-title"><span class="topic-num">4</span>Current Account & Cash Credit</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t4',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Current Account</h3>
+<ul>
+<li>For business/trading purposes.</li>
+<li><b>No interest</b> (as per RBI).</li>
+<li>Unlimited transactions, cheque book.</li>
+<li>Overdraft/Cash Credit facility available.</li>
+<li>Opened by: Proprietor, Partnership, LLP, Company, Trust, Govt bodies, Co-operative Society, Clubs/Associations.</li>
+</ul>
+
+<h3>Cash Credit (CC)</h3>
+<ul>
+<li>Running credit facility against security of stocks/receivables.</li>
+<li>Interest on daily outstanding.</li>
+<li><b>Drawing Power (DP)</b> = Paid Stock (after margin) + Book Debts (after margin).</li>
+<li>Stock statement — <b>monthly</b> submission.</li>
+<li>Renewal — <b>annual review</b>.</li>
+<li>Margin typically 25% on stocks, 25-40% on receivables.</li>
+<li>Book debts > 90 days usually excluded from DP.</li>
+</ul>
+
+<h3>Current A/c for Borrowers with Credit Facilities (RBI Aug 2020)</h3>
+<ul>
+<li>Borrowers with aggregate credit > ₹5 Cr: CA only with the lending bank(s), not elsewhere.</li>
+<li>Below ₹5 Cr: CA with any bank (self-declaration from borrower).</li>
+<li>Monitoring under routing of transactions.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t5"><div class="topic-head" onclick="toggleTopic('t5')"><div class="topic-title"><span class="topic-num">5</span>Capital Gains Account Scheme 1988</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t5',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Under Income Tax Act for deposit of capital gains not utilized in stipulated time.</li>
+<li>Used for claiming exemption under Sec 54, 54B, 54D, 54F, 54G.</li>
+<li><b>Two Types:</b>
+<ul>
+<li><b>Type A (SB):</b> Withdrawable, SB interest rate.</li>
+<li><b>Type B (Term Deposit):</b> Fixed term like FD.</li>
+</ul></li>
+<li>Minimum deposit ₹100; no maximum.</li>
+<li>If not utilized within specified period → treated as income in year of expiry.</li>
+<li>Withdrawal: Only for intended purpose (purchase of property/bond).</li>
+<li>No premature closure of Type B except for utilization.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t6"><div class="topic-head" onclick="toggleTopic('t6')"><div class="topic-title"><span class="topic-num">6</span>CASA Schemes (IOB Specific)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t6',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+
+<h3>IOB Salary Accounts (Classic / Gold / Diamond / Platinum / Premium)</h3>
+<ul>
+<li>For salaried employees of Govt, PSU, Corporates.</li>
+<li>Minimum balance: NIL.</li>
+<li>Free services: ATM (unlimited), NEFT/RTGS, SMS alerts, chequebooks.</li>
+<li><b>Insurance:</b> PAI (Personal Accident) — varies by tier.</li>
+<li><b>TOD (Temporary Overdraft):</b> 2 months' net salary, max 2 times/year.</li>
+<li>Concessions on retail loans, locker rent.</li>
+<li>On retirement/VRS/dismissal: converts to regular SB; concessions withdrawn.</li>
+</ul>
+
+<h3>Pensioner Account (I & II)</h3>
+<ul>
+<li><b>Pensioner I:</b> Central Govt + State Govt + Defence pensioners.</li>
+<li><b>Pensioner II:</b> PSU + Autonomous body pensioners.</li>
+<li>No minimum balance.</li>
+<li>Free services as per scheme.</li>
+</ul>
+
+<h3>SB Max / HNI / Superstar / Ultra HNI</h3>
+<ul>
+<li>Tiered by minimum balance/AQB.</li>
+<li>Premium Debit Cards (Platinum/Select).</li>
+<li>Locker concession, demat concession.</li>
+<li>Higher insurance cover.</li>
+<li>Dedicated relationship manager (HNI+).</li>
+</ul>
+
+<h3>IOB Parivaar (Family Savings)</h3>
+<ul>
+<li>Group 2 to 6 individual SB accounts under one Family ID.</li>
+<li>Eligible: Spouse, Parents, In-laws, Children, Son/Daughter-in-law.</li>
+<li>Pooled balance benefits — qualify for higher-tier perks.</li>
+<li>Excludes: frozen, inoperative, negative balance, charge-unrecovered accounts.</li>
+<li>All accounts must be fully KYC compliant.</li>
+</ul>
+
+<h3>Tamil Nadu Govt Employee SB (IOB)</h3>
+<ul>
+<li>For Tamil Nadu Govt employees, PSUs, Boards, Universities, Autonomous bodies.</li>
+<li>Age: 18-60.</li>
+<li>Min balance: NIL; spouse joint allowed.</li>
+<li>Free: unlimited ATM access (own + other); NEFT/RTGS/IMPS; 60 personalized cheques/yr.</li>
+<li>PAI: ₹120 lakh (Death + TPD + Air Death/TPD); ₹96 lakh (PPD, Air PPD).</li>
+<li>Term Insurance: ₹10 lakh.</li>
+<li>TOD: 2 months' net salary; max 2 times/yr.</li>
+<li>Concessions: Locker 15%; Housing/Retail processing fee 100% waiver.</li>
+</ul>
+
+<h3>IOB Vanitha / IOB Naari (Women-focused)</h3>
+<ul>
+<li>For women account holders.</li>
+<li>Free health check-up / insurance perks.</li>
+<li>Preferential interest on retail loans.</li>
+</ul>
+
+<h3>SB Prime Account (Senior Citizens)</h3>
+<ul>
+<li>Age 60+.</li>
+<li>Free doorstep banking (if eligible).</li>
+<li>Additional 0.50% on FDs.</li>
+<li>No minimum balance penalty.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t7"><div class="topic-head" onclick="toggleTopic('t7')"><div class="topic-title"><span class="topic-num">7</span>Term Deposits (FD/RD)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t7',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+
+<h3>Tenure Rules</h3>
+<ul>
+<li>Minimum tenure: <span class="key">7 days</span>.</li>
+<li>Maximum tenure: <span class="key">10 years</span> (NRE/NRO: 10 years; FCNR: 1-5 years).</li>
+<li>Minor TD: with guardian, max tenure as per policy.</li>
+</ul>
+
+<h3>Interest</h3>
+<ul>
+<li>Deregulated — banks fix rates. Rates vary by tenure bucket.</li>
+<li>Senior Citizen premium: <span class="key">+0.50%</span> (resident Indian 60+).</li>
+<li>Super Senior (80+): usually <b>+0.75%</b>.</li>
+<li>Staff: <b>+1%</b> over card rate.</li>
+<li>Compounding: Quarterly (standard FD).</li>
+</ul>
+
+<h3>Premature Withdrawal Penalty</h3>
+<ul>
+<li>Normally <span class="key">1%</span> below applicable rate for the period deposit actually ran.</li>
+<li>Some schemes: no penalty for small TDs < ₹15 lakh held for min tenure (bank-specific).</li>
+<li>Death of depositor: usually no penalty.</li>
+<li>Minimum 7 days — no interest if closed within 7 days.</li>
+</ul>
+
+<h3>Loan Against TD</h3>
+<ul>
+<li>Up to <span class="key">90%</span> of principal (plus accrued interest).</li>
+<li>Rate: TD rate + 1% (approx).</li>
+<li>Processing: instant.</li>
+<li>Lien marked; no premature closure during pendency.</li>
+</ul>
+
+<h3>TDS on FD Interest</h3>
+<ul>
+<li>Individual: <span class="key">10%</span> if interest > ₹40,000/yr.</li>
+<li>Senior Citizen: 10% if > ₹50,000/yr.</li>
+<li>No PAN: 20%.</li>
+<li>15G (below 60, income below tax) / 15H (60+) — to avoid TDS.</li>
+</ul>
+
+<h3>Recurring Deposit (RD)</h3>
+<ul>
+<li>Fixed monthly instalment for fixed period.</li>
+<li>Minimum: ₹100/month (as per bank).</li>
+<li>Tenure: 6 months to 10 years.</li>
+<li>Penalty for missed instalment: usually ₹1 per ₹100 per month.</li>
+<li>Interest: compounded quarterly like FD.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t8"><div class="topic-head" onclick="toggleTopic('t8')"><div class="topic-title"><span class="topic-num">8</span>Term Deposit Schemes (IOB)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t8',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+
+<h3>IOB Senior Citizen Deposit</h3>
+<ul>
+<li>60+ years resident Indian.</li>
+<li>+0.50% over card rate (super senior 80+: +0.75%).</li>
+<li>Age proof mandatory.</li>
+</ul>
+
+<h3>Tax Saver FD</h3>
+<ul>
+<li>Lock-in: <span class="key">5 years</span> (minimum).</li>
+<li>Max investment: ₹1.5 lakh/yr (eligible for <b>Sec 80C</b>).</li>
+<li>No premature withdrawal.</li>
+<li>No loan against; no auto-renewal.</li>
+<li>Interest taxable.</li>
+<li>Only individuals/HUF.</li>
+</ul>
+
+<h3>IOB Flexi RD</h3>
+<ul>
+<li>Variable monthly deposit (core + top-up).</li>
+<li>Top-up multiples of core instalment.</li>
+<li>Flexibility for irregular income earners.</li>
+</ul>
+
+<h3>IOB Super Save (Sweep Account)</h3>
+<ul>
+<li>SB + auto-sweep into TD when balance exceeds threshold.</li>
+<li>Reverse sweep when SB balance falls below threshold.</li>
+<li>Interest at TD rates (higher than SB).</li>
+</ul>
+
+<h3>MOD (Money Multiplier Deposit)</h3>
+<ul>
+<li>Fixed Deposit linked to SB.</li>
+<li>Auto-break into multiples of ₹1,000.</li>
+<li>Earns at TD rate; liquid like SB.</li>
+</ul>
+
+<h3>IOB Reinvestment Deposit</h3>
+<ul>
+<li>Cumulative FD — interest reinvested quarterly.</li>
+<li>Maturity value includes all compounded interest.</li>
+<li>Higher effective yield.</li>
+</ul>
+
+<h3>Senior Citizen Savings Scheme (SCSS) — Govt Scheme</h3>
+<ul>
+<li>Age 60+ (55-60 if VRS/superannuation; 50+ for defence).</li>
+<li>Tenure 5 years; extendable by 3.</li>
+<li>Max: <span class="key">₹30 lakh</span>.</li>
+<li>Interest: notified quarterly (~8.2%); paid quarterly.</li>
+<li>Sec 80C deduction up to ₹1.5 lakh.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t9"><div class="topic-head" onclick="toggleTopic('t9')"><div class="topic-title"><span class="topic-num">9</span>Gold Monetization Scheme (GMS)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t9',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>Launched 2015 by GoI — objective: mobilize idle gold lying with households/institutions into productive use.</p>
+
+<h3>Three Variants</h3>
+<table>
+<tr><th>Variant</th><th>Tenure</th><th>Interest</th><th>Redemption</th></tr>
+<tr><td>STBD (Short Term Bank Deposit)</td><td><span class="key">1 to 3 years</span></td><td>Bank-decided (annual)</td><td>Gold or INR</td></tr>
+<tr><td>MTGD (Medium Term Govt Deposit)</td><td>5-7 years</td><td>Govt-decided (currently 2.25%)</td><td>Gold or INR</td></tr>
+<tr><td>LTGD (Long Term Govt Deposit)</td><td>12-15 years</td><td>Govt-decided (currently 2.50%)</td><td>Gold or INR</td></tr>
+</table>
+
+<h3>Key Features</h3>
+<ul>
+<li><b>Minimum deposit:</b> 10 grams raw gold.</li>
+<li><b>No maximum.</b></li>
+<li>Only individuals, HUF, Trusts, Mutual Funds, Cos, charitable institutions.</li>
+<li>Gold tested at CPTC (Collection and Purity Testing Centre), BIS-hallmarked, then deposited.</li>
+<li>Depositor receives Gold Deposit Certificate (GDC).</li>
+<li>Premature withdrawal allowed (MTGD: after 3 yrs; LTGD: after 5 yrs) with penalty.</li>
+</ul>
+
+<h3>Tax Benefits</h3>
+<ul>
+<li>Interest earned: <b>tax-exempt</b>.</li>
+<li>Capital gains on redemption: <b>exempt</b>.</li>
+<li>No wealth tax (currently abolished).</li>
+</ul>
+
+<h3>Benefits to Depositor</h3>
+<ul>
+<li>Earn interest on idle gold.</li>
+<li>No storage cost / risk.</li>
+<li>Safer than locker.</li>
+</ul>
+
+<h3>Benefits to Bank/GoI</h3>
+<ul>
+<li>Reduce gold imports.</li>
+<li>Channel to productive use (jewellers, etc.).</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t10"><div class="topic-head" onclick="toggleTopic('t10')"><div class="topic-title"><span class="topic-num">10</span>NRE / NRO / FCNR Accounts</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t10',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+
+<h3>Non-Resident External (NRE)</h3>
+<ul>
+<li>Currency: INR.</li>
+<li>Source: Foreign inward remittance only.</li>
+<li><b>Fully repatriable</b> (principal + interest).</li>
+<li>Interest <b>tax-free</b>.</li>
+<li>Types: SB, CA, FD, RD.</li>
+<li>Tenure (TD): 1 to 10 years.</li>
+<li>Joint: With another NRI OR resident close relative on <b>E/S basis only</b>.</li>
+</ul>
+
+<h3>Non-Resident Ordinary (NRO)</h3>
+<ul>
+<li>Currency: INR.</li>
+<li>For local income (rent, dividends, pension, etc.).</li>
+<li>Repatriation: Up to <span class="key">USD 1 million per financial year</span> (current income freely repatriable).</li>
+<li>Interest: TDS @ 30%.</li>
+<li>Can be joint with NRI or Resident Indian (E/S, F/S).</li>
+<li>Tenure (TD): 7 days to 10 years.</li>
+</ul>
+
+<h3>FCNR(B) — Foreign Currency Non-Resident (Bank)</h3>
+<ul>
+<li>Currency: USD, GBP, EUR, JPY, CAD, AUD (bank's choice).</li>
+<li><b>Only Term Deposit</b> — 1 to 5 years.</li>
+<li>Fully repatriable; tax-free.</li>
+<li>Immune from exchange risk for depositor.</li>
+<li>Joint: With another NRI only (or with resident close relative — latter is a variant).</li>
+<li>Minimum: Usually USD 1,000 or equivalent.</li>
+</ul>
+
+<h3>On Return to India (Status Change)</h3>
+<ul>
+<li>NRE / FCNR → RFC (Resident Foreign Currency) account. Funds retain character.</li>
+<li>NRO → Resident SB.</li>
+<li>Notify bank within reasonable time.</li>
+</ul>
+</div></div>
+
+</div>
+
+<div id="flash" class="view">
+<div class="alert alert-info"><b>💡 Tap any card to flip.</b></div>
+<div class="flashcard-deck" id="flashDeck"></div>
+</div>
+<div id="compare" class="view">
+<div class="alert alert-info"><b>⚖️ Tap to reveal comparisons.</b></div>
+<div id="compareList"></div>
+</div>
+<div id="numbers" class="view">
+<div class="alert alert-warn"><b>🔢 Memorize these.</b></div>
+<input class="search-box" placeholder="🔍 Search numbers..." oninput="filterNums(this.value)">
+<div id="numList"></div>
+</div>
+<div id="mcq" class="view">
+<div id="quizIntro">
+<div class="quiz-intro"><h2>📝 Module B Quiz</h2><p>40 questions • Deposits deep-dive</p><button class="quiz-btn" onclick="startQuiz()">▶️ Start</button></div>
+<div class="quiz-stats"><div class="quiz-stat"><div class="v" id="stAtt">0</div><div class="l">Attempted</div></div><div class="quiz-stat"><div class="v" id="stCor">0</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v" id="stAcc">0%</div><div class="l">Accuracy</div></div></div>
+<div class="action-row"><button class="btn btn-sec" onclick="reviewWeak()" style="flex:1">🎯 Review Weak</button></div>
+</div>
+<div id="quizArea" style="display:none"></div>
+</div>
+<div id="cases" class="view">
+<div class="alert alert-info"><b>📋 Real branch scenarios.</b></div>
+<div id="caseList"></div>
+</div>
+</div>
+
+<button class="float-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const MOD_KEY='iob_mod_B_v1';
+let state=JSON.parse(localStorage.getItem(MOD_KEY)||'{}');
+if(!state.topics)state.topics={};
+if(!state.quiz)state.quiz={attempted:0,correct:0,perQuestion:{}};
+if(!state.weak)state.weak=[];
+if(!state.theme)state.theme='light';
+function save(){localStorage.setItem(MOD_KEY,JSON.stringify(state))}
+function toggleTheme(){state.theme=state.theme==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',state.theme);document.querySelector('.theme-btn').textContent=state.theme==='dark'?'☀️':'🌙';save()}
+function showTab(id,el){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.tab-chip').forEach(c=>c.classList.remove('active'));document.getElementById(id).classList.add('active');el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+function toggleTopic(id){document.getElementById(id).classList.toggle('open')}
+function toggleDone(id,el){state.topics[id]=!state.topics[id];if(state.topics[id])el.classList.add('done');else el.classList.remove('done');save();updateProgressBar()}
+function updateProgressBar(){const done=Object.keys(state.topics).filter(k=>state.topics[k]).length;const pct=Math.round(done/10*100);document.getElementById('pbar').style.width=pct+'%'}
+function filterTopics(q){q=q.toLowerCase();document.querySelectorAll('.topic').forEach(t=>{const text=t.innerText.toLowerCase();t.style.display=(!q||text.includes(q))?'':'none';if(q&&text.includes(q))t.classList.add('open')})}
+
+const FLASHCARDS=[
+{q:"IOB SB interest rate for balance up to ₹1 lakh?",a:"2.50% (not linked to Repo rate)"},
+{q:"IOB SB interest rate for balance above ₹1 lakh to ₹2000 Cr?",a:"2.20% (Repo-linked)"},
+{q:"IOB SB interest rate for balance above ₹2000 Cr?",a:"7.00% (Repo + 1.50%)"},
+{q:"Section 80TTA — SB interest exemption for non-senior citizens?",a:"₹10,000 per year"},
+{q:"Section 80TTB — SB interest exemption for senior citizens?",a:"₹50,000 per year"},
+{q:"Minimum tenure for Term Deposit?",a:"7 days"},
+{q:"Maximum tenure for domestic Term Deposit?",a:"10 years (NRE/NRO: 10 yrs; FCNR: 1-5 yrs)"},
+{q:"Senior Citizen premium on FD rate (60+)?",a:"+0.50% over card rate"},
+{q:"Super Senior Citizen premium (80+)?",a:"+0.75% over card rate"},
+{q:"Staff/retired staff FD premium?",a:"+1.00% over card rate"},
+{q:"Premature FD withdrawal penalty?",a:"Normally 1% below applicable rate for period run"},
+{q:"Maximum loan against FD?",a:"90% of principal + accrued interest"},
+{q:"TDS on FD interest threshold (individual)?",a:"₹40,000 per year (SR: ₹50,000)"},
+{q:"TDS rate on FD interest (with PAN)?",a:"10% (without PAN: 20%)"},
+{q:"Form 15G — for whom?",a:"Resident individual below 60 years, total income below taxable limit"},
+{q:"Form 15H — for whom?",a:"Resident individual 60+ years (senior citizens)"},
+{q:"Tax Saver FD lock-in?",a:"5 years; Sec 80C eligible up to ₹1.5 lakh"},
+{q:"Tax Saver FD — premature withdrawal allowed?",a:"NO. Also no loan against, no auto-renewal."},
+{q:"GMS — minimum gold deposit?",a:"10 grams raw gold"},
+{q:"GMS STBD tenure?",a:"1 to 3 years (Bank)"},
+{q:"GMS MTGD tenure?",a:"5 to 7 years (Govt deposit)"},
+{q:"GMS LTGD tenure?",a:"12 to 15 years (Govt deposit)"},
+{q:"GMS — tax treatment of interest and capital gains?",a:"Both exempt (interest tax-free + capital gains exempt at redemption)"},
+{q:"NRE account — tax on interest?",a:"Tax-free (both principal and interest fully repatriable)"},
+{q:"NRO account — TDS on interest?",a:"30% (plus applicable surcharge)"},
+{q:"NRO repatriation — max per financial year?",a:"USD 1 million (current income freely repatriable)"},
+{q:"FCNR(B) — currencies permitted?",a:"USD, GBP, EUR, JPY, CAD, AUD"},
+{q:"FCNR(B) — tenure range?",a:"1 to 5 years (Term Deposit only)"},
+{q:"BSBDA — maximum free withdrawals per month?",a:"4 free withdrawals (own-bank branch/ATM)"},
+{q:"BSBDA overdraft limit?",a:"Up to ₹10,000 after 6 months; age 18-65"},
+{q:"CC Drawing Power components?",a:"Paid Stock (after margin) + Book Debts (after margin, usually not overdue >90 days)"},
+{q:"CC stock statement submission?",a:"Monthly"},
+{q:"Capital Gains Scheme 1988 — Type A vs B?",a:"Type A = SB (withdrawable); Type B = TD (fixed term)"},
+{q:"Capital Gains Scheme minimum deposit?",a:"₹100; no maximum"},
+{q:"SCSS — age eligibility?",a:"60+ (55-60 if VRS/superannuation; 50+ for defence retirees)"},
+{q:"SCSS — maximum deposit?",a:"₹30 lakh (revised from ₹15 lakh)"},
+{q:"SCSS — tenure?",a:"5 years; extendable by 3 years"},
+{q:"IOB Parivaar — max accounts in family group?",a:"Maximum 6 accounts (minimum 2)"},
+{q:"Who can open an SB account for business purposes?",a:"Only NPOs and Section 8 companies (Cos Act 2013). Others can't use SB for business."},
+{q:"Current Account for borrowers with credit > ₹5 Cr?",a:"Can only be with the lending bank(s) (RBI Aug 2020)"}
+];
+function renderFlashcards(){document.getElementById('flashDeck').innerHTML=FLASHCARDS.map((c,i)=>`<div class="flashcard" onclick="this.classList.toggle('flipped')"><div class="flashcard-inner"><div class="flashcard-face flashcard-front">${c.q}<div class="flashcard-hint">Tap to flip • Card ${i+1}/${FLASHCARDS.length}</div></div><div class="flashcard-face flashcard-back">${c.a}</div></div></div>`).join('')}
+
+const COMPARE=[
+{title:'SB vs Current Account',rows:[['Purpose','Individual savings','Business/trading'],['Interest','2.20-7.00% (slab)','No interest'],['Transactions','Limited (as per policy)','Unlimited'],['Overdraft','Not usual','OD/CC available'],['Who can open','Individuals + NPOs + Sec 8','Business entities, firms, companies']]},
+{title:'NRE vs NRO vs FCNR(B)',rows:[['Currency','INR','INR','Foreign (USD/GBP/EUR/JPY/CAD/AUD)'],['Source','Foreign inward only','Local + foreign','Foreign inward only'],['Repatriable','Fully','USD 1M/yr','Fully'],['Interest tax','Free','TDS 30%','Free'],['Tenure (TD)','1-10 yrs','7d-10 yrs','1-5 yrs']]},
+{title:'FD vs RD vs Flexi RD',rows:[['Structure','Lump sum deposit','Fixed monthly instalment','Variable monthly (core + top-up)'],['Tenure','7d to 10 yrs','6 months to 10 yrs','As per scheme'],['Interest','Quarterly compound','Quarterly compound','Similar to RD'],['Premature','Allowed with penalty','Allowed with penalty','Flexible']]},
+{title:'Tax Saver FD vs Regular FD',rows:[['Lock-in','5 years mandatory','No lock-in'],['Max investment','₹1.5 lakh/yr (80C)','No limit'],['Premature','Not allowed','Allowed with penalty'],['Auto-renewal','No','Yes (optional)'],['Loan against','Not available','Up to 90%'],['Tax on interest','Taxable','Taxable (TDS applies)']]},
+{title:'GMS: STBD vs MTGD vs LTGD',rows:[['Tenure','1-3 yrs','5-7 yrs','12-15 yrs'],['Deposit type','Bank deposit','Govt deposit','Govt deposit'],['Interest','Bank-fixed','Govt-fixed (~2.25%)','Govt-fixed (~2.50%)'],['Redemption','Gold or INR','Gold or INR','Gold or INR'],['Tax','Exempt','Exempt','Exempt']]}
+];
+function renderCompare(){document.getElementById('compareList').innerHTML=COMPARE.map(c=>`<div class="compare-card"><div class="compare-head" onclick="this.parentElement.classList.toggle('open')"><span>${c.title}</span><span class="arrow">▼</span></div><div class="compare-body"><table>${c.rows.map(r=>`<tr>${r.map((cell,idx)=>idx===0?`<td><b>${cell}</b></td>`:`<td>${cell}</td>`).join('')}</tr>`).join('')}</table></div></div>`).join('')}
+
+const NUMBERS=[
+{v:'2.50%',d:'IOB SB rate — up to ₹1 lakh balance',cat:'SB Rate'},
+{v:'2.20%',d:'IOB SB rate — above ₹1 lakh to ₹2000 Cr',cat:'SB Rate'},
+{v:'7.00%',d:'IOB SB rate — above ₹2000 Cr',cat:'SB Rate'},
+{v:'₹10,000',d:'Sec 80TTA exemption on SB interest (non-senior)',cat:'Tax'},
+{v:'₹50,000',d:'Sec 80TTB exemption on SB interest (senior citizen)',cat:'Tax'},
+{v:'30%',d:'TDS on NRO interest',cat:'Tax'},
+{v:'₹40,000',d:'TDS 194A threshold for FD interest (individual)',cat:'TDS'},
+{v:'₹50,000',d:'TDS 194A threshold for FD interest (senior citizen)',cat:'TDS'},
+{v:'10%',d:'TDS rate on FD interest (with PAN)',cat:'TDS'},
+{v:'20%',d:'TDS rate on FD interest (without PAN)',cat:'TDS'},
+{v:'7 days',d:'Minimum tenure for Term Deposit',cat:'TD'},
+{v:'10 years',d:'Max tenure Domestic TD / NRE TD / NRO TD',cat:'TD'},
+{v:'5 years',d:'FCNR(B) maximum tenure',cat:'TD'},
+{v:'1 year',d:'FCNR(B) minimum tenure',cat:'TD'},
+{v:'+0.50%',d:'Senior Citizen FD premium (60+)',cat:'TD'},
+{v:'+0.75%',d:'Super Senior premium (80+)',cat:'TD'},
+{v:'+1.00%',d:'Staff/Retired Staff FD premium',cat:'TD'},
+{v:'1% below',d:'Premature TD penalty (approx)',cat:'TD'},
+{v:'90%',d:'Max loan against TD',cat:'TD'},
+{v:'5 years',d:'Tax Saver FD lock-in (Sec 80C)',cat:'TD'},
+{v:'₹1.5 lakh',d:'Sec 80C max for Tax Saver FD',cat:'TD'},
+{v:'₹100',d:'RD minimum per month (indicative)',cat:'RD'},
+{v:'₹1/₹100/month',d:'RD penalty for missed instalment',cat:'RD'},
+{v:'₹5 lakh',d:'DICGC insurance per depositor per bank',cat:'Insurance'},
+{v:'12 paise',d:'DICGC premium per ₹100 of deposits',cat:'Insurance'},
+{v:'USD 1 million',d:'NRO repatriation limit per financial year',cat:'NR'},
+{v:'10 grams',d:'GMS minimum raw gold deposit',cat:'GMS'},
+{v:'1-3 yrs',d:'GMS STBD tenure',cat:'GMS'},
+{v:'5-7 yrs',d:'GMS MTGD tenure',cat:'GMS'},
+{v:'12-15 yrs',d:'GMS LTGD tenure',cat:'GMS'},
+{v:'2.25%',d:'GMS MTGD indicative interest',cat:'GMS'},
+{v:'2.50%',d:'GMS LTGD indicative interest',cat:'GMS'},
+{v:'₹2 lakh',d:'PMJDY RuPay card accidental insurance',cat:'BSBDA'},
+{v:'₹10,000',d:'PMJDY/BSBDA overdraft limit',cat:'BSBDA'},
+{v:'4',d:'BSBDA max free withdrawals/month',cat:'BSBDA'},
+{v:'₹50,000',d:'BSBDA small account max balance',cat:'BSBDA'},
+{v:'₹1 lakh',d:'BSBDA small account annual credits cap',cat:'BSBDA'},
+{v:'₹10,000',d:'BSBDA small account monthly withdrawal cap',cat:'BSBDA'},
+{v:'₹100',d:'Capital Gains Scheme 1988 minimum deposit',cat:'CGAS'},
+{v:'60+',d:'SCSS age (55 if VRS; 50+ defence)',cat:'SCSS'},
+{v:'₹30 lakh',d:'SCSS maximum deposit',cat:'SCSS'},
+{v:'5+3 yrs',d:'SCSS tenure',cat:'SCSS'},
+{v:'8.2%',d:'SCSS current interest rate (indicative)',cat:'SCSS'},
+{v:'2 to 6',d:'IOB Parivaar accounts in family group',cat:'IOB'},
+{v:'₹5 Cr',d:'CA with lending bank only — threshold',cat:'CA'},
+{v:'Quarterly',d:'SB interest credit frequency',cat:'SB'},
+{v:'Monthly',d:'CC stock statement submission',cat:'CC'},
+{v:'Annual',d:'CC renewal cycle',cat:'CC'},
+{v:'25%',d:'Typical margin on CC stocks',cat:'CC'},
+{v:'90 days',d:'CC book debts cutoff for DP (overdue excluded)',cat:'CC'}
+];
+function renderNumbers(f=''){f=f.toLowerCase();const items=NUMBERS.filter(n=>!f||n.v.toLowerCase().includes(f)||n.d.toLowerCase().includes(f)||n.cat.toLowerCase().includes(f));document.getElementById('numList').innerHTML=items.map(n=>`<div class="num-card"><div class="num-badge">${n.v}</div><div class="num-desc"><div class="num-cat">${n.cat}</div>${n.d}</div></div>`).join('')||'<p style="text-align:center;padding:30px;color:var(--muted)">No matches</p>'}
+function filterNums(v){renderNumbers(v)}
+
+const QUIZ=[
+{q:"Minimum tenure for a Term Deposit in India?",o:["1 day","7 days","15 days","1 month"],a:1,e:"RBI permits minimum TD tenure of 7 days."},
+{q:"Section 80TTA deduction limit on SB interest for non-senior individuals?",o:["₹10,000","₹25,000","₹40,000","₹50,000"],a:0,e:"80TTA allows ₹10,000/yr exemption on SB interest for individuals/HUF below 60."},
+{q:"Senior Citizens (60+) get what exemption on all interest u/s 80TTB?",o:["₹10,000","₹25,000","₹40,000","₹50,000"],a:3,e:"80TTB allows ₹50,000/yr on all interest (SB + FD + RD) for senior citizens."},
+{q:"TDS on NRO interest?",o:["10%","20%","30%","40%"],a:2,e:"NRO interest TDS = 30% (plus applicable surcharge)."},
+{q:"NRO account repatriation limit per financial year?",o:["USD 1 lakh","USD 5 lakh","USD 1 million","Unlimited"],a:2,e:"NRO: USD 1 million per financial year. Current income is freely repatriable."},
+{q:"FCNR(B) deposit tenure range?",o:["7 days to 10 yrs","1 to 5 years","2 to 10 years","3 to 7 years"],a:1,e:"FCNR(B) is only Term Deposit; tenure 1 to 5 years."},
+{q:"GMS minimum gold deposit?",o:["5 grams","10 grams","20 grams","50 grams"],a:1,e:"Gold Monetization Scheme: minimum 10 grams raw gold. No maximum."},
+{q:"GMS MTGD tenure?",o:["1-3 yrs","3-5 yrs","5-7 yrs","10-15 yrs"],a:2,e:"Medium Term Govt Deposit: 5-7 years. (Short Term Bank Deposit: 1-3; LT Govt: 12-15)."},
+{q:"GMS — tax treatment on interest and redemption?",o:["Interest taxable; redemption exempt","Interest exempt; redemption taxable","Both tax-free","Both taxable"],a:2,e:"GMS: Interest tax-free + Capital gains on redemption exempt."},
+{q:"IOB SB interest rate for balance up to ₹1 lakh (as of Oct 2026)?",o:["2.00%","2.50%","2.20%","3.00%"],a:1,e:"Per IOB Circular DEP/05/2026-27 dt 08.10.2026: 2.50% up to ₹1 lakh (not Repo-linked)."},
+{q:"Senior Citizen FD premium (60+ non-super senior)?",o:["+0.25%","+0.50%","+0.75%","+1.00%"],a:1,e:"+0.50% over card rate for senior citizens 60-80 years."},
+{q:"Super Senior Citizen (80+) FD premium?",o:["+0.50%","+0.75%","+1.00%","+1.50%"],a:1,e:"+0.75% premium for super seniors 80+."},
+{q:"Staff/retired staff FD premium?",o:["+0.50%","+0.75%","+1.00%","+1.50%"],a:2,e:"Staff/retired staff: +1.00% over card rate."},
+{q:"Tax Saver FD lock-in period?",o:["3 years","5 years","7 years","10 years"],a:1,e:"5 years mandatory lock-in. No premature withdrawal, no loan against."},
+{q:"Tax Saver FD maximum investment per year (80C eligible)?",o:["₹1 lakh","₹1.5 lakh","₹2 lakh","₹2.5 lakh"],a:1,e:"₹1.5 lakh/yr — same as overall Sec 80C limit."},
+{q:"Maximum loan against FD?",o:["75%","80%","90%","95%"],a:2,e:"Up to 90% of FD principal. Rate: TD rate + ~1%."},
+{q:"RD minimum instalment (typical)?",o:["₹50","₹100","₹500","₹1,000"],a:1,e:"₹100/month is typical minimum (bank-specific). IOB: ₹100."},
+{q:"Capital Gains Account Scheme 1988 — Type A account is:",o:["TD only","SB (withdrawable)","Current Account","PPF-like"],a:1,e:"Type A = SB (freely withdrawable for intended use). Type B = TD-like."},
+{q:"CGAS minimum deposit?",o:["₹100","₹500","₹1,000","₹10,000"],a:0,e:"Minimum ₹100; no maximum."},
+{q:"Who can open SB for business purposes?",o:["Any business","Partnership firms","NPOs and Sec 8 companies","None"],a:2,e:"Only NPOs and Sec 8 companies (formerly Sec 25 Cos). Others must use Current A/c."},
+{q:"RBI Aug 2020 rule — Current Account for borrowers with aggregate credit > ₹5 Cr?",o:["Any bank","Only lending bank(s)","Only scheduled banks","Only PSBs"],a:1,e:"RBI Aug 2020: CA only with the lending bank(s) to prevent routing elsewhere."},
+{q:"BSBDA — maximum free withdrawals per month?",o:["2","3","4","Unlimited"],a:2,e:"4 free withdrawals per month at own-bank branch/ATM."},
+{q:"BSBDA Small Account — maximum balance allowed?",o:["₹10,000","₹25,000","₹50,000","₹1 lakh"],a:2,e:"Balance ≤ ₹50,000 at any time. Credits ≤ ₹1 lakh/yr. Withdrawals ≤ ₹10,000/month."},
+{q:"PMJDY RuPay Debit Card — accidental insurance cover?",o:["₹1 lakh","₹2 lakh","₹5 lakh","₹10 lakh"],a:1,e:"₹2 lakh accidental death/disability insurance under PMJDY."},
+{q:"PMJDY — overdraft limit?",o:["₹5,000","₹10,000","₹25,000","₹50,000"],a:1,e:"Up to ₹10,000 OD after 6 months, age 18-65."},
+{q:"SCSS 2019 — maximum deposit?",o:["₹15 lakh","₹30 lakh","₹50 lakh","₹1 Crore"],a:1,e:"₹30 lakh (revised from ₹15 lakh by Budget 2023)."},
+{q:"SCSS tenure?",o:["3 years","5 years, extendable by 3","7 years","10 years"],a:1,e:"5 years initial tenure, extendable by 3 years."},
+{q:"SCSS — age eligibility for defence retirees?",o:["50+","55+","60+","65+"],a:0,e:"Defence retirees: 50+. VRS/Superannuation: 55-60. Others: 60+."},
+{q:"IOB Parivaar — family grouping max accounts?",o:["2","4","6","8"],a:2,e:"2 to 6 accounts can be grouped under one Family ID."},
+{q:"Deposit insurance (DICGC) coverage per depositor per bank?",o:["₹1 lakh","₹2 lakh","₹5 lakh","₹10 lakh"],a:2,e:"₹5 lakh (revised Feb 2020). Includes principal + interest."},
+{q:"CC Drawing Power calculation uses book debts up to how many days?",o:["30 days","60 days","90 days","120 days"],a:2,e:"Typically book debts overdue > 90 days excluded from DP."},
+{q:"CC renewal / review cycle?",o:["Monthly","Quarterly","Half-yearly","Annual"],a:3,e:"Annual renewal. Stock statement monthly."},
+{q:"Tamil Nadu Govt Employee SB — age range?",o:["18-55","18-58","18-60","21-60"],a:2,e:"Age 18-60 (as per IOB TN Govt scheme). Joint with spouse allowed."},
+{q:"TN Govt Employee SB — TOD (Temporary Overdraft) limit?",o:["1 month salary","1.5 months salary","2 months salary","3 months salary"],a:2,e:"2 months' net salary, max 2 times in a calendar year."},
+{q:"SB interest credit frequency (banks in India)?",o:["Monthly","Quarterly","Half-yearly","Yearly"],a:1,e:"Quarterly credit; daily product basis calculation."},
+{q:"Minor's self-operated SB account — minimum age?",o:["7","10","12","15"],a:1,e:"Minor (10+) can operate SB in own name; SB only, subject to bank limits."},
+{q:"NRE joint account with resident close relative — basis?",o:["Jointly","F/S","E/S only","Any mandate"],a:2,e:"RBI permits resident close relative joint with NRI on 'Either or Survivor' basis only."},
+{q:"NRE account — tax treatment?",o:["Tax-free","TDS 10%","TDS 30%","Taxable at slab"],a:0,e:"NRE interest is tax-free. Fully repatriable (both principal and interest)."},
+{q:"FCNR(B) deposit — currencies permitted?",o:["Only USD","USD, GBP, EUR","USD, GBP, EUR, JPY, CAD, AUD","Any convertible currency"],a:2,e:"6 currencies: USD, GBP, EUR, JPY, CAD, AUD (bank's choice at opening)."},
+{q:"Death of FD holder — premature closure penalty?",o:["Full penalty","Half penalty","No penalty","Case-by-case"],a:2,e:"Usually no penalty on premature closure due to death of depositor (bank policy)."}
+];
+
+let quizIndex=0;let currentOrder=[];
+function startQuiz(){currentOrder=QUIZ.map((_,i)=>i).sort(()=>Math.random()-0.5);quizIndex=0;document.getElementById('quizIntro').style.display='none';document.getElementById('quizArea').style.display='block';renderQuestion()}
+function renderQuestion(){if(quizIndex>=currentOrder.length){renderResult();return}const qid=currentOrder[quizIndex];const q=QUIZ[qid];const prev=state.quiz.perQuestion[qid];const area=document.getElementById('quizArea');area.innerHTML=`<div class="quiz-stats"><div class="quiz-stat"><div class="v">${quizIndex+1}/${currentOrder.length}</div><div class="l">Progress</div></div><div class="quiz-stat"><div class="v">${state.quiz.correct}</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v">${state.quiz.attempted?Math.round(state.quiz.correct/state.quiz.attempted*100):0}%</div><div class="l">Accuracy</div></div></div><div class="question-card"><div class="q-num">Question ${quizIndex+1} of ${currentOrder.length}</div><div class="q-text">${q.q}</div>${q.o.map((opt,i)=>`<div class="option" onclick="pickOption(${qid},${i},this)" id="opt-${i}">${String.fromCharCode(65+i)}) ${opt}</div>`).join('')}<div class="explanation" id="exp"><b>💡 ${q.o[q.a]}</b><br>${q.e}</div><div class="nav-btns"><button class="btn-prev" onclick="prevQuestion()">← Prev</button><button class="btn-next" onclick="nextQuestion()">Next →</button></div></div>`;if(prev!==undefined){const sel=prev;document.getElementById('opt-'+sel).classList.add(sel===q.a?'correct':'wrong');if(sel!==q.a)document.getElementById('opt-'+q.a).classList.add('correct');document.getElementById('exp').classList.add('show')}}
+function pickOption(qid,idx,el){const q=QUIZ[qid];if(state.quiz.perQuestion[qid]!==undefined)return;state.quiz.perQuestion[qid]=idx;state.quiz.attempted++;if(idx===q.a){state.quiz.correct++;el.classList.add('correct')}else{el.classList.add('wrong');document.getElementById('opt-'+q.a).classList.add('correct');if(!state.weak.includes(qid))state.weak.push(qid)}document.getElementById('exp').classList.add('show');save();updateStatBoxes()}
+function nextQuestion(){quizIndex++;renderQuestion()}
+function prevQuestion(){if(quizIndex>0)quizIndex--;renderQuestion()}
+function renderResult(){const score=state.quiz.correct;const total=state.quiz.attempted;const pct=total?Math.round(score/total*100):0;let msg='Good effort!';if(pct>=80)msg='🎉 Excellent — you\'re exam-ready!';else if(pct>=60)msg='👍 Solid — tighten weak topics.';else if(pct>=40)msg='📚 Needs more practice.';else msg='💪 Keep going — revise + retake.';document.getElementById('quizArea').innerHTML=`<div class="result-card"><div style="font-size:50px">${pct>=60?'🏆':'📖'}</div><div class="result-score">${pct}%</div><div class="result-msg">${msg}</div><div class="result-row"><div class="quiz-stat"><div class="v">${score}</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v">${total-score}</div><div class="l">Wrong</div></div></div><div class="action-row"><button class="btn" onclick="resetQuiz()">🔄 Retake All</button><button class="btn btn-sec" onclick="reviewWeak()">🎯 Weak Only</button></div></div>`}
+function resetQuiz(){state.quiz={attempted:0,correct:0,perQuestion:{}};state.weak=[];save();document.getElementById('quizArea').style.display='none';document.getElementById('quizIntro').style.display='block';updateStatBoxes()}
+function reviewWeak(){if(state.weak.length===0){alert('No weak topics yet! Take the quiz first.');return}currentOrder=[...state.weak];quizIndex=0;document.getElementById('quizIntro').style.display='none';document.getElementById('quizArea').style.display='block';state.weak.forEach(w=>{delete state.quiz.perQuestion[w]});state.quiz.attempted=Math.max(0,state.quiz.attempted-state.weak.length);state.weak=[];save();renderQuestion()}
+function updateStatBoxes(){const att=state.quiz.attempted;const cor=state.quiz.correct;const acc=att?Math.round(cor/att*100):0;if(document.getElementById('stAtt'))document.getElementById('stAtt').textContent=att;if(document.getElementById('stCor'))document.getElementById('stCor').textContent=cor;if(document.getElementById('stAcc'))document.getElementById('stAcc').textContent=acc+'%'}
+
+const CASES=[
+{t:'1. SB Account for Partnership Firm',scenario:'Mr. Arun and Mr. Bala, partners of M/s Arun Enterprises (trading in textiles), approach you to open an SB account for their firm because they want "individual-type" simpler operations. Can you do it?',solution:'<b>Answer: NO.</b> SB accounts are for individuals only. Business/trading entities including partnership firms must open Current Account.<br><b>Reason:</b> SB account prohibits business transactions per RBI norms. Exception only for NPOs and Sec 8 companies.<br><b>Advice:</b> Open a Current Account for the firm with partnership deed + registration certificate + all partners\' KYC + Board Resolution/Mandate. Explain CA has no interest but unlimited transactions and overdraft facility.'},
+{t:'2. NRO Repatriation Request',scenario:'Mr. Ramanathan (NRI in Dubai) holds NRO FD of ₹80 lakh and wants to repatriate ₹60 lakh to his UAE account for property purchase. His current year rent income (₹5 lakh) and savings interest (₹3 lakh) are also in the NRO account. Can you process?',solution:'<b>Step 1:</b> NRO repatriation cap = <b>USD 1 million per FY</b> (approx ₹83 lakh at current rate).<br><b>Step 2:</b> Current income (rent ₹5L + interest ₹3L = ₹8L) is <b>freely repatriable</b> — no cap on this.<br><b>Step 3:</b> Principal repatriation (₹60L - ₹8L = ₹52L): within USD 1M cap → PERMISSIBLE.<br><b>Step 4:</b> Required: Form 15CA + 15CB (CA certification).<br><b>Step 5:</b> Deduct TDS @ 30% if not already deducted on interest.<br><b>Key learning:</b> Current income freely repatriable outside USD 1M cap.'},
+{t:'3. Tax Saver FD Premature Request',scenario:'Mrs. Kavitha opened Tax Saver FD of ₹1.5 lakh on 10-Apr-2024 for 5 years. On 15-Nov-2026, she requests premature closure for urgent medical need. Advise her.',solution:'<b>Answer: NOT PERMITTED.</b> Tax Saver FD has mandatory 5-year lock-in with NO premature withdrawal.<br><b>Also NOT available:</b> No loan against Tax Saver FD, no auto-renewal.<br><b>Alternatives for her:</b><br>• Personal loan against her other assets.<br>• Loan against a regular FD if she has one (90% of principal).<br>• Jewel loan if she has gold.<br><b>Key learning:</b> Tax Saver FD = strict lock-in in exchange for 80C deduction. Separate Tax Saver FDs for different years may be possible if urgency repeats.'},
+{t:'4. DICGC Multi-Capacity Coverage',scenario:'Mr. Vasudevan holds the following at your bank: Individual SB ₹3 lakh, FD ₹4 lakh. Jointly with wife (E/S): SB ₹2 lakh. As Karta of HUF: SB ₹3 lakh, FD ₹4 lakh. If bank fails, what is the DICGC cover?',solution:'<b>Different "capacities" are separately covered.</b><br><b>Capacity 1: Individual Mr. Vasudevan</b> = ₹3L + ₹4L = ₹7 lakh → Cover: ₹5 lakh.<br><b>Capacity 2: Joint with wife (E/S)</b> = ₹2 lakh → Separate capacity → Full cover ₹2 lakh.<br><b>Capacity 3: As Karta of HUF</b> = ₹3L + ₹4L = ₹7 lakh → Separate capacity → ₹5 lakh.<br><b>Total Cover:</b> ₹5L + ₹2L + ₹5L = <b>₹12 lakh</b>.<br><b>Loss:</b> Total holding ₹16 lakh - ₹12 lakh covered = ₹4 lakh loss.<br><b>Key learning:</b> Same name in different capacity = separate ₹5 lakh.'},
+{t:'5. Gold Monetization Enquiry',scenario:'Mrs. Priya has 500 grams of gold jewellery sitting in locker for years. She wants to earn income on it without selling. Which GMS variant suits her and what\'s the process?',solution:'<b>Recommendation:</b> Based on tenure flexibility:<br>• <b>STBD (1-3 yrs):</b> Short term; bank-decided interest; good if she needs liquidity soon.<br>• <b>MTGD (5-7 yrs):</b> ~2.25% interest; Govt deposit; middle ground.<br>• <b>LTGD (12-15 yrs):</b> ~2.50% interest; longest tenure.<br><br><b>Process:</b><br>1. Take gold to CPTC (Collection & Purity Testing Centre).<br>2. Fire assay — determines purity.<br>3. If accepted → GMS account opened.<br>4. Gold Deposit Certificate issued.<br>5. Interest credited annually.<br>6. On maturity: redeem in gold (equivalent) OR INR at prevailing rate.<br><br><b>Tax benefits:</b> Interest tax-free + capital gains at redemption fully exempt.<br><b>Minimum:</b> 10 grams. 500g fits easily.<br><b>Key learning:</b> No storage worry, no locker cost, earning income + tax-exempt.'}
+];
+function renderCases(){document.getElementById('caseList').innerHTML=CASES.map((c,i)=>`<div class="case-card"><div class="case-head" onclick="this.parentElement.classList.toggle('open')"><span>${c.t}</span><span class="arrow">▼</span></div><div class="case-body"><div class="case-scenario"><b>📍 Scenario:</b> ${c.scenario}</div><button class="reveal-btn" onclick="this.nextElementSibling.classList.add('show'); this.style.display='none'">👁️ Reveal Solution</button><div class="case-solution">${c.solution}</div></div></div>`).join('')}
+
+function init(){document.documentElement.setAttribute('data-theme',state.theme);document.querySelector('.theme-btn').textContent=state.theme==='dark'?'☀️':'🌙';Object.keys(state.topics).forEach(id=>{const el=document.querySelector(`#${id} .topic-check`);if(el&&state.topics[id])el.classList.add('done')});updateProgressBar();renderFlashcards();renderCompare();renderNumbers();renderCases();updateStatBoxes()}
+init();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(e => console.log('SW failed:', e));
+  });
+}
+</script>
+</body>
+</html>

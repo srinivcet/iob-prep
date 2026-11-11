@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a2540">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IOB Prep">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Module E: NPA & Recovery — IOB 2027</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#1a202c;--muted:#64748b;--primary:#0a2540;--primary-light:#1e40af;--accent:#d4a017;--success:#10b981;--warn:#f59e0b;--danger:#ef4444;--border:#e2e8f0;--highlight:#fef3c7;--important:#fee2e2;--info:#dbeafe}
+[data-theme="dark"]{--bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--muted:#94a3b8;--primary:#3b82f6;--accent:#fbbf24;--border:#334155;--highlight:#78350f;--important:#7f1d1d;--info:#1e3a8a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;font-size:14px;padding-bottom:80px}
+.header{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:14px 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.header-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.back-link{color:#fff;text-decoration:none;font-size:13px;padding:4px 8px;background:rgba(255,255,255,.15);border-radius:8px;display:inline-block}
+.header h1{font-size:16px;font-weight:700;margin-top:4px}
+.header-sub{font-size:11px;opacity:.85}
+.theme-btn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:8px 10px;border-radius:8px;font-size:15px;cursor:pointer}
+.progress-strip{height:4px;background:rgba(255,255,255,.2);margin-top:8px;border-radius:10px;overflow:hidden}
+.progress-strip-fill{height:100%;background:linear-gradient(90deg,var(--accent),#fbbf24);transition:width .5s}
+.tabs{background:var(--card);padding:8px;overflow-x:auto;white-space:nowrap;border-bottom:1px solid var(--border);position:sticky;top:85px;z-index:50;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-chip{display:inline-block;padding:8px 14px;margin:0 3px;border-radius:20px;background:var(--bg);color:var(--text);border:1px solid var(--border);font-size:12px;font-weight:600;cursor:pointer}
+.tab-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+[data-theme="dark"] .tab-chip.active{background:var(--accent);color:var(--primary)}
+.container{padding:14px;max-width:900px;margin:0 auto}
+.view{display:none}.view.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.topic{background:var(--card);border-radius:12px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid var(--border);overflow:hidden}
+.topic-head{padding:12px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(90deg,var(--card),var(--bg));user-select:none}
+.topic-title{font-weight:700;font-size:14px;color:var(--primary);display:flex;align-items:center;gap:8px}
+[data-theme="dark"] .topic-title{color:var(--accent)}
+.topic-num{background:var(--primary);color:#fff;width:24px;height:24px;border-radius:50%;text-align:center;line-height:24px;font-size:11px;font-weight:700;flex-shrink:0}
+[data-theme="dark"] .topic-num{background:var(--accent);color:var(--primary)}
+.topic-check{width:22px;height:22px;border:2px solid var(--muted);border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}
+.topic-check.done{background:var(--success);border-color:var(--success)}.topic-check.done::after{content:'✓'}
+.topic-body{display:none;padding:0 14px 14px}
+.topic.open .topic-body{display:block;animation:fadeIn .3s ease}
+.topic.open .topic-arrow{transform:rotate(90deg)}
+.topic-arrow{transition:transform .3s;color:var(--muted);font-size:14px}
+h3{margin:14px 0 8px;font-size:14px;color:var(--primary);padding-bottom:4px;border-bottom:2px solid var(--accent)}
+[data-theme="dark"] h3{color:var(--accent)}
+h4{margin:12px 0 6px;font-size:13px;color:var(--primary);font-weight:700}
+[data-theme="dark"] h4{color:#93c5fd}
+p{margin:4px 0 8px}
+ul,ol{margin:4px 0 10px;padding-left:22px}li{margin:3px 0}
+.key{background:var(--highlight);padding:2px 6px;border-radius:4px;font-weight:700;color:#92400e;font-size:13px}
+[data-theme="dark"] .key{color:#fde68a}
+.imp{background:var(--important);padding:2px 6px;border-radius:4px;font-weight:600;color:#991b1b}
+[data-theme="dark"] .imp{color:#fecaca}
+.alert{padding:10px 12px;margin:10px 0;border-radius:8px;border-left:3px solid;font-size:13px}
+.alert-info{background:var(--info);border-color:var(--primary-light);color:var(--primary)}
+.alert-danger{background:var(--important);border-color:var(--danger);color:#991b1b}
+.alert-warn{background:var(--highlight);border-color:var(--warn);color:#92400e}
+[data-theme="dark"] .alert-info{color:#dbeafe}
+[data-theme="dark"] .alert-danger{color:#fecaca;background:#7f1d1d}
+[data-theme="dark"] .alert-warn{color:#fde68a;background:#78350f}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12.5px}
+th,td{padding:6px 8px;text-align:left;border:1px solid var(--border)}
+th{background:var(--bg);font-weight:700;color:var(--primary)}
+[data-theme="dark"] th{color:var(--accent)}
+tr:nth-child(even) td{background:var(--bg)}
+.flashcard-deck{display:flex;flex-direction:column;gap:12px}
+.flashcard{perspective:1000px;height:180px;cursor:pointer}
+.flashcard-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}
+.flashcard-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;padding:18px;display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.flashcard-front{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;font-size:15px;font-weight:600}
+.flashcard-back{background:linear-gradient(135deg,var(--accent),#d97706);color:#1a202c;font-size:13px;transform:rotateY(180deg);font-weight:500;overflow-y:auto;line-height:1.5}
+.flashcard-hint{position:absolute;bottom:8px;left:0;right:0;font-size:10px;opacity:.7;text-align:center}
+.compare-card{background:var(--card);border-radius:12px;margin-bottom:10px;border:1px solid var(--border);overflow:hidden}
+.compare-head{padding:12px 14px;background:linear-gradient(90deg,var(--primary),var(--primary-light));color:#fff;font-weight:700;font-size:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.compare-body{display:none;padding:10px;overflow-x:auto}
+.compare-card.open .compare-body{display:block;animation:fadeIn .3s ease}
+.compare-card.open .compare-head .arrow{transform:rotate(180deg)}
+.compare-head .arrow{transition:transform .3s;font-size:14px}
+.num-card{background:var(--card);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.num-badge{background:var(--accent);color:var(--primary);padding:6px 10px;border-radius:8px;font-family:monospace;font-weight:700;font-size:13px;min-width:90px;text-align:center;flex-shrink:0}
+.num-desc{font-size:13px;flex:1}
+.num-cat{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.quiz-intro{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:20px;border-radius:14px;margin-bottom:14px;text-align:center}
+.quiz-intro h2{font-size:20px;margin-bottom:8px}
+.quiz-intro p{font-size:13px;opacity:.9;margin-bottom:14px}
+.quiz-btn{padding:10px 20px;background:var(--accent);color:var(--primary);border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px;font-family:inherit}
+.quiz-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.quiz-stat{background:var(--card);padding:10px;border-radius:10px;text-align:center;border:1px solid var(--border)}
+.quiz-stat .v{font-size:20px;font-weight:700;color:var(--primary)}
+[data-theme="dark"] .quiz-stat .v{color:var(--accent)}
+.quiz-stat .l{font-size:10px;color:var(--muted);text-transform:uppercase}
+.question-card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.q-num{font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:600}
+.q-text{font-size:14px;font-weight:600;margin-bottom:12px;line-height:1.45}
+.option{padding:10px 12px;margin-bottom:6px;background:var(--bg);border-radius:8px;border:2px solid transparent;cursor:pointer;font-size:13px;transition:all .2s}
+.option:hover{background:var(--card);border-color:var(--primary)}
+.option.correct{background:#d1fae5;border-color:var(--success);color:#065f46}
+.option.wrong{background:#fee2e2;border-color:var(--danger);color:#991b1b}
+[data-theme="dark"] .option.correct{background:#065f46;color:#d1fae5}
+[data-theme="dark"] .option.wrong{background:#7f1d1d;color:#fecaca}
+.explanation{background:var(--info);padding:10px 12px;margin-top:10px;border-radius:8px;font-size:12.5px;border-left:3px solid var(--primary-light);display:none}
+.explanation.show{display:block;animation:fadeIn .3s}
+[data-theme="dark"] .explanation{background:#1e3a8a;color:#dbeafe}
+.nav-btns{display:flex;gap:8px;margin-top:14px}
+.nav-btns button{flex:1;padding:10px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit}
+.btn-prev{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.btn-next{background:var(--primary);color:#fff}
+[data-theme="dark"] .btn-next{background:var(--accent);color:var(--primary)}
+.case-card{background:var(--card);border-radius:14px;margin-bottom:14px;border:1px solid var(--border);overflow:hidden}
+.case-head{padding:12px 14px;background:linear-gradient(135deg,var(--accent),#d97706);color:#1a202c;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:700}
+.case-body{display:none;padding:14px}
+.case-card.open .case-body{display:block;animation:fadeIn .3s}
+.case-card.open .case-head .arrow{transform:rotate(180deg)}
+.case-scenario{background:var(--info);padding:10px 12px;border-radius:8px;margin-bottom:10px;font-size:13px;border-left:3px solid var(--primary-light)}
+[data-theme="dark"] .case-scenario{background:#1e3a8a;color:#dbeafe}
+.case-solution{background:var(--highlight);padding:10px 12px;border-radius:8px;font-size:13px;border-left:3px solid var(--accent);display:none}
+.case-solution.show{display:block;animation:fadeIn .3s}
+[data-theme="dark"] .case-solution{background:#78350f;color:#fde68a}
+.reveal-btn{padding:8px 14px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;margin-top:8px}
+.result-card{background:var(--card);padding:20px;border-radius:14px;text-align:center;border:1px solid var(--border)}
+.result-score{font-size:44px;font-weight:800;color:var(--primary);margin:10px 0}
+[data-theme="dark"] .result-score{color:var(--accent)}
+.result-msg{font-size:14px;color:var(--muted);margin-bottom:16px}
+.result-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.float-btn{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;width:48px;height:48px;border-radius:50%;font-size:22px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:200}
+[data-theme="dark"] .float-btn{background:var(--accent);color:var(--primary)}
+.search-box{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px;margin-bottom:10px;font-family:inherit}
+.btn{padding:10px 14px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;background:var(--primary);color:#fff;font-family:inherit}
+.btn-sec{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.flow-container{background:var(--card);border-radius:12px;padding:14px;margin:10px 0;border:1px solid var(--border);overflow-x:auto}
+.flow-title{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:8px;text-align:center}
+[data-theme="dark"] .flow-title{color:var(--accent)}
+.flow-step{display:inline-flex;flex-direction:column;align-items:center;margin:0 8px;vertical-align:top;width:110px}
+.flow-circle{width:50px;height:50px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;animation:pulseStep 2s infinite}
+.flow-step:nth-child(2) .flow-circle{animation-delay:.3s;background:#1e40af}
+.flow-step:nth-child(3) .flow-circle{animation-delay:.6s;background:#2563eb}
+.flow-step:nth-child(4) .flow-circle{animation-delay:.9s;background:var(--accent);color:var(--primary)}
+.flow-step:nth-child(5) .flow-circle{animation-delay:1.2s;background:var(--success)}
+@keyframes pulseStep{0%,100%{transform:scale(1);box-shadow:0 0 0 0 currentColor}50%{transform:scale(1.1);box-shadow:0 0 0 8px rgba(10,37,64,.1)}}
+.flow-label{font-size:10px;margin-top:6px;text-align:center;line-height:1.3;color:var(--muted)}
+.flow-arrow{color:var(--muted);font-size:18px;vertical-align:top;margin-top:18px;animation:slideRight 1.5s infinite}
+@keyframes slideRight{0%,100%{transform:translateX(0);opacity:.5}50%{transform:translateX(3px);opacity:1}}
+</style>
+</head>
+<body>
+<div class="header"><div class="header-row"><div><a href="IOB_Study_Hub.html" class="back-link">← Hub</a><h1>Module E: NPA & Recovery</h1><div class="header-sub">IRAC • SARFAESI • IBC • 50 MCQs</div></div><button class="theme-btn" onclick="toggleTheme()">🌙</button></div><div class="progress-strip"><div class="progress-strip-fill" id="pbar" style="width:0%"></div></div></div>
+<div class="tabs">
+<div class="tab-chip active" onclick="showTab('content',this)">📖 Content</div>
+<div class="tab-chip" onclick="showTab('flash',this)">🎴 Flashcards</div>
+<div class="tab-chip" onclick="showTab('compare',this)">⚖️ Compare</div>
+<div class="tab-chip" onclick="showTab('numbers',this)">🔢 Numbers</div>
+<div class="tab-chip" onclick="showTab('mcq',this)">❓ Quiz</div>
+<div class="tab-chip" onclick="showTab('cases',this)">📋 Cases</div>
+</div>
+<div class="container">
+<div id="content" class="view active">
+<input class="search-box" placeholder="🔍 Search..." oninput="filterTopics(this.value)">
+
+<div class="topic" id="t1"><div class="topic-head" onclick="toggleTopic('t1')"><div class="topic-title"><span class="topic-num">1</span>IRAC Norms — Asset Classification</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t1',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>IRAC = Income Recognition, Asset Classification, Provisioning. Recommended by Narasimham Committee.</p>
+
+<h3>Asset Classification</h3>
+<table>
+<tr><th>Category</th><th>Criteria</th></tr>
+<tr><td><b>Standard</b></td><td>No overdue beyond 90 days; regular interest/instalment service</td></tr>
+<tr><td><b>Sub-Standard</b></td><td>First <span class="key">12 months</span> from NPA date</td></tr>
+<tr><td><b>Doubtful 1 (DA-1)</b></td><td>Next 12 months (2nd year as NPA)</td></tr>
+<tr><td><b>Doubtful 2 (DA-2)</b></td><td>Next 24 months (3rd & 4th year as NPA)</td></tr>
+<tr><td><b>Doubtful 3 (DA-3)</b></td><td>5th year onwards</td></tr>
+<tr><td><b>Loss</b></td><td>Identified by bank/auditor/RBI as uncollectable</td></tr>
+</table>
+
+<h3>Agricultural NPA Criteria</h3>
+<ul>
+<li><b>Short-duration crop:</b> NPA if instalment/interest overdue for <span class="key">2 crop seasons</span>.</li>
+<li><b>Long-duration crop:</b> NPA if overdue for <span class="key">1 crop season</span>.</li>
+<li>Long-duration crop = crop whose duration exceeds 1 year (sugarcane, banana).</li>
+</ul>
+
+<h3>Erosion in Security Value — Direct Classification</h3>
+<ul>
+<li>Realisable value < <span class="key">50%</span> of outstanding → DIRECT to <b>Doubtful</b>.</li>
+<li>Realisable value < <span class="key">10%</span> of outstanding → DIRECT to <b>Loss</b>.</li>
+</ul>
+
+<h3>Advances Exempt from NPA Classification</h3>
+<ul>
+<li>Advances against FD (with adequate margin).</li>
+<li>Advances against NSC (eligible for surrender).</li>
+<li>Advances against KVP.</li>
+<li>Advances against LIC Policy.</li>
+<li>Gold ornaments, govt securities, other securities — NOT exempt.</li>
+</ul>
+
+<h3>Consortium Advances</h3>
+<ul>
+<li>Asset classification based on <b>recovery record of each individual bank</b>.</li>
+<li>Even if other banks are regular, if your bank's instalment is overdue > 90 days = NPA in your books.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t2"><div class="topic-head" onclick="toggleTopic('t2')"><div class="topic-title"><span class="topic-num">2</span>Provisioning Norms</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t2',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Non-Performing Assets</h3>
+<table>
+<tr><th>Classification</th><th>Security Status</th><th>Provision</th></tr>
+<tr><td>Sub-Standard</td><td>Secured</td><td><span class="key">15%</span></td></tr>
+<tr><td>Sub-Standard</td><td>Unsecured ab initio</td><td><span class="key">25%</span></td></tr>
+<tr><td>Sub-Standard (Infrastructure)</td><td>Secured</td><td>20%</td></tr>
+<tr><td>Doubtful 1 (DA-1)</td><td>Secured portion</td><td><span class="key">25%</span></td></tr>
+<tr><td>Doubtful 2 (DA-2)</td><td>Secured portion</td><td><span class="key">40%</span></td></tr>
+<tr><td>Doubtful 3 (DA-3)</td><td>Secured portion</td><td><span class="key">100%</span></td></tr>
+<tr><td>Doubtful (any stage)</td><td>Unsecured portion</td><td>100%</td></tr>
+<tr><td>Loss</td><td>—</td><td>100%</td></tr>
+</table>
+
+<h3>Standard Assets Provisioning</h3>
+<table>
+<tr><th>Asset Class</th><th>Provision</th></tr>
+<tr><td>Direct Agriculture / Micro & Small / Individual Housing</td><td><span class="key">0.25%</span></td></tr>
+<tr><td>CRE-RH (Residential Housing CRE)</td><td>0.75%</td></tr>
+<tr><td>CRE (Commercial Real Estate)</td><td><span class="key">1.00%</span></td></tr>
+<tr><td>Medium Enterprises / Others</td><td>0.40%</td></tr>
+<tr><td>Restructured Standard (Non-Agri)</td><td>Additional 5% above normal</td></tr>
+</table>
+
+<h3>Provisioning Coverage Ratio (PCR)</h3>
+<p>PCR = (Provisions held against NPA + Write-offs) / Gross NPA × 100<br>Target: generally 70%+ for public sector banks.</p>
+
+<h3>Floating Provisions</h3>
+<ul>
+<li>Over and above minimum IRAC requirements.</li>
+<li>Can be used as buffer against unexpected losses.</li>
+<li>Cannot be reversed to P&L except RBI permission.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t3"><div class="topic-head" onclick="toggleTopic('t3')"><div class="topic-title"><span class="topic-num">3</span>SARFAESI Act, 2002</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t3',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p><b>Securitisation and Reconstruction of Financial Assets and Enforcement of Security Interest Act, 2002.</b></p>
+
+<h3>Applicability</h3>
+<ul>
+<li>NPA accounts of banks + FIs.</li>
+<li>Secured loans only.</li>
+<li>Not applicable to:
+<ul>
+<li>Agricultural land (specifically exempted).</li>
+<li>Pledge/lien under Indian Contract Act.</li>
+<li>Minimum loan outstanding: >₹1 lakh (originally); check latest circular.</li>
+</ul></li>
+</ul>
+
+<h3>SARFAESI Process Flow</h3>
+<div class="flow-container">
+<div class="flow-title">SARFAESI Enforcement Timeline</div>
+<div style="text-align:center;white-space:nowrap">
+<div class="flow-step"><div class="flow-circle">13(2)</div><div class="flow-label">60-day<br>Demand Notice</div></div>
+<span class="flow-arrow">→</span>
+<div class="flow-step"><div class="flow-circle">13(3A)</div><div class="flow-label">Objection<br>Bank replies</div></div>
+<span class="flow-arrow">→</span>
+<div class="flow-step"><div class="flow-circle">13(4)</div><div class="flow-label">Possession<br>Symbolic/Physical</div></div>
+<span class="flow-arrow">→</span>
+<div class="flow-step"><div class="flow-circle">S14</div><div class="flow-label">CMM/DM<br>Help for Possession</div></div>
+<span class="flow-arrow">→</span>
+<div class="flow-step"><div class="flow-circle">Sale</div><div class="flow-label">30-day<br>Notice + Auction</div></div>
+</div>
+</div>
+
+<h3>Key Sections</h3>
+<ul>
+<li><b>Sec 13(2):</b> Demand notice — <span class="key">60 days</span> to repay; classify as NPA.</li>
+<li><b>Sec 13(3A):</b> Borrower's objection/representation; bank must reply within <span class="key">15 days</span>.</li>
+<li><b>Sec 13(4):</b> Enforcement — take possession of security (symbolic / physical).</li>
+<li><b>Sec 13(8):</b> Right to reconstruction post-sale.</li>
+<li><b>Sec 14:</b> Assistance from Chief Metropolitan Magistrate / District Magistrate for physical possession.</li>
+<li><b>Sec 17:</b> Appeal to DRT within <span class="key">45 days</span> of 13(4) action.</li>
+<li><b>Sec 18:</b> Appeal to DRAT (Debt Recovery Appellate Tribunal) with 50% deposit of due amount.</li>
+<li><b>Sec 20:</b> Central Registry (CERSAI) — within 30 days of charge creation.</li>
+<li><b>Sec 29A (IBC-related):</b> Barred persons (wilful defaulters, etc.) cannot buy back under resolution.</li>
+</ul>
+
+<h3>Auction Rules</h3>
+<ul>
+<li>Reserve price fixed by valuer.</li>
+<li>30 days' notice to borrower + newspaper publication.</li>
+<li>EMD (Earnest Money Deposit) by bidders: 10% of reserve price.</li>
+<li>Successful bidder: 25% within specified time (balance 75% within 90 days).</li>
+<li>Failed auction: can be re-attempted at lower reserve price.</li>
+</ul>
+
+<h3>Thresholds</h3>
+<ul>
+<li>Loan outstanding: ≥ ₹1 lakh (historical; newer rules may apply).</li>
+<li>Agricultural land: NOT covered.</li>
+<li>Stock/book debts: Can be taken but process different.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t4"><div class="topic-head" onclick="toggleTopic('t4')"><div class="topic-title"><span class="topic-num">4</span>DRT & DRAT</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t4',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li><b>DRT (Debt Recovery Tribunal):</b> Specialised forum under RDDBFI Act 1993.</li>
+<li>Monetary jurisdiction: ≥ <span class="key">₹20 lakh</span>.</li>
+<li>Faster resolution than regular courts.</li>
+<li>Recovery Officer executes DRT orders.</li>
+<li>Number of DRTs: 39 across India.</li>
+<li><b>DRAT (DRT Appellate Tribunal):</b> Appeal against DRT.
+<ul>
+<li>Appeal within 30 days.</li>
+<li>50% of debt to be deposited (can be reduced to 25% at tribunal's discretion).</li>
+<li>5 DRATs in India.</li>
+</ul></li>
+<li>Further appeal: High Court on points of law only.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t5"><div class="topic-head" onclick="toggleTopic('t5')"><div class="topic-title"><span class="topic-num">5</span>Lok Adalat</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t5',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Under Legal Services Authorities Act, 1987.</li>
+<li>Alternative Dispute Resolution — mutual settlement.</li>
+<li>Award is <b>deemed decree of civil court</b> — final; no appeal.</li>
+<li>No court fee; court fee refunded if case was pending.</li>
+<li>Both parties must agree — compromise.</li>
+<li>Monetary limit: up to <span class="key">₹20 lakh</span> at DRT Lok Adalat.</li>
+<li>Large Lok Adalat / Permanent Lok Adalat: higher limits.</li>
+<li>Quick disposal of pre-litigation + pending cases.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t6"><div class="topic-head" onclick="toggleTopic('t6')"><div class="topic-title"><span class="topic-num">6</span>OTS / Compromise Settlement Scheme 2026</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t6',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>OTS = One Time Settlement. OCS = One-time Compromise Settlement.</p>
+
+<h3>Features</h3>
+<ul>
+<li>For NPA accounts — compromise settlement below principal + interest.</li>
+<li>Settlement amount: usually higher of:
+<ul>
+<li>Book outstanding (part), OR</li>
+<li>Realisable value of security, OR</li>
+<li>Negotiated amount as per OTS matrix.</li>
+</ul></li>
+<li>Upfront payment: 10-25% at approval.</li>
+<li>Balance in instalments: 3-12 months (max).</li>
+<li>Sacrifice: written off against provisions.</li>
+<li>Settled a/c removed from NPA list.</li>
+</ul>
+
+<h3>Sanctioning Authority (indicative)</h3>
+<table>
+<tr><th>Settlement Amount</th><th>Authority</th></tr>
+<tr><td>Up to ₹10 lakh</td><td>BM / RO Scale IV</td></tr>
+<tr><td>₹10L to ₹1 Cr</td><td>Regional Head / RO Committee</td></tr>
+<tr><td>₹1 Cr to ₹10 Cr</td><td>Central Office Committee / GMC</td></tr>
+<tr><td>Above ₹10 Cr</td><td>Board Committee (SMAC / BMC)</td></tr>
+</table>
+
+<h3>OTS Benefits</h3>
+<ul>
+<li>Early recovery, better than lengthy litigation.</li>
+<li>Reduces NPA ratios.</li>
+<li>Releases capital for productive use.</li>
+<li>Avoids provisioning costs.</li>
+</ul>
+
+<h3>Non-Discretionary OTS (RBI 2023)</h3>
+<ul>
+<li>Board-approved framework.</li>
+<li>Wilful defaulters allowed under certain conditions (controversial, debated).</li>
+<li>Minimum 12 months after NPA.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t7"><div class="topic-head" onclick="toggleTopic('t7')"><div class="topic-title"><span class="topic-num">7</span>Debt Recovery Agent (DRA)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t7',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Empanelled as per RBI Fair Practices Code.</li>
+<li>Must undergo IIBF DRA certification.</li>
+<li>Code of conduct enforced.</li>
+<li>Calls only between 7 AM to 7 PM.</li>
+<li>No harassment, abuse, threat.</li>
+<li>Breach → bank liable; borrower can complain to Ombudsman.</li>
+<li>Agency commission + incentives.</li>
+<li>Detective / Investigating agencies: separate empanelment for skip-tracing.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t8"><div class="topic-head" onclick="toggleTopic('t8')"><div class="topic-title"><span class="topic-num">8</span>Insolvency & Bankruptcy Code (IBC) 2016</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t8',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>Consolidated code for insolvency resolution of companies, LLPs, partnerships, individuals.</p>
+
+<h3>CIRP (Corporate Insolvency Resolution Process)</h3>
+<ul>
+<li>Initiated by: Financial Creditor, Operational Creditor, Corporate Debtor itself.</li>
+<li>Minimum default: <span class="key">₹1 Crore</span> (for corporate debtor).</li>
+<li>MSMEs: separate pre-pack framework at lower threshold.</li>
+</ul>
+
+<h3>Timelines</h3>
+<table>
+<tr><th>Milestone</th><th>Timeline</th></tr>
+<tr><td>CIRP initial period</td><td><span class="key">180 days</span> from admission</td></tr>
+<tr><td>Extension (one-time)</td><td>+90 days (total 270)</td></tr>
+<tr><td>Outer limit (incl. litigation)</td><td><span class="key">330 days</span></td></tr>
+<tr><td>Moratorium</td><td>Automatic under Sec 14 — covers legal actions</td></tr>
+</table>
+
+<h3>CoC (Committee of Creditors)</h3>
+<ul>
+<li>All Financial Creditors.</li>
+<li>Operational Creditors: present but no voting rights (unless FC's are < 25%).</li>
+<li><b>Voting threshold: 66%</b> by value for Resolution Plan approval.</li>
+<li>Appointment of Resolution Professional (RP).</li>
+</ul>
+
+<h3>Key Sections</h3>
+<ul>
+<li><b>Sec 7:</b> Application by Financial Creditor.</li>
+<li><b>Sec 9:</b> Application by Operational Creditor.</li>
+<li><b>Sec 10:</b> Application by Corporate Debtor itself.</li>
+<li><b>Sec 14:</b> Moratorium.</li>
+<li><b>Sec 29A:</b> Persons not eligible to submit Resolution Plan — wilful defaulters, NPA > 1 year borrowers, convicted persons, disqualified directors.</li>
+<li><b>Sec 30(2):</b> Resolution Plan mandatory contents.</li>
+<li><b>Sec 33:</b> Liquidation process.</li>
+<li><b>Sec 53:</b> Waterfall of payments at liquidation.</li>
+</ul>
+
+<h3>Liquidation Waterfall (Sec 53)</h3>
+<ol>
+<li>Insolvency resolution process costs + liquidation costs.</li>
+<li>Workmen dues (24 months) + secured creditors' debts.</li>
+<li>Wages & unpaid dues of employees other than workmen (12 months).</li>
+<li>Financial debts owed to unsecured creditors.</li>
+<li>Any amount due to Central/State Govt + debts owed to secured creditors who gave up security interest.</li>
+<li>Remaining debts + dues.</li>
+<li>Preference shareholders.</li>
+<li>Equity shareholders.</li>
+</ol>
+
+<h3>Pre-pack Insolvency (for MSMEs)</h3>
+<ul>
+<li>Introduced April 2021.</li>
+<li>Minimum default: <span class="key">₹10 lakh</span>.</li>
+<li>Debtor-in-possession; management retains control.</li>
+<li>Faster: 120 days total (90 days to approve + 30 for AA).</li>
+<li>Only for MSMEs.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t9"><div class="topic-head" onclick="toggleTopic('t9')"><div class="topic-title"><span class="topic-num">9</span>Look Out Circular (LOC)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t9',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Permitted under MHA OM dated 27.10.2010.</li>
+<li>Authorised officials request Bureau of Immigration (BoI).</li>
+<li>MoF Notification dated 22.11.2018 included MD/CEO of PSBs as authorised officials.</li>
+</ul>
+
+<h3>Against Whom</h3>
+<ul>
+<li>Fraudsters.</li>
+<li>Wilful defaulters.</li>
+<li>Money launderers.</li>
+<li>Economic offenders whose departure is detrimental.</li>
+<li>Cases where ₹25 lakh+ dues involved.</li>
+</ul>
+
+<h3>Address</h3>
+<p>Deputy Director, Bureau of Immigration [BoI], R.K. Puram, New Delhi.</p>
+
+<h3>Validity</h3>
+<ul>
+<li>Usually 1 year; extendable.</li>
+<li>Can be revoked on compliance.</li>
+<li>Prevents person from leaving India without clearance.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t10"><div class="topic-head" onclick="toggleTopic('t10')"><div class="topic-title"><span class="topic-num">10</span>Wilful Defaulter</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t10',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Definition (RBI 2015 Master Circular)</h3>
+<p>A unit/borrower is Wilful Defaulter if any of the following:</p>
+<ol>
+<li>Has defaulted in meeting payment/repayment obligations despite having capacity to pay.</li>
+<li>Has diverted funds for purposes other than specified.</li>
+<li>Has siphoned off funds (not available in borrower's accounts/business).</li>
+<li>Has disposed off/removed secured assets without bank's knowledge.</li>
+</ol>
+
+<h3>Threshold</h3>
+<ul>
+<li>Outstanding dues ≥ <span class="key">₹25 lakh</span>.</li>
+</ul>
+
+<h3>Procedure</h3>
+<ol>
+<li>First Identification Committee (bank-level).</li>
+<li>Show-cause notice to borrower (15 days).</li>
+<li>Hearing.</li>
+<li>Review Committee (bank-level) — final decision.</li>
+<li>Reporting to CIBIL / RBI / CRILC.</li>
+</ol>
+
+<h3>Consequences</h3>
+<ul>
+<li>Barred from fresh credit from any bank for <b>5 years</b> from date of removal from list.</li>
+<li>No capital market access.</li>
+<li>Cannot be promoter in listed companies.</li>
+<li>Photograph publication: Permitted in newspapers (Karnataka, Madras HC approved).</li>
+<li>Sec 29A of IBC: disqualified from submitting Resolution Plan.</li>
+<li>LOC can be issued.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t11"><div class="topic-head" onclick="toggleTopic('t11')"><div class="topic-title"><span class="topic-num">11</span>Policy on Transfer of Loan Exposures (TLE) 2026</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t11',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Based on RBI Master Directions on TLE 2021 (updated).</li>
+<li>Permits transfer to: Banks, NBFCs, ARCs, FIs, Investment Funds (for stressed assets).</li>
+</ul>
+
+<h3>Minimum Holding Period (MHP)</h3>
+<ul>
+<li>Housing / Retail loans: <span class="key">3 months</span>.</li>
+<li>Others: <span class="key">6 months</span>.</li>
+<li>Not applicable to <b>stressed assets</b>.</li>
+</ul>
+
+<h3>Features</h3>
+<ul>
+<li>True sale (title transfer); not credit enhancement.</li>
+<li>No recourse/guarantee by transferor post-sale.</li>
+<li>Transfer price: at commercial rate.</li>
+<li>For NPA/stressed assets: typically to ARCs via SRA.</li>
+</ul>
+
+<h3>Asset Reconstruction Company (ARC)</h3>
+<ul>
+<li>Registered with RBI under SARFAESI.</li>
+<li>Buys NPAs from banks; recovers via settlement, restructuring, sale.</li>
+<li>SR (Security Receipts): issued by ARC to bank.</li>
+<li>SR holder can sell to QIBs.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t12"><div class="topic-head" onclick="toggleTopic('t12')"><div class="topic-title"><span class="topic-num">12</span>Stressed Assets Resolution Framework (Prudential 2025)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t12',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>RBI Prudential Framework for Resolution of Stressed Assets (June 2019, updated).</p>
+
+<h3>Early Identification</h3>
+<ul>
+<li>SMA-0 / SMA-1 / SMA-2 classification per Credit Monitoring norms.</li>
+<li>CRILC reporting (≥ ₹5 Cr).</li>
+</ul>
+
+<h3>Review Period</h3>
+<ul>
+<li>30 days from default (Reference Date).</li>
+<li>Lenders decide on resolution plan during this period.</li>
+</ul>
+
+<h3>Inter-Creditor Agreement (ICA)</h3>
+<ul>
+<li>Signed by all lenders of a borrower.</li>
+<li>Decision thresholds:
+<ul>
+<li>66% by value AND 60% by number.</li>
+</ul></li>
+<li>Dissenting creditor can be bought out.</li>
+</ul>
+
+<h3>Resolution Plan Implementation</h3>
+<ul>
+<li>Within 180 days from end of review period (so 180 + 30 = 210 days total from default).</li>
+<li>If delayed:
+<ul>
+<li>Beyond 180 days of review: additional 20% provision.</li>
+<li>Beyond 365 days of review: additional 15% more (total 35%).</li>
+</ul></li>
+</ul>
+
+<h3>Options under Resolution Plan</h3>
+<ul>
+<li>Change in ownership.</li>
+<li>Restructuring / Rescheduling.</li>
+<li>Sale to ARC.</li>
+<li>IBC proceedings.</li>
+<li>Combination of above.</li>
+</ul>
+
+<h3>Independent Credit Evaluation (ICE)</h3>
+<ul>
+<li>For resolution plans involving banks of exposure ≥ ₹100 Cr.</li>
+<li>ICE by Credit Rating Agencies.</li>
+<li>Only "RP4 or above" rating plans can be implemented.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t13"><div class="topic-head" onclick="toggleTopic('t13')"><div class="topic-title"><span class="topic-num">13</span>MSME Revival & Rehabilitation</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t13',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>RBI Framework for Revival and Rehabilitation of MSMEs (March 2016, updated).</p>
+
+<h3>Coverage</h3>
+<ul>
+<li>MSME units with aggregate loan ≤ <span class="key">₹25 Cr</span>.</li>
+<li>Stressed accounts identified via SMA signals.</li>
+</ul>
+
+<h3>Committee (at RO/CO level)</h3>
+<ul>
+<li>Formed within <b>5 days</b> of application (self-initiated or on request).</li>
+<li>Decides viability + corrective action in <b>30 days</b> of application.</li>
+</ul>
+
+<h3>Three Options</h3>
+<ol>
+<li><b>Rectification:</b> Interest/EMI postponement; obtaining additional margin.</li>
+<li><b>Restructuring:</b> Reschedulement of principal/interest; moratorium; conversion of debt to equity.</li>
+<li><b>Recovery:</b> If revival not viable, recovery through SARFAESI/DRT.</li>
+</ol>
+
+<h3>Timeline</h3>
+<ul>
+<li>Application/trigger → Committee in 5 days.</li>
+<li>Decision in 30 days.</li>
+<li>CAP (Corrective Action Plan) implementation.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t14"><div class="topic-head" onclick="toggleTopic('t14')"><div class="topic-title"><span class="topic-num">14</span>Suit-filed / Decreed Accounts</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t14',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Suit filing after serving demand notice.</li>
+<li>Jurisdiction: Civil Court (small amounts) or DRT (≥ ₹20 lakh).</li>
+<li>Decree execution: via Recovery Officer (DRT) or Civil Court.</li>
+<li>Decree limitation: 12 years from decree date.</li>
+<li>Can attach property, bank accounts, salary (per Income Tax Act exemptions).</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t15"><div class="topic-head" onclick="toggleTopic('t15')"><div class="topic-title"><span class="topic-num">15</span>Technical Write-Off vs Prudential Write-Off</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t15',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li><b>Technical Write-Off:</b> Only accounting entry; legal rights maintained. Recovery continues.</li>
+<li><b>Prudential Write-Off:</b> Full provision + Board approval for write-off; but legal rights intact for recovery.</li>
+<li>Both do NOT absolve borrower's liability — recovery continues.</li>
+<li>Written-off accounts tracked in separate register.</li>
+<li>Recovery from written-off: 100% credit to P&L.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t16"><div class="topic-head" onclick="toggleTopic('t16')"><div class="topic-title"><span class="topic-num">16</span>Non-Cooperative Borrower</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t16',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Borrower not cooperating with resolution/recovery efforts.</li>
+<li>Reported to RBI; attracts higher provisioning.</li>
+<li>Additional provisioning: minimum 20% on SS Assets + 100% on DA/Loss Assets.</li>
+<li>Different from Wilful Defaulter — may or may not have capacity to pay but not cooperating.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t17"><div class="topic-head" onclick="toggleTopic('t17')"><div class="topic-title"><span class="topic-num">17</span>Fraud Classification & Reporting</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t17',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Account classified as fraud if deceitful intent + loss to bank.</li>
+<li>Report via FMR-1 to RBI within 21 days of detection.</li>
+<li>Provisioning: 100% of exposure in installments over 4 quarters (recent RBI relaxation for restructured fraud).</li>
+<li>All classifications in category-wise fraud returns.</li>
+<li>Section 447 Companies Act — criminal prosecution.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t18"><div class="topic-head" onclick="toggleTopic('t18')"><div class="topic-title"><span class="topic-num">18</span>Recovery Policy 2026 (IOB)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t18',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Strategy: Early detection + prompt action.</li>
+<li>Tools:
+<ul>
+<li>Negotiated settlement (OTS).</li>
+<li>SARFAESI action.</li>
+<li>DRT suit.</li>
+<li>IBC referral (for corporates).</li>
+<li>Lok Adalat for small accounts.</li>
+<li>Sale to ARC.</li>
+</ul></li>
+<li>DRA engagement for small / retail accounts.</li>
+<li>Sahaj — recovery through compromise for small retail accounts.</li>
+<li>Internal portal for monitoring: PACE, Bank Mitra.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t19"><div class="topic-head" onclick="toggleTopic('t19')"><div class="topic-title"><span class="topic-num">19</span>Compromise Sanctioning (CGC Policy)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t19',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>CGC = Compromise Granting Committee.</li>
+<li>Bank-level committee: General Manager + designated members.</li>
+<li>Specific matrix for compromise sanctioning per amount.</li>
+<li>All settlements require minimum sacrifice justification.</li>
+<li>Beyond specified limit: Board Committee / Management Committee.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t20"><div class="topic-head" onclick="toggleTopic('t20')"><div class="topic-title"><span class="topic-num">20</span>Recovery Flow (End-to-End)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t20',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<div class="flow-container">
+<div class="flow-title">Recovery Process Flow</div>
+<div style="text-align:center;white-space:nowrap">
+<div class="flow-step"><div class="flow-circle">1</div><div class="flow-label">SMA<br>Early Warning</div></div>
+<span class="flow-arrow">→</span>
+<div class="flow-step"><div class="flow-circle">2</div><div class="flow-label">NPA<br>Classification</div></div>
+<span class="flow-arrow">→</span>
+<div class="flow-step"><div class="flow-circle">3</div><div class="flow-label">Resolution<br>(OTS/Restructure)</div></div>
+<span class="flow-arrow">→</span>
+<div class="flow-step"><div class="flow-circle">4</div><div class="flow-label">SARFAESI<br>/ DRT / IBC</div></div>
+<span class="flow-arrow">→</span>
+<div class="flow-step"><div class="flow-circle">5</div><div class="flow-label">Recovery<br>/ Write-off</div></div>
+</div>
+</div>
+</div></div>
+
+</div>
+
+<div id="flash" class="view"><div class="alert alert-info"><b>💡 Tap to flip.</b></div><div class="flashcard-deck" id="flashDeck"></div></div>
+<div id="compare" class="view"><div class="alert alert-info"><b>⚖️ Compare.</b></div><div id="compareList"></div></div>
+<div id="numbers" class="view"><div class="alert alert-warn"><b>🔢 Memorize.</b></div><input class="search-box" placeholder="🔍 Search..." oninput="filterNums(this.value)"><div id="numList"></div></div>
+<div id="mcq" class="view">
+<div id="quizIntro">
+<div class="quiz-intro"><h2>📝 Module E Quiz</h2><p>50 questions • NPA, SARFAESI, IBC drill</p><button class="quiz-btn" onclick="startQuiz()">▶️ Start</button></div>
+<div class="quiz-stats"><div class="quiz-stat"><div class="v" id="stAtt">0</div><div class="l">Attempted</div></div><div class="quiz-stat"><div class="v" id="stCor">0</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v" id="stAcc">0%</div><div class="l">Accuracy</div></div></div>
+<div class="action-row"><button class="btn btn-sec" onclick="reviewWeak()" style="flex:1">🎯 Review Weak</button></div>
+</div>
+<div id="quizArea" style="display:none"></div>
+</div>
+<div id="cases" class="view"><div class="alert alert-info"><b>📋 Scenarios.</b></div><div id="caseList"></div></div>
+</div>
+<button class="float-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const MOD_KEY='iob_mod_E_v1';
+let state=JSON.parse(localStorage.getItem(MOD_KEY)||'{}');
+if(!state.topics)state.topics={};if(!state.quiz)state.quiz={attempted:0,correct:0,perQuestion:{}};if(!state.weak)state.weak=[];if(!state.theme)state.theme='light';
+function save(){localStorage.setItem(MOD_KEY,JSON.stringify(state))}
+function toggleTheme(){state.theme=state.theme==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',state.theme);document.querySelector('.theme-btn').textContent=state.theme==='dark'?'☀️':'🌙';save()}
+function showTab(id,el){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.tab-chip').forEach(c=>c.classList.remove('active'));document.getElementById(id).classList.add('active');el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+function toggleTopic(id){document.getElementById(id).classList.toggle('open')}
+function toggleDone(id,el){state.topics[id]=!state.topics[id];if(state.topics[id])el.classList.add('done');else el.classList.remove('done');save();updateProgressBar()}
+function updateProgressBar(){const done=Object.keys(state.topics).filter(k=>state.topics[k]).length;document.getElementById('pbar').style.width=Math.round(done/20*100)+'%'}
+function filterTopics(q){q=q.toLowerCase();document.querySelectorAll('.topic').forEach(t=>{const text=t.innerText.toLowerCase();t.style.display=(!q||text.includes(q))?'':'none';if(q&&text.includes(q))t.classList.add('open')})}
+
+const FLASHCARDS=[
+{q:"NPA — overdue classification?",a:"> 90 days overdue"},{q:"Sub-Standard Asset classification period?",a:"First 12 months as NPA"},{q:"DA-1 period?",a:"Next 12 months (2nd year as NPA)"},{q:"DA-2 period?",a:"Next 24 months (3rd & 4th year as NPA)"},{q:"DA-3 period?",a:"5th year onwards"},
+{q:"Agricultural NPA — short-duration crop?",a:"Overdue for 2 crop seasons"},{q:"Agricultural NPA — long-duration crop?",a:"Overdue for 1 crop season"},
+{q:"Erosion in security — direct to Doubtful?",a:"Realisable value < 50% of outstanding"},{q:"Erosion in security — direct to Loss?",a:"Realisable value < 10% of outstanding"},
+{q:"Sub-Standard secured — provision %?",a:"15%"},{q:"Sub-Standard unsecured ab initio — provision?",a:"25%"},{q:"DA-1 secured provision?",a:"25%"},{q:"DA-2 secured provision?",a:"40%"},{q:"DA-3 secured provision?",a:"100%"},
+{q:"Doubtful unsecured portion provision?",a:"100% (always)"},{q:"Loss Asset provision?",a:"100%"},
+{q:"Standard Agri / MSE / Individual Housing — provisioning?",a:"0.25%"},{q:"CRE provisioning (standard)?",a:"1.00%"},{q:"CRE-RH provisioning?",a:"0.75%"},
+{q:"SARFAESI Sec 13(2) — demand notice period?",a:"60 days"},
+{q:"SARFAESI Sec 13(3A) — bank's reply to objection?",a:"Within 15 days"},
+{q:"SARFAESI Sec 17 — appeal to DRT?",a:"Within 45 days of Sec 13(4) action"},
+{q:"SARFAESI Sec 18 — DRAT appeal deposit?",a:"50% of debt (reducible to 25% at DRAT's discretion)"},
+{q:"SARFAESI Sec 14 — assistance from?",a:"Chief Metropolitan Magistrate (CMM) / District Magistrate (DM) for physical possession"},
+{q:"SARFAESI exemption — key category?",a:"Agricultural land (specifically exempted)"},
+{q:"DRT monetary jurisdiction?",a:"≥ ₹20 lakh"},
+{q:"Number of DRTs in India?",a:"39 DRTs"},
+{q:"DRAT appeal deposit %?",a:"50% of debt (minimum)"},
+{q:"Lok Adalat — nature of award?",a:"Deemed decree of civil court; final; no appeal"},
+{q:"IBC — minimum default for corporate CIRP?",a:"₹1 Crore"},
+{q:"IBC CIRP timeline (initial + extension)?",a:"180 days + 90 days = 270 days; outer limit 330 days"},
+{q:"CoC voting threshold for Resolution Plan?",a:"66% by value"},
+{q:"Sec 29A IBC — who is barred?",a:"Wilful defaulters, NPA > 1 year borrowers, convicted persons, disqualified directors"},
+{q:"Pre-pack insolvency — min default?",a:"₹10 lakh (for MSMEs only)"},
+{q:"LOC — who can request from PSBs?",a:"MD / CEO of PSB (post MoF Notification 22.11.2018)"},
+{q:"LOC — issued by?",a:"Bureau of Immigration (BoI), Ministry of Home Affairs"},
+{q:"Wilful Defaulter — threshold outstanding?",a:"≥ ₹25 lakh"},
+{q:"Wilful Defaulter — bar from fresh credit?",a:"5 years from removal from the list"},
+{q:"Transfer of Loan Exposures (TLE) — MHP for retail/housing?",a:"3 months"},
+{q:"TLE MHP for others?",a:"6 months"},
+{q:"ICA (Inter-Creditor Agreement) voting threshold?",a:"66% by value AND 60% by number"},
+{q:"Resolution Plan implementation — timeline after review period?",a:"180 days (extra provisions if delayed)"},
+{q:"Additional provision — RP delayed beyond 180 days?",a:"20% extra"},
+{q:"Additional provision — RP delayed beyond 365 days?",a:"15% more (total 35%)"},
+{q:"MSME revival — committee decision in?",a:"30 days from application"},
+{q:"MSME revival — threshold loan?",a:"Aggregate loan ≤ ₹25 Cr"},
+{q:"OTS upfront payment typical?",a:"10-25% at approval"},
+{q:"OTS balance in instalments?",a:"3-12 months"},
+{q:"Technical Write-Off vs Prudential?",a:"Both: legal rights intact; recovery continues. Prudential: Board-approved full provision + write-off."},
+{q:"Decree limitation period?",a:"12 years from decree date"},
+{q:"Non-Cooperative Borrower — additional provision?",a:"20% on SS + 100% on DA/Loss"}
+];
+function renderFlashcards(){document.getElementById('flashDeck').innerHTML=FLASHCARDS.map((c,i)=>`<div class="flashcard" onclick="this.classList.toggle('flipped')"><div class="flashcard-inner"><div class="flashcard-face flashcard-front">${c.q}<div class="flashcard-hint">Tap to flip • Card ${i+1}/${FLASHCARDS.length}</div></div><div class="flashcard-face flashcard-back">${c.a}</div></div></div>`).join('')}
+
+const COMPARE=[
+{title:'Asset Classification Timeline',rows:[['Standard','No overdue > 90 days'],['Sub-Standard','First 12 months as NPA'],['DA-1','2nd year (next 12 months)'],['DA-2','3rd & 4th year (24 months)'],['DA-3','5th year onwards'],['Loss','Identified as uncollectable']]},
+{title:'Provisioning — NPA',rows:[['SS Secured','15%'],['SS Unsecured ab initio','25%'],['SS Infrastructure Secured','20%'],['DA-1 Secured','25%'],['DA-2 Secured','40%'],['DA-3 Secured','100%'],['Doubtful Unsecured (any)','100%'],['Loss','100%']]},
+{title:'Standard Asset Provisioning',rows:[['Agri / MSE / Individual Housing','0.25%'],['CRE-RH','0.75%'],['CRE','1.00%'],['Medium Enterprises / Others','0.40%']]},
+{title:'SARFAESI Key Sections',rows:[['Sec 13(2)','60-day demand notice'],['Sec 13(3A)','Bank reply to objection — 15 days'],['Sec 13(4)','Possession enforcement'],['Sec 14','CMM/DM assistance for physical possession'],['Sec 17','Appeal to DRT within 45 days'],['Sec 18','DRAT appeal with 50% deposit'],['Sec 29A','Barred persons under IBC resolution']]},
+{title:'DRT vs Lok Adalat',rows:[['Authority','Tribunal','Mediation forum'],['Jurisdiction','≥ ₹20 lakh','Up to ₹20L (DRT Lok Adalat)'],['Nature','Adjudication','Compromise'],['Award','Decree','Deemed decree (final, no appeal)'],['Fee','Court fee','No fee']]},
+{title:'IBC CIRP Timeline',rows:[['Initial','180 days'],['Extension','+90 days (one-time)'],['Total allowed','270 days'],['Outer limit (incl. litigation)','330 days'],['CoC voting threshold','66% by value']]},
+{title:'OTS Approval Hierarchy',rows:[['Up to ₹10 lakh','BM / RO Scale IV'],['₹10L to ₹1 Cr','Regional Head / RO Committee'],['₹1 Cr to ₹10 Cr','Central Office / GMC'],['Above ₹10 Cr','Board Committee (SMAC / BMC)']]},
+{title:'TLE Minimum Holding Period',rows:[['Housing / Retail','3 months'],['Others','6 months'],['Stressed assets','Not applicable']]}
+];
+function renderCompare(){document.getElementById('compareList').innerHTML=COMPARE.map(c=>`<div class="compare-card"><div class="compare-head" onclick="this.parentElement.classList.toggle('open')"><span>${c.title}</span><span class="arrow">▼</span></div><div class="compare-body"><table>${c.rows.map(r=>`<tr>${r.map((cell,idx)=>idx===0?`<td><b>${cell}</b></td>`:`<td>${cell}</td>`).join('')}</tr>`).join('')}</table></div></div>`).join('')}
+
+const NUMBERS=[
+{v:'> 90 days',d:'NPA classification',cat:'IRAC'},{v:'12 months',d:'SS → DA-1 (first year as NPA)',cat:'IRAC'},
+{v:'12 months',d:'DA-1 → DA-2 (next year)',cat:'IRAC'},{v:'24 months',d:'DA-2 → DA-3 (3rd & 4th year)',cat:'IRAC'},
+{v:'2 seasons',d:'Agri NPA — short crop',cat:'IRAC'},{v:'1 season',d:'Agri NPA — long crop',cat:'IRAC'},
+{v:'< 50%',d:'Security erosion → direct to Doubtful',cat:'IRAC'},{v:'< 10%',d:'Security erosion → direct to Loss',cat:'IRAC'},
+{v:'15%',d:'SS secured provision',cat:'Provision'},{v:'25%',d:'SS unsecured provision / DA-1 secured',cat:'Provision'},
+{v:'40%',d:'DA-2 secured provision',cat:'Provision'},{v:'100%',d:'DA-3 secured / Doubtful unsecured / Loss',cat:'Provision'},
+{v:'0.25%',d:'Standard — Agri / MSE / Individual Housing',cat:'Provision'},{v:'0.75%',d:'Standard — CRE-RH',cat:'Provision'},{v:'1.00%',d:'Standard — CRE',cat:'Provision'},
+{v:'0.40%',d:'Standard — Medium Enterprises / Others',cat:'Provision'},
+{v:'70%+',d:'PCR target for PSBs (Provisioning Coverage Ratio)',cat:'Provision'},
+{v:'60 days',d:'SARFAESI Sec 13(2) demand notice',cat:'SARFAESI'},
+{v:'15 days',d:'Bank reply to Sec 13(3A) objection',cat:'SARFAESI'},
+{v:'45 days',d:'DRT appeal — Sec 17',cat:'SARFAESI'},
+{v:'50%',d:'DRAT appeal deposit — Sec 18 (reducible to 25%)',cat:'SARFAESI'},
+{v:'30 days',d:'SARFAESI sale — notice period to borrower',cat:'SARFAESI'},
+{v:'10%',d:'EMD for SARFAESI auction bidders',cat:'SARFAESI'},
+{v:'25%',d:'SARFAESI auction — immediate payment by bidder',cat:'SARFAESI'},
+{v:'90 days',d:'SARFAESI auction — balance 75% payment',cat:'SARFAESI'},
+{v:'₹20 lakh',d:'DRT monetary jurisdiction',cat:'DRT'},
+{v:'39',d:'Number of DRTs in India',cat:'DRT'},
+{v:'5',d:'Number of DRATs in India',cat:'DRT'},
+{v:'₹20 lakh',d:'DRT Lok Adalat upper limit',cat:'LA'},
+{v:'₹1 Cr',d:'IBC CIRP minimum default (corporate)',cat:'IBC'},
+{v:'₹10 lakh',d:'Pre-pack insolvency — minimum (MSME)',cat:'IBC'},
+{v:'180 days',d:'IBC CIRP initial period',cat:'IBC'},
+{v:'90 days',d:'IBC CIRP extension (one-time)',cat:'IBC'},
+{v:'270 days',d:'IBC CIRP max (with extension)',cat:'IBC'},
+{v:'330 days',d:'IBC outer limit incl. litigation',cat:'IBC'},
+{v:'66%',d:'CoC voting threshold (by value)',cat:'IBC'},
+{v:'₹25 lakh',d:'Wilful Defaulter threshold',cat:'WD'},
+{v:'5 years',d:'Wilful Defaulter — bar from fresh credit',cat:'WD'},
+{v:'3 months',d:'TLE MHP — housing / retail',cat:'TLE'},
+{v:'6 months',d:'TLE MHP — other loans',cat:'TLE'},
+{v:'66% & 60%',d:'ICA voting thresholds (value & number)',cat:'ICA'},
+{v:'30 days',d:'Review period from default',cat:'Resolution'},
+{v:'180 days',d:'RP implementation from review end',cat:'Resolution'},
+{v:'20%',d:'Extra provision — RP delayed beyond 180 days',cat:'Resolution'},
+{v:'35% total',d:'Extra provision — RP delayed beyond 365 days',cat:'Resolution'},
+{v:'₹25 Cr',d:'MSME revival framework — aggregate loan cap',cat:'MSME'},
+{v:'5 days',d:'MSME revival committee formation',cat:'MSME'},
+{v:'30 days',d:'MSME revival committee decision',cat:'MSME'},
+{v:'10-25%',d:'OTS upfront payment typical',cat:'OTS'},
+{v:'3-12 months',d:'OTS balance in instalments',cat:'OTS'},
+{v:'12 years',d:'Decree limitation period',cat:'Legal'},
+{v:'21 days',d:'FMR-1 fraud reporting from detection',cat:'Fraud'},
+{v:'₹1 Cr',d:'FMR-1 threshold',cat:'Fraud'}
+];
+function renderNumbers(f=''){f=f.toLowerCase();const items=NUMBERS.filter(n=>!f||n.v.toLowerCase().includes(f)||n.d.toLowerCase().includes(f)||n.cat.toLowerCase().includes(f));document.getElementById('numList').innerHTML=items.map(n=>`<div class="num-card"><div class="num-badge">${n.v}</div><div class="num-desc"><div class="num-cat">${n.cat}</div>${n.d}</div></div>`).join('')||'<p style="text-align:center;padding:30px;color:var(--muted)">No matches</p>'}
+function filterNums(v){renderNumbers(v)}
+
+const QUIZ=[
+{q:"When does a loan account become NPA?",o:["Interest overdue 30 days","Overdue > 60 days","Overdue > 90 days","Overdue > 120 days"],a:2,e:"Beyond 90 days overdue → NPA."},
+{q:"Sub-Standard Asset — classification period?",o:["First 6 months","First 12 months","First 24 months","First 36 months"],a:1,e:"Sub-Standard: First 12 months from date of NPA."},
+{q:"DA-2 asset classification period?",o:["Next 12 months","Next 18 months","Next 24 months","Next 36 months"],a:2,e:"DA-2: Next 24 months (3rd & 4th year as NPA)."},
+{q:"Agricultural NPA — short-duration crop?",o:["1 crop season","2 crop seasons","3 crop seasons","4 crop seasons"],a:1,e:"Short crop: NPA if overdue for 2 crop seasons. Long crop: 1 crop season."},
+{q:"Erosion in security — classification to Loss?",o:["< 25%","< 20%","< 10%","< 5%"],a:2,e:"Realisable value < 10% → direct to Loss. < 50% → direct to Doubtful."},
+{q:"Sub-Standard secured — provision?",o:["10%","15%","20%","25%"],a:1,e:"SS Secured: 15%. SS Unsecured ab initio: 25%. SS Infrastructure: 20%."},
+{q:"DA-1 secured — provision?",o:["15%","25%","40%","100%"],a:1,e:"DA-1 Secured: 25%."},
+{q:"DA-2 secured — provision?",o:["25%","40%","75%","100%"],a:1,e:"DA-2 Secured: 40%."},
+{q:"Doubtful unsecured portion — provision?",o:["25%","40%","75%","100%"],a:3,e:"Doubtful UNSECURED portion: 100% at all stages."},
+{q:"Standard Agri / MSE / Individual Housing provision?",o:["0.25%","0.40%","0.75%","1.00%"],a:0,e:"0.25% standard provision. CRE: 1%. CRE-RH: 0.75%. Medium/Others: 0.40%."},
+{q:"CRE Standard provision?",o:["0.25%","0.40%","0.75%","1.00%"],a:3,e:"Commercial Real Estate: 1.00%."},
+{q:"SARFAESI Sec 13(2) — demand notice period?",o:["30 days","45 days","60 days","90 days"],a:2,e:"60 days to repay the amount after demand notice."},
+{q:"SARFAESI Sec 13(3A) — bank's reply to borrower's objection?",o:["7 days","10 days","15 days","30 days"],a:2,e:"Bank must reply within 15 days."},
+{q:"SARFAESI Sec 17 — appeal to DRT?",o:["Within 30 days","Within 45 days","Within 60 days","Within 90 days"],a:1,e:"45 days of Sec 13(4) possession action."},
+{q:"DRAT appeal — minimum deposit?",o:["25%","50%","75%","100%"],a:1,e:"50% of debt amount (reducible to 25% at DRAT's discretion)."},
+{q:"SARFAESI Sec 14 — assistance from?",o:["Police","Chief Metropolitan Magistrate / DM","High Court","DRT"],a:1,e:"CMM / DM for physical possession assistance."},
+{q:"SARFAESI NOT applicable to?",o:["Housing loan","Agricultural land","Vehicle loan","CC against stocks"],a:1,e:"Agricultural land specifically exempted."},
+{q:"SARFAESI auction — EMD percentage?",o:["5%","10%","15%","25%"],a:1,e:"10% of reserve price as EMD by bidders."},
+{q:"SARFAESI auction — successful bidder balance 75% payment?",o:["Within 15 days","Within 30 days","Within 90 days","Within 180 days"],a:2,e:"Within 90 days."},
+{q:"DRT monetary jurisdiction (minimum)?",o:["₹5 lakh","₹10 lakh","₹20 lakh","₹50 lakh"],a:2,e:"≥ ₹20 lakh (lower cases go to civil courts)."},
+{q:"Number of DRTs in India?",o:["29","35","39","45"],a:2,e:"39 DRTs across India."},
+{q:"DRT Lok Adalat upper monetary limit?",o:["₹10 lakh","₹20 lakh","₹1 Cr","No limit"],a:1,e:"Up to ₹20 lakh at DRT Lok Adalat. Larger via Permanent/Mega Lok Adalat."},
+{q:"Lok Adalat award — nature?",o:["Advisory","Deemed decree, final","Interim order","Mediation report"],a:1,e:"Deemed decree of civil court; final; no appeal."},
+{q:"IBC — minimum default for corporate CIRP initiation?",o:["₹10 lakh","₹50 lakh","₹1 Crore","₹5 Crore"],a:2,e:"₹1 Crore (raised from ₹1 lakh in March 2020). Pre-pack for MSME: ₹10 lakh."},
+{q:"CIRP initial timeline?",o:["90 days","180 days","270 days","365 days"],a:1,e:"180 days initial; +90 days extension; outer limit 330 days (incl. litigation)."},
+{q:"CIRP maximum (incl. extension)?",o:["180","270","330","360"],a:1,e:"270 days (180 + 90 one-time extension). Outer limit with litigation: 330 days."},
+{q:"CoC voting threshold for Resolution Plan?",o:["50%","51%","66%","75%"],a:2,e:"66% by value of CoC for approval of Resolution Plan."},
+{q:"Section 29A IBC bars?",o:["All borrowers","Wilful defaulters, NPA > 1 year, convicted","Only promoters","Only directors"],a:1,e:"Barred: Wilful defaulters, borrowers whose A/c is NPA > 1 year at filing, convicted persons, disqualified directors."},
+{q:"Pre-pack insolvency applies to?",o:["All companies","Only MSMEs","Listed companies","Partnership firms"],a:1,e:"Pre-pack is only for MSMEs. Min default: ₹10 lakh. 120 days total."},
+{q:"Pre-pack IBC total timeline?",o:["90 days","120 days","180 days","270 days"],a:1,e:"120 days (90 for approval + 30 for AA)."},
+{q:"LOC (Look Out Circular) — against PSBs authorized to request?",o:["Branch Manager","Regional Manager","MD / CEO of PSB","CGM"],a:2,e:"MD/CEO of PSBs empowered since MoF Notification 22.11.2018."},
+{q:"LOC requests sent to?",o:["Enforcement Directorate","Bureau of Immigration (BoI)","CBI","High Court"],a:1,e:"Deputy Director, Bureau of Immigration (BoI), R.K. Puram, New Delhi."},
+{q:"Wilful Defaulter outstanding threshold?",o:["₹10 lakh","₹25 lakh","₹1 Cr","₹5 Cr"],a:1,e:"Outstanding ≥ ₹25 lakh, defined in RBI 2015 Master Circular."},
+{q:"Wilful Defaulter — bar from fresh credit?",o:["2 years","3 years","5 years","10 years"],a:2,e:"5 years from date of removal from wilful defaulter list."},
+{q:"TLE Minimum Holding Period — housing loans?",o:["3 months","6 months","12 months","18 months"],a:0,e:"3 months for housing/retail. 6 months for others. NA for stressed assets."},
+{q:"ICA voting thresholds (both)?",o:["50% value, 50% number","60% value, 60% number","66% value, 60% number","75% value, 51% number"],a:2,e:"66% by value AND 60% by number of lenders."},
+{q:"Resolution Plan implementation — timeline after review period?",o:["90 days","180 days","270 days","365 days"],a:1,e:"180 days from end of 30-day review period."},
+{q:"Additional provision if RP delayed beyond 180 days?",o:["5%","10%","15%","20%"],a:3,e:"Extra 20% provisioning. Beyond 365: another 15% — total 35%."},
+{q:"MSME Revival Framework — aggregate loan threshold?",o:["₹5 Cr","₹10 Cr","₹25 Cr","₹50 Cr"],a:2,e:"≤ ₹25 Cr aggregate loan. Committee decision in 30 days of application."},
+{q:"MSME revival committee formed in how many days of application?",o:["3 days","5 days","15 days","30 days"],a:1,e:"Committee formed within 5 days; decision within 30 days."},
+{q:"Three stages of MSME revival?",o:["Review-Response-Recovery","Rectification-Restructuring-Recovery","Negotiation-Restructuring-Settlement","Monitoring-Action-Recovery"],a:1,e:"Rectification → Restructuring → Recovery."},
+{q:"OTS upfront payment typical range?",o:["0-5%","5-10%","10-25%","25-50%"],a:2,e:"10-25% upfront at approval; balance in 3-12 months."},
+{q:"Which asset type is directly classified as Loss on security erosion?",o:["Any NPA","Realisable value < 10%","When overdue > 1 year","All substandards"],a:1,e:"Realisable value < 10% of outstanding → direct to Loss (per IRAC)."},
+{q:"FMR-1 fraud reporting threshold?",o:["₹10 lakh","₹25 lakh","₹50 lakh","₹1 Crore"],a:3,e:"Frauds ≥ ₹1 Cr in FMR-1 to RBI within 21 days of detection."},
+{q:"FMR-1 reporting timeline from detection?",o:["7 days","14 days","21 days","30 days"],a:2,e:"Within 21 days of fraud detection."},
+{q:"Decree limitation period (for execution)?",o:["3 years","6 years","12 years","20 years"],a:2,e:"12 years from decree date."},
+{q:"Asset classification in consortium — basis?",o:["Lead bank's record","Oldest bank's record","Individual bank's recovery record","Combined CRILC status"],a:2,e:"Each bank classifies based on its own recovery record in the consortium account."},
+{q:"Which is exempt from NPA classification?",o:["Advances against gold ornaments","Advances against govt securities","Advances against FD with margin","All of the above"],a:2,e:"Advances against FD / NSC / KVP / LIC Policy with adequate margin are exempt. Gold ornaments and govt securities are NOT exempt."},
+{q:"Non-Cooperative Borrower — additional provisioning on SS?",o:["5%","10%","20%","30%"],a:2,e:"Additional 20% on SS Assets of Non-Cooperative Borrowers."}
+];
+
+let quizIndex=0;let currentOrder=[];
+function startQuiz(){currentOrder=QUIZ.map((_,i)=>i).sort(()=>Math.random()-0.5);quizIndex=0;document.getElementById('quizIntro').style.display='none';document.getElementById('quizArea').style.display='block';renderQuestion()}
+function renderQuestion(){if(quizIndex>=currentOrder.length){renderResult();return}const qid=currentOrder[quizIndex];const q=QUIZ[qid];const prev=state.quiz.perQuestion[qid];document.getElementById('quizArea').innerHTML=`<div class="quiz-stats"><div class="quiz-stat"><div class="v">${quizIndex+1}/${currentOrder.length}</div><div class="l">Progress</div></div><div class="quiz-stat"><div class="v">${state.quiz.correct}</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v">${state.quiz.attempted?Math.round(state.quiz.correct/state.quiz.attempted*100):0}%</div><div class="l">Accuracy</div></div></div><div class="question-card"><div class="q-num">Question ${quizIndex+1} of ${currentOrder.length}</div><div class="q-text">${q.q}</div>${q.o.map((opt,i)=>`<div class="option" onclick="pickOption(${qid},${i},this)" id="opt-${i}">${String.fromCharCode(65+i)}) ${opt}</div>`).join('')}<div class="explanation" id="exp"><b>💡 ${q.o[q.a]}</b><br>${q.e}</div><div class="nav-btns"><button class="btn-prev" onclick="prevQuestion()">← Prev</button><button class="btn-next" onclick="nextQuestion()">Next →</button></div></div>`;if(prev!==undefined){const sel=prev;document.getElementById('opt-'+sel).classList.add(sel===q.a?'correct':'wrong');if(sel!==q.a)document.getElementById('opt-'+q.a).classList.add('correct');document.getElementById('exp').classList.add('show')}}
+function pickOption(qid,idx,el){const q=QUIZ[qid];if(state.quiz.perQuestion[qid]!==undefined)return;state.quiz.perQuestion[qid]=idx;state.quiz.attempted++;if(idx===q.a){state.quiz.correct++;el.classList.add('correct')}else{el.classList.add('wrong');document.getElementById('opt-'+q.a).classList.add('correct');if(!state.weak.includes(qid))state.weak.push(qid)}document.getElementById('exp').classList.add('show');save();updateStatBoxes()}
+function nextQuestion(){quizIndex++;renderQuestion()}
+function prevQuestion(){if(quizIndex>0)quizIndex--;renderQuestion()}
+function renderResult(){const s=state.quiz.correct,t=state.quiz.attempted,p=t?Math.round(s/t*100):0;let m='Good effort!';if(p>=80)m='🎉 Excellent!';else if(p>=60)m='👍 Solid.';else if(p>=40)m='📚 Practice more.';else m='💪 Keep going.';document.getElementById('quizArea').innerHTML=`<div class="result-card"><div style="font-size:50px">${p>=60?'🏆':'📖'}</div><div class="result-score">${p}%</div><div class="result-msg">${m}</div><div class="result-row"><div class="quiz-stat"><div class="v">${s}</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v">${t-s}</div><div class="l">Wrong</div></div></div><div class="action-row"><button class="btn" onclick="resetQuiz()">🔄 Retake</button><button class="btn btn-sec" onclick="reviewWeak()">🎯 Weak</button></div></div>`}
+function resetQuiz(){state.quiz={attempted:0,correct:0,perQuestion:{}};state.weak=[];save();document.getElementById('quizArea').style.display='none';document.getElementById('quizIntro').style.display='block';updateStatBoxes()}
+function reviewWeak(){if(state.weak.length===0){alert('No weak topics yet!');return}currentOrder=[...state.weak];quizIndex=0;document.getElementById('quizIntro').style.display='none';document.getElementById('quizArea').style.display='block';state.weak.forEach(w=>{delete state.quiz.perQuestion[w]});state.quiz.attempted=Math.max(0,state.quiz.attempted-state.weak.length);state.weak=[];save();renderQuestion()}
+function updateStatBoxes(){const a=state.quiz.attempted,c=state.quiz.correct,ac=a?Math.round(c/a*100):0;if(document.getElementById('stAtt'))document.getElementById('stAtt').textContent=a;if(document.getElementById('stCor'))document.getElementById('stCor').textContent=c;if(document.getElementById('stAcc'))document.getElementById('stAcc').textContent=ac+'%'}
+
+const CASES=[
+{t:'1. NPA Classification Timeline',scenario:'A housing loan of ₹25 lakh with security value ₹40 lakh became NPA on 01-Apr-2024. It is now 15-Nov-2026. What is current classification + provision?',solution:'<b>Step 1: NPA since 01-Apr-2024. Today is 15-Nov-2026 = 31 months as NPA.</b><br><b>Classification:</b><br>• 01-Apr-2024 to 31-Mar-2025 (12 months) = Sub-Standard.<br>• 01-Apr-2025 to 31-Mar-2026 (12 months) = DA-1.<br>• 01-Apr-2026 onwards (currently in 2nd year of Doubtful, 3rd overall year) = DA-2 starts.<br>• <b>Current: DA-2 (secured)</b>.<br><b>Provision for DA-2 secured:</b> 40%.<br><b>Security:</b> ₹40 lakh > ₹25 lakh outstanding — fully secured.<br><b>Provision amount:</b> 40% of ₹25 lakh = ₹10 lakh.<br><b>Key learning:</b> Track dates carefully — 12-12-24 month blocks for SS/DA-1/DA-2.'},
+{t:'2. SARFAESI Action',scenario:'Mr. Vel\'s small enterprise CC of ₹50 lakh is NPA. Property mortgaged: ₹1 Cr. He\'s not responding. Design the SARFAESI timeline.',solution:'<b>Day 0:</b> Classify as NPA (overdue > 90 days).<br><b>Day 1:</b> Issue <b>Sec 13(2) demand notice</b> — 60 days to repay.<br><b>Day 60:</b> If no response/objection → proceed.<br><b>Day 60-75:</b> If borrower raises objection under 13(3A), bank replies within 15 days.<br><b>Day 70:</b> Serve <b>Sec 13(4) notice</b> to take possession.<br><b>Day 75:</b> Symbolic Possession — affix notice on property + inventory.<br><b>Day 90:</b> Apply to <b>CMM/DM under Sec 14</b> for physical possession assistance.<br><b>Day 120:</b> Take physical possession (with police help if needed).<br><b>Day 125:</b> Valuation report + reserve price.<br><b>Day 155:</b> Issue 30-day sale notice + publish in newspaper.<br><b>Day 185:</b> Auction with 10% EMD. Successful bidder: 25% immediately.<br><b>Day 275 (90 days from auction):</b> Balance 75% received. Sale certificate issued.<br><b>Borrower rights:</b> Sec 17 appeal to DRT within 45 days of Sec 13(4). Must deposit 50% to DRAT.<br><b>Key learning:</b> 4-8 month timeline from NPA to realization under SARFAESI.'},
+{t:'3. IBC vs SARFAESI Decision',scenario:'Mr. Shah\'s corporate borrower default = ₹5 Cr. Company has ₹8 Cr of debts across 4 banks. Which route: SARFAESI or IBC?',solution:'<b>Option 1: SARFAESI (your bank alone)</b><br>• Only your loan. Fast — 4-8 months.<br>• But other 3 banks\' security interests may complicate.<br>• You get only your share from sale proceeds.<br><br><b>Option 2: IBC (CIRP)</b><br>• Threshold met (>₹1 Cr default).<br>• All 4 banks join CoC — unified action.<br>• CIRP in 180+90 days.<br>• Resolution Plan — company may revive OR liquidation.<br>• 66% CoC vote.<br>• All banks share proceeds per waterfall.<br><br><b>Consideration:</b><br>• Small default/single bank → SARFAESI.<br>• Multiple banks + viability concerns → IBC.<br>• If promoter is wilful defaulter → IBC (Sec 29A bars them from bidding back).<br><br><b>Recommendation:</b> With 4 banks + ₹8 Cr total debt + possible viability → <b>IBC better</b>. Joint action through CoC.<br><b>Key learning:</b> Multiple creditors + going concern = IBC. Single + liquidation = SARFAESI.'},
+{t:'4. OTS Decision',scenario:'A ₹2 Cr NPA with security value ₹80 lakh (eroded) sits in DA-2 for 3 years. Borrower offers ₹60 lakh OTS. Analysis?',solution:'<b>Step 1:</b> Bank\'s realisable value from SARFAESI = ₹80 lakh (security). Less legal costs (5-10%), likely net ~₹70-72 lakh. Takes 1+ year.<br><b>Step 2:</b> OTS offer = ₹60 lakh. Immediate cash.<br><b>Step 3:</b> NPV Analysis:<br>• SARFAESI: ₹70L in 1 year at 10% = PV ₹63 lakh.<br>• OTS: ₹60L today.<br><b>Step 4:</b> Difference small; but OTS saves:<br>• Legal costs.<br>• Time (12-18 months).<br>• Provisioning (currently 40% of ₹2 Cr = ₹80 lakh locked).<br>• Risk of further security erosion.<br><b>Step 5:</b> Sanctioning authority:<br>• OTS ₹60 lakh falls in ₹10L-₹1 Cr bracket → Regional Head / RO Committee.<br>• Sacrifice: ₹2 Cr - ₹60 lakh = ₹1.40 Cr → written off against provision.<br><b>Step 6:</b> Terms:<br>• Upfront 10-25% at approval (~₹10-15 lakh).<br>• Balance in 3-12 months.<br>• Default = settlement cancelled.<br><b>Recommendation:</b> Accept OTS — frees up capital, removes NPA.<br><b>Key learning:</b> Compare NPV of recovery vs OTS + consider time + provisioning release.'},
+{t:'5. Wilful Defaulter Declaration',scenario:'A borrower owes ₹35 lakh. Investigation shows: funds diverted to a sister concern for property purchase; stocks sold without informing bank. How to proceed?',solution:'<b>Step 1:</b> Threshold met (₹35L > ₹25L).<br><b>Step 2:</b> Acts fit Wilful Defaulter criteria:<br>• Diversion of funds ✓<br>• Disposal of secured assets without bank knowledge ✓<br>• Likely has capacity (invested in property) ✓<br><b>Step 3:</b> First Identification Committee at bank:<br>• Prepare case with evidence.<br>• Show-cause notice to borrower (15 days to respond).<br>• Hearing.<br>• Decision.<br><b>Step 4:</b> Review Committee at bank:<br>• Final decision.<br>• Classification as Wilful Defaulter.<br><b>Step 5:</b> Reporting:<br>• CIBIL — name reported.<br>• RBI — monthly report.<br>• CRILC — classification tag.<br>• Photograph publication in newspapers (allowed by Karnataka, Madras HC).<br><b>Step 6:</b> Consequences for borrower:<br>• Bar from fresh credit (any bank) — 5 years.<br>• No capital market access.<br>• Cannot be promoter in listed cos.<br>• Sec 29A IBC — barred from Resolution Plan.<br>• LOC can be issued.<br>• Criminal prosecution possible (IPC 405/406/420).<br><b>Step 7:</b> Simultaneously: SARFAESI action for recovery.<br><b>Key learning:</b> Diversion + disposal = strong WD case. Follow procedure strictly.'}
+];
+function renderCases(){document.getElementById('caseList').innerHTML=CASES.map((c,i)=>`<div class="case-card"><div class="case-head" onclick="this.parentElement.classList.toggle('open')"><span>${c.t}</span><span class="arrow">▼</span></div><div class="case-body"><div class="case-scenario"><b>📍 Scenario:</b> ${c.scenario}</div><button class="reveal-btn" onclick="this.nextElementSibling.classList.add('show'); this.style.display='none'">👁️ Reveal Solution</button><div class="case-solution">${c.solution}</div></div></div>`).join('')}
+
+function init(){document.documentElement.setAttribute('data-theme',state.theme);document.querySelector('.theme-btn').textContent=state.theme==='dark'?'☀️':'🌙';Object.keys(state.topics).forEach(id=>{const el=document.querySelector(`#${id} .topic-check`);if(el&&state.topics[id])el.classList.add('done')});updateProgressBar();renderFlashcards();renderCompare();renderNumbers();renderCases();updateStatBoxes()}
+init();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(e => console.log('SW failed:', e));
+  });
+}
+</script>
+</body>
+</html>

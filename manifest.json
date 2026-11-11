@@ -1,0 +1,59 @@
+{
+  "name": "IOB Promotion Prep 2027",
+  "short_name": "IOB Prep",
+  "description": "IOB Career Guide 2027 — complete promotion exam study hub with 11 modules, 500+ MCQs, flashcards, and case studies. Works fully offline.",
+  "start_url": "./IOB_Study_Hub.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0a2540",
+  "theme_color": "#0a2540",
+  "lang": "en-IN",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Module C: Advances",
+      "short_name": "Advances",
+      "url": "./IOB_Module_C.html",
+      "description": "Loan Policy, MSME, Retail, Agri"
+    },
+    {
+      "name": "Module E: NPA & Recovery",
+      "short_name": "NPA",
+      "url": "./IOB_Module_E.html",
+      "description": "IRAC, SARFAESI, IBC"
+    },
+    {
+      "name": "Module G: Forex",
+      "short_name": "Forex",
+      "url": "./IOB_Module_G.html",
+      "description": "FEMA, LRS, LC, Incoterms"
+    },
+    {
+      "name": "Module K: RBI Circulars 2026",
+      "short_name": "RBI",
+      "url": "./IOB_Module_K.html",
+      "description": "Latest 11 RBI circulars"
+    }
+  ]
+}

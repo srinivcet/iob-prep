@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a2540">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IOB Prep">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Module I: Para Banking — IOB 2027</title>
+<style>:root{--bg:#f5f7fb;--card:#fff;--text:#1a202c;--muted:#64748b;--primary:#0a2540;--primary-light:#1e40af;--accent:#d4a017;--success:#10b981;--warn:#f59e0b;--danger:#ef4444;--border:#e2e8f0;--highlight:#fef3c7;--important:#fee2e2;--info:#dbeafe}[data-theme="dark"]{--bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--muted:#94a3b8;--primary:#3b82f6;--accent:#fbbf24;--border:#334155;--highlight:#78350f;--important:#7f1d1d;--info:#1e3a8a}*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;font-size:14px;padding-bottom:80px}.header{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:14px 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.15)}.header-row{display:flex;justify-content:space-between;align-items:center;gap:10px}.back-link{color:#fff;text-decoration:none;font-size:13px;padding:4px 8px;background:rgba(255,255,255,.15);border-radius:8px;display:inline-block}.header h1{font-size:16px;font-weight:700;margin-top:4px}.header-sub{font-size:11px;opacity:.85}.theme-btn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:8px 10px;border-radius:8px;font-size:15px;cursor:pointer}.progress-strip{height:4px;background:rgba(255,255,255,.2);margin-top:8px;border-radius:10px;overflow:hidden}.progress-strip-fill{height:100%;background:linear-gradient(90deg,var(--accent),#fbbf24);transition:width .5s}.tabs{background:var(--card);padding:8px;overflow-x:auto;white-space:nowrap;border-bottom:1px solid var(--border);position:sticky;top:85px;z-index:50;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab-chip{display:inline-block;padding:8px 14px;margin:0 3px;border-radius:20px;background:var(--bg);color:var(--text);border:1px solid var(--border);font-size:12px;font-weight:600;cursor:pointer}.tab-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}[data-theme="dark"] .tab-chip.active{background:var(--accent);color:var(--primary)}.container{padding:14px;max-width:900px;margin:0 auto}.view{display:none}.view.active{display:block;animation:fadeIn .3s ease}@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.topic{background:var(--card);border-radius:12px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid var(--border);overflow:hidden}.topic-head{padding:12px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(90deg,var(--card),var(--bg));user-select:none}.topic-title{font-weight:700;font-size:14px;color:var(--primary);display:flex;align-items:center;gap:8px}[data-theme="dark"] .topic-title{color:var(--accent)}.topic-num{background:var(--primary);color:#fff;width:24px;height:24px;border-radius:50%;text-align:center;line-height:24px;font-size:11px;font-weight:700;flex-shrink:0}[data-theme="dark"] .topic-num{background:var(--accent);color:var(--primary)}.topic-check{width:22px;height:22px;border:2px solid var(--muted);border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}.topic-check.done{background:var(--success);border-color:var(--success)}.topic-check.done::after{content:'✓'}.topic-body{display:none;padding:0 14px 14px}.topic.open .topic-body{display:block;animation:fadeIn .3s ease}.topic.open .topic-arrow{transform:rotate(90deg)}.topic-arrow{transition:transform .3s;color:var(--muted);font-size:14px}h3{margin:14px 0 8px;font-size:14px;color:var(--primary);padding-bottom:4px;border-bottom:2px solid var(--accent)}[data-theme="dark"] h3{color:var(--accent)}p{margin:4px 0 8px}ul,ol{margin:4px 0 10px;padding-left:22px}li{margin:3px 0}.key{background:var(--highlight);padding:2px 6px;border-radius:4px;font-weight:700;color:#92400e;font-size:13px}[data-theme="dark"] .key{color:#fde68a}.alert{padding:10px 12px;margin:10px 0;border-radius:8px;border-left:3px solid;font-size:13px}.alert-info{background:var(--info);border-color:var(--primary-light);color:var(--primary)}.alert-warn{background:var(--highlight);border-color:var(--warn);color:#92400e}[data-theme="dark"] .alert-info{color:#dbeafe}[data-theme="dark"] .alert-warn{color:#fde68a;background:#78350f}table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12.5px}th,td{padding:6px 8px;text-align:left;border:1px solid var(--border)}th{background:var(--bg);font-weight:700;color:var(--primary)}[data-theme="dark"] th{color:var(--accent)}tr:nth-child(even) td{background:var(--bg)}.flashcard-deck{display:flex;flex-direction:column;gap:12px}.flashcard{perspective:1000px;height:180px;cursor:pointer}.flashcard-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}.flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}.flashcard-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;padding:18px;display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.1)}.flashcard-front{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;font-size:15px;font-weight:600}.flashcard-back{background:linear-gradient(135deg,var(--accent),#d97706);color:#1a202c;font-size:13px;transform:rotateY(180deg);font-weight:500;overflow-y:auto;line-height:1.5}.flashcard-hint{position:absolute;bottom:8px;left:0;right:0;font-size:10px;opacity:.7;text-align:center}.compare-card{background:var(--card);border-radius:12px;margin-bottom:10px;border:1px solid var(--border);overflow:hidden}.compare-head{padding:12px 14px;background:linear-gradient(90deg,var(--primary),var(--primary-light));color:#fff;font-weight:700;font-size:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}.compare-body{display:none;padding:10px;overflow-x:auto}.compare-card.open .compare-body{display:block;animation:fadeIn .3s ease}.compare-card.open .compare-head .arrow{transform:rotate(180deg)}.compare-head .arrow{transition:transform .3s;font-size:14px}.num-card{background:var(--card);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid var(--border);display:flex;align-items:center;gap:12px}.num-badge{background:var(--accent);color:var(--primary);padding:6px 10px;border-radius:8px;font-family:monospace;font-weight:700;font-size:13px;min-width:90px;text-align:center;flex-shrink:0}.num-desc{font-size:13px;flex:1}.num-cat{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}.quiz-intro{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:20px;border-radius:14px;margin-bottom:14px;text-align:center}.quiz-intro h2{font-size:20px;margin-bottom:8px}.quiz-intro p{font-size:13px;opacity:.9;margin-bottom:14px}.quiz-btn{padding:10px 20px;background:var(--accent);color:var(--primary);border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px;font-family:inherit}.quiz-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}.quiz-stat{background:var(--card);padding:10px;border-radius:10px;text-align:center;border:1px solid var(--border)}.quiz-stat .v{font-size:20px;font-weight:700;color:var(--primary)}[data-theme="dark"] .quiz-stat .v{color:var(--accent)}.quiz-stat .l{font-size:10px;color:var(--muted);text-transform:uppercase}.question-card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.05)}.q-num{font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:600}.q-text{font-size:14px;font-weight:600;margin-bottom:12px;line-height:1.45}.option{padding:10px 12px;margin-bottom:6px;background:var(--bg);border-radius:8px;border:2px solid transparent;cursor:pointer;font-size:13px;transition:all .2s}.option:hover{background:var(--card);border-color:var(--primary)}.option.correct{background:#d1fae5;border-color:var(--success);color:#065f46}.option.wrong{background:#fee2e2;border-color:var(--danger);color:#991b1b}[data-theme="dark"] .option.correct{background:#065f46;color:#d1fae5}[data-theme="dark"] .option.wrong{background:#7f1d1d;color:#fecaca}.explanation{background:var(--info);padding:10px 12px;margin-top:10px;border-radius:8px;font-size:12.5px;border-left:3px solid var(--primary-light);display:none}.explanation.show{display:block;animation:fadeIn .3s}[data-theme="dark"] .explanation{background:#1e3a8a;color:#dbeafe}.nav-btns{display:flex;gap:8px;margin-top:14px}.nav-btns button{flex:1;padding:10px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit}.btn-prev{background:var(--card);color:var(--text);border:1px solid var(--border)}.btn-next{background:var(--primary);color:#fff}[data-theme="dark"] .btn-next{background:var(--accent);color:var(--primary)}.case-card{background:var(--card);border-radius:14px;margin-bottom:14px;border:1px solid var(--border);overflow:hidden}.case-head{padding:12px 14px;background:linear-gradient(135deg,var(--accent),#d97706);color:#1a202c;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:700}.case-body{display:none;padding:14px}.case-card.open .case-body{display:block;animation:fadeIn .3s}.case-card.open .case-head .arrow{transform:rotate(180deg)}.case-scenario{background:var(--info);padding:10px 12px;border-radius:8px;margin-bottom:10px;font-size:13px;border-left:3px solid var(--primary-light)}[data-theme="dark"] .case-scenario{background:#1e3a8a;color:#dbeafe}.case-solution{background:var(--highlight);padding:10px 12px;border-radius:8px;font-size:13px;border-left:3px solid var(--accent);display:none}.case-solution.show{display:block;animation:fadeIn .3s}[data-theme="dark"] .case-solution{background:#78350f;color:#fde68a}.reveal-btn{padding:8px 14px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;margin-top:8px}.result-card{background:var(--card);padding:20px;border-radius:14px;text-align:center;border:1px solid var(--border)}.result-score{font-size:44px;font-weight:800;color:var(--primary);margin:10px 0}[data-theme="dark"] .result-score{color:var(--accent)}.result-msg{font-size:14px;color:var(--muted);margin-bottom:16px}.result-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.float-btn{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;width:48px;height:48px;border-radius:50%;font-size:22px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:200}[data-theme="dark"] .float-btn{background:var(--accent);color:var(--primary)}.search-box{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px;margin-bottom:10px;font-family:inherit}.btn{padding:10px 14px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;background:var(--primary);color:#fff;font-family:inherit}.btn-sec{background:var(--card);color:var(--text);border:1px solid var(--border)}.action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}</style>
+</head>
+<body>
+<div class="header"><div class="header-row"><div><a href="IOB_Study_Hub.html" class="back-link">← Hub</a><h1>Module I: Para Banking</h1><div class="header-sub">Insurance, PPF, NPS, SGB • 45 MCQs</div></div><button class="theme-btn" onclick="toggleTheme()">🌙</button></div><div class="progress-strip"><div class="progress-strip-fill" id="pbar" style="width:0%"></div></div></div>
+<div class="tabs"><div class="tab-chip active" onclick="showTab('content',this)">📖 Content</div><div class="tab-chip" onclick="showTab('flash',this)">🎴 Flashcards</div><div class="tab-chip" onclick="showTab('compare',this)">⚖️ Compare</div><div class="tab-chip" onclick="showTab('numbers',this)">🔢 Numbers</div><div class="tab-chip" onclick="showTab('mcq',this)">❓ Quiz</div><div class="tab-chip" onclick="showTab('cases',this)">📋 Cases</div></div>
+<div class="container">
+<div id="content" class="view active"><input class="search-box" placeholder="🔍 Search..." oninput="filterTopics(this.value)">
+
+<div class="topic" id="t1"><div class="topic-head" onclick="toggleTopic('t1')"><div class="topic-title"><span class="topic-num">1</span>Cheque Collection Policy</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t1',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Local cheques (CTS Grid): T+1 / T+2.</li>
+<li>Outstation cheques: 7-14 working days.</li>
+<li>Delay compensation: SB rate + 2% above FD rate.</li>
+<li><b>Positive Pay System (PPS):</b> mandatory for cheques ≥ <span class="key">₹5 lakh</span> (RBI effective 1 Jan 2021).</li>
+<li>Drawer submits cheque details online BEFORE presentation.</li>
+<li>CTS (Cheque Truncation System) — image-based clearing.</li>
+<li>CTS 2010 standard: watermark, void pantograph, VOID background, MICR.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t2"><div class="topic-head" onclick="toggleTopic('t2')"><div class="topic-title"><span class="topic-num">2</span>Safe Deposit Locker Policy (RBI 2022)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t2',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Relationship: <b>Lessor-Lessee</b> (changed from bailor-bailee as per RBI 2022).</li>
+<li>Agreement renewed every 5 years (model agreement format).</li>
+<li>Rent collection: Quarterly / half-yearly / annual.</li>
+<li>Advance rent: max 3 years' rent + ₹500 charges collectable.</li>
+</ul>
+<h3>Allotment</h3>
+<ul>
+<li>Waitlist mandatory + publicly displayed.</li>
+<li>Priority-based allotment.</li>
+<li>Only one locker per hirer (preference).</li>
+</ul>
+<h3>Operation Monitoring</h3>
+<ul>
+<li>If locker NOT operated for 1 year — letter to hirer.</li>
+<li>If NOT operated for 3 years — notice issued; bank may break open after another year.</li>
+<li>If rent unpaid for 3 years — bank may break open after 3 months notice.</li>
+</ul>
+<h3>Nomination</h3>
+<ul>
+<li>Multiple survivors permitted.</li>
+<li>Minor nominee — guardian required.</li>
+</ul>
+<h3>Compensation for Loss</h3>
+<ul>
+<li>Bank negligence: up to <span class="key">100× annual rent</span>.</li>
+<li>Natural calamity, customer's own fault: NIL.</li>
+<li>Customer cannot store illegal goods — prohibited.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t3"><div class="topic-head" onclick="toggleTopic('t3')"><div class="topic-title"><span class="topic-num">3</span>PMJJBY & PMSBY</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t3',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>PMJJBY (Pradhan Mantri Jeevan Jyoti Bima Yojana)</h3>
+<ul>
+<li>Age eligibility: <span class="key">18-50 years</span>.</li>
+<li>Sum assured: <span class="key">₹2 lakh</span> on death (any reason).</li>
+<li>Annual premium: <span class="key">₹436</span> (auto-debited from SB).</li>
+<li>Enrollment period: June 1 to May 31 (annual).</li>
+<li>Cover from day 46 (lien period), except accidental death.</li>
+<li>Cover continues till age 55.</li>
+<li>Through LIC + other insurance companies.</li>
+<li>Claim time: within 30 days of death; nominee submits.</li>
+</ul>
+<h3>PMSBY (Pradhan Mantri Suraksha Bima Yojana)</h3>
+<ul>
+<li>Age eligibility: <span class="key">18-70 years</span>.</li>
+<li>Sum assured: <span class="key">₹2 lakh</span> (accidental death / total permanent disability).</li>
+<li>Partial permanent disability: ₹1 lakh.</li>
+<li>Annual premium: <span class="key">₹20</span>.</li>
+<li>Through Public Sector + Private general insurers.</li>
+</ul>
+<h3>Common Features</h3>
+<ul>
+<li>One account per policy (SB linked).</li>
+<li>Policy year: June 1 to May 31.</li>
+<li>Premium auto-debit (consent-based).</li>
+<li>No medical examination required.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t4"><div class="topic-head" onclick="toggleTopic('t4')"><div class="topic-title"><span class="topic-num">4</span>APY (Atal Pension Yojana)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t4',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Age eligibility: <span class="key">18-40 years</span>.</li>
+<li>Must have SB account.</li>
+<li>Guaranteed pension from age 60: ₹1,000 / ₹2,000 / ₹3,000 / ₹4,000 / <span class="key">₹5,000</span> per month.</li>
+<li>Monthly contribution depends on joining age + pension amount chosen.</li>
+<li>On subscriber's death → spouse gets same pension; then nominee gets corpus.</li>
+<li>Earlier: GoI co-contributed 50% of contribution or ₹1,000/yr (whichever lower) for 5 years (for subscribers joined before 31.03.2016).</li>
+<li>From 1 Oct 2022: Taxpayers NOT eligible for APY.</li>
+<li>Regulated by PFRDA.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t5"><div class="topic-head" onclick="toggleTopic('t5')"><div class="topic-title"><span class="topic-num">5</span>NPS (National Pension System)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t5',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Overview</h3>
+<ul>
+<li>Launched 2004 for govt employees; 2009 for all citizens.</li>
+<li>Regulated by PFRDA.</li>
+<li>Age entry: 18-70 years.</li>
+</ul>
+<h3>Two Tiers</h3>
+<ul>
+<li><b>Tier 1:</b> Pension account with restricted withdrawal; mandatory for pension benefits; tax benefits eligible.</li>
+<li><b>Tier 2:</b> Voluntary account; any withdrawal; no tax benefits.</li>
+</ul>
+<h3>Exit at 60</h3>
+<ul>
+<li>60% lump sum — tax-free.</li>
+<li>40% annuity (for monthly pension) — taxable.</li>
+<li>Can be deferred up to age 75.</li>
+</ul>
+<h3>Tax Benefits</h3>
+<table>
+<tr><th>Section</th><th>Amount</th></tr>
+<tr><td>80CCD(1)</td><td>Up to ₹1.5 lakh (within overall 80C)</td></tr>
+<tr><td>80CCD(1B)</td><td>Additional ₹50,000 (exclusive)</td></tr>
+<tr><td>80CCD(2) — Employer contribution</td><td>Up to 10% of salary (14% for govt)</td></tr>
+</table>
+<h3>Investment Mix</h3>
+<ul>
+<li>Auto Choice: Age-based glide path (E / C / G).</li>
+<li>Active Choice: Subscriber selects.</li>
+<li>Equity cap: 75% till age 50.</li>
+</ul>
+<h3>CRAs (Central Record Keeping Agencies)</h3>
+<ul>
+<li>Protean (formerly NSDL).</li>
+<li>KFin Technologies.</li>
+<li>CAMS.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t6"><div class="topic-head" onclick="toggleTopic('t6')"><div class="topic-title"><span class="topic-num">6</span>NPS Vatsalya (2024)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t6',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Launched 2024.</li>
+<li>For MINORS below 18 years — guardian opens.</li>
+<li>Min contribution: ₹1,000/year.</li>
+<li>No maximum.</li>
+<li>Auto-converts to regular NPS Tier-1 at age 18.</li>
+<li>Can partially withdraw (max 25% after 3 years for education/medical).</li>
+<li>Investment choice similar to NPS.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t7"><div class="topic-head" onclick="toggleTopic('t7')"><div class="topic-title"><span class="topic-num">7</span>PPF (Public Provident Fund)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t7',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Tenure: <span class="key">15 years</span>, extendable in blocks of 5.</li>
+<li>Min deposit: <span class="key">₹500</span> per year.</li>
+<li>Max deposit: <span class="key">₹1.5 lakh</span> per year.</li>
+<li>Max 12 deposits per year.</li>
+<li>Interest: notified quarterly (currently ~7.1%); tax-free.</li>
+<li>Sec 80C deduction up to ₹1.5 lakh; EEE (Exempt-Exempt-Exempt) status.</li>
+<li>Partial withdrawal: From 7th year, up to 50% of 4th preceding year's balance.</li>
+<li>Loan: From 3rd to 6th year, up to 25% of 2nd preceding year's balance.</li>
+<li>One account per person; minor through guardian.</li>
+<li>No loan against deposit (as collateral for other loans) — specifically prohibited.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t8"><div class="topic-head" onclick="toggleTopic('t8')"><div class="topic-title"><span class="topic-num">8</span>SSY (Sukanya Samriddhi Yojana)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t8',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>For girl child only, up to <span class="key">10 years of age</span>.</li>
+<li>Max 2 accounts per family (twins/triplets — exception).</li>
+<li>Min deposit: <span class="key">₹250</span> per year.</li>
+<li>Max deposit: ₹1.5 lakh per year.</li>
+<li>Deposit required for <span class="key">15 years</span>.</li>
+<li>Maturity: 21 years from date of opening OR on marriage after 18 years.</li>
+<li>Interest: notified quarterly (currently ~8.2%); tax-free.</li>
+<li>Sec 80C eligible.</li>
+<li>Partial withdrawal: 50% for higher education after 18 years.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t9"><div class="topic-head" onclick="toggleTopic('t9')"><div class="topic-title"><span class="topic-num">9</span>SCSS (Senior Citizen Savings Scheme) 2019</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t9',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Age eligibility: 60+ (55-60 if VRS/superannuation; 50+ for defence retirees).</li>
+<li>Tenure: 5 years; extendable by 3 years.</li>
+<li>Max deposit: <span class="key">₹30 lakh</span> (revised from ₹15 lakh in Budget 2023).</li>
+<li>Interest: notified quarterly (~8.2%); paid quarterly.</li>
+<li>Sec 80C deduction up to ₹1.5 lakh.</li>
+<li>Premature closure: after 1 year with penalty.</li>
+<li>Can be opened at Post Office + nationalised banks.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t10"><div class="topic-head" onclick="toggleTopic('t10')"><div class="topic-title"><span class="topic-num">10</span>Sovereign Gold Bond (SGB)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t10',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Issued by RBI on behalf of GoI.</li>
+<li>Denomination: 1 gram gold (and multiples).</li>
+<li>Min: 1 gram.</li>
+<li>Max per FY: 4 kg (individual/HUF); 20 kg (trusts).</li>
+<li>Interest: <span class="key">2.50% p.a.</span> paid half-yearly on nominal value.</li>
+<li>Tenure: <span class="key">8 years</span>; exit after 5th year on interest dates.</li>
+<li>Maturity redemption: at prevailing gold price.</li>
+<li>Capital gains at maturity: <b>exempt</b> (for individuals).</li>
+<li>Interest taxable.</li>
+<li>Can be used as loan collateral (LTV applies).</li>
+<li>Issued periodically (tranches).</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t11"><div class="topic-head" onclick="toggleTopic('t11')"><div class="topic-title"><span class="topic-num">11</span>KVP & NSC</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t11',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>KVP (Kisan Vikas Patra)</h3>
+<ul>
+<li>Doubles in <span class="key">115 months</span> (indicative; revisions by GoI).</li>
+<li>Min: ₹1,000; no max.</li>
+<li>Not tax-free; no 80C.</li>
+<li>Can be held in physical certificate or dematerialised.</li>
+<li>Transferable.</li>
+</ul>
+<h3>NSC (National Savings Certificate)</h3>
+<ul>
+<li>Tenure: <span class="key">5 years</span>.</li>
+<li>Interest: notified quarterly (~7.7%); compounded annually, paid at maturity.</li>
+<li>Min: ₹1,000; no max.</li>
+<li>Sec 80C deduction up to ₹1.5 lakh.</li>
+<li>Interest reinvestment also eligible under 80C (except final year).</li>
+<li>No premature withdrawal (except death / forfeiture / court order).</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t12"><div class="topic-head" onclick="toggleTopic('t12')"><div class="topic-title"><span class="topic-num">12</span>National Savings — MIS / TD / RD</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t12',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Monthly Income Scheme (MIS)</h3>
+<ul>
+<li>Tenure: 5 years.</li>
+<li>Min: ₹1,000; Max: <span class="key">₹9 lakh</span> (single); ₹15 lakh (joint).</li>
+<li>Interest: notified quarterly (~7.4%); paid monthly.</li>
+<li>Interest: taxable; no 80C.</li>
+</ul>
+<h3>Post Office Time Deposit (POTD)</h3>
+<ul>
+<li>Tenures: 1 / 2 / 3 / 5 years.</li>
+<li>5-year TD: 80C eligible.</li>
+<li>Interest payable annually (compounded quarterly).</li>
+</ul>
+<h3>Post Office RD (5-year RD)</h3>
+<ul>
+<li>Monthly investment for 5 years.</li>
+<li>Min: ₹100/month.</li>
+<li>Interest compounded quarterly.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t13"><div class="topic-head" onclick="toggleTopic('t13')"><div class="topic-title"><span class="topic-num">13</span>Insurance Products</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t13',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Life Insurance Types</h3>
+<ul>
+<li><b>Term Insurance:</b> Pure life cover; no survival benefit.</li>
+<li><b>Endowment:</b> Life cover + savings.</li>
+<li><b>Whole Life:</b> Lifetime cover; usually till age 100.</li>
+<li><b>Money-Back:</b> Periodic payments + maturity.</li>
+<li><b>ULIP (Unit Linked Insurance Plan):</b> Life cover + market-linked investment.</li>
+<li><b>Annuity Plans:</b> Income after retirement.</li>
+</ul>
+<h3>Tax Benefits</h3>
+<ul>
+<li>Sec 80C: Premium up to ₹1.5 lakh.</li>
+<li>Sec 10(10D): Maturity proceeds tax-free (conditions — premium ≤ 10% of sum assured; 15% for disability).</li>
+<li>From Apr 2023: ULIPs with premium > ₹2.5 lakh — no 10(10D) exemption.</li>
+<li>Traditional policies with premium > ₹5 lakh — no 10(10D) exemption (from Apr 2023).</li>
+</ul>
+<h3>General Insurance</h3>
+<ul>
+<li>Motor: Third-party (mandatory) + Own Damage.</li>
+<li>Health: Mediclaim, Critical Illness.</li>
+<li>Property / Fire.</li>
+<li>Marine (transit).</li>
+<li>Crop (PMFBY).</li>
+</ul>
+<h3>Health Insurance</h3>
+<ul>
+<li>Sec 80D deduction: ₹25,000 self+family; +₹50,000 senior citizens parents.</li>
+<li>Preventive health check-up: ₹5,000 within 80D limit.</li>
+<li>Pre-existing diseases: 2-4 year waiting period.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t14"><div class="topic-head" onclick="toggleTopic('t14')"><div class="topic-title"><span class="topic-num">14</span>Mutual Funds, Demat, IPO</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t14',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Mutual Funds</h3>
+<ul>
+<li>Regulated by SEBI.</li>
+<li>Bank as distributor — AMFI registered.</li>
+<li>Types: Equity, Debt, Hybrid, ELSS, Index, Sectoral, Thematic.</li>
+<li><b>ELSS:</b> 3-year lock-in; Sec 80C eligible.</li>
+<li>SIP (Systematic Investment Plan) — periodic investment.</li>
+<li>STP (Systematic Transfer Plan): between MF schemes.</li>
+<li>SWP (Systematic Withdrawal Plan): regular withdrawal.</li>
+</ul>
+<h3>Demat Account</h3>
+<ul>
+<li>Depositories: NSDL + CDSL.</li>
+<li>Required for shares, bonds, SGB, ETFs post dematerialisation.</li>
+<li>Mandatory for IPO applications in physical shares > 500 shares.</li>
+<li>CMR (Client Master Report) — DP account details.</li>
+</ul>
+<h3>IPO</h3>
+<ul>
+<li>ASBA (Application Supported by Blocked Amount) — mandatory.</li>
+<li>Amount blocked in SB; released on allotment / withdrawal.</li>
+<li>UPI route for retail investors (₹2-5 lakh).</li>
+<li>Minimum subscription: 90% of issue (else refund).</li>
+<li>Price band: Book-built or Fixed-price.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t15"><div class="topic-head" onclick="toggleTopic('t15')"><div class="topic-title"><span class="topic-num">15</span>Pension Accounts Maintenance</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t15',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Bank earns agency commission from GoI/RBI for pension disbursal.</li>
+<li>Life Certificate submission: Annually (Nov) via physical / Jeevan Pramaan (biometric).</li>
+<li>Family Pension on pensioner death — spouse eligible.</li>
+<li>Arrears / DA revision — adjustments.</li>
+<li>CGHS, income tax deduction, etc.</li>
+</ul>
+<h3>Agency Commission</h3>
+<ul>
+<li>Pension payments: ₹75 per transaction.</li>
+<li>Also for Govt business (taxes, deposits).</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t16"><div class="topic-head" onclick="toggleTopic('t16')"><div class="topic-title"><span class="topic-num">16</span>Digital Lending Policy 2026</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t16',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>RBI Digital Lending Guidelines + updates.</li>
+<li><b>LSP (Loan Service Provider):</b> Must be regulated.</li>
+<li>Disclosure of APR (Annual Percentage Rate).</li>
+<li>Cooling-off period: cancellation without penalty within specified days.</li>
+<li>Fair practices + grievance redressal (Internal Ombudsman).</li>
+<li>Data protection per IT Act + DPDP 2023.</li>
+<li>DLG (Default Loss Guarantee) framework: cap 5% of loan portfolio.</li>
+<li>No access to customer's phone contacts, photo gallery (without specific consent).</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t17"><div class="topic-head" onclick="toggleTopic('t17')"><div class="topic-title"><span class="topic-num">17</span>Green Finance Framework</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t17',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>RBI framework for sustainable finance.</li>
+<li>Green projects: renewable energy, EV, energy efficiency, waste management, sustainable agriculture.</li>
+<li>Green Deposits: ESG-aligned; separate accounting.</li>
+<li>Reporting to RBI quarterly.</li>
+<li>Sovereign Green Bonds (SGrB) — introduced 2023.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t18"><div class="topic-head" onclick="toggleTopic('t18')"><div class="topic-title"><span class="topic-num">18</span>Interest Rate Policy 2026</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t18',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Board-approved; reviewed annually.</li>
+<li>Governs rates for all deposits + loans.</li>
+<li>Rate changes communicated to branches.</li>
+<li>Compliance with RBI MCLR / EBLR directions.</li>
+<li>Must be transparent + non-discriminatory.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t19"><div class="topic-head" onclick="toggleTopic('t19')"><div class="topic-title"><span class="topic-num">19</span>Term & Accidental Insurance</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t19',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Term Insurance (IOB Partners)</h3>
+<ul>
+<li>Pure life cover only.</li>
+<li>Low premium, high cover.</li>
+<li>No maturity benefit.</li>
+<li>Various plans: 10-30 years term.</li>
+<li>Tax: 80C deduction.</li>
+</ul>
+<h3>Accidental Insurance</h3>
+<ul>
+<li>Cover: Accidental death + disability.</li>
+<li>PMSBY: Govt scheme.</li>
+<li>Individual policies: higher cover.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t20"><div class="topic-head" onclick="toggleTopic('t20')"><div class="topic-title"><span class="topic-num">20</span>Cheque Collection + Health Insurance Products</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t20',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>IOB Health Products</h3>
+<ul>
+<li>IOB Health Care Plus (partnered with Universal Sompo).</li>
+<li>IOB Jeevan Health.</li>
+<li>Sum insured options: ₹3 lakh / ₹5 lakh / family cover.</li>
+<li>Covers hospitalisation, day-care, pre+post hospitalisation.</li>
+</ul>
+<h3>Mediclaim Features</h3>
+<ul>
+<li>Cashless at network hospitals.</li>
+<li>Reimbursement at non-network.</li>
+<li>No Claim Bonus (NCB).</li>
+<li>Co-pay for senior citizens.</li>
+</ul>
+</div></div>
+
+</div>
+
+<div id="flash" class="view"><div class="alert alert-info"><b>💡 Tap to flip.</b></div><div class="flashcard-deck" id="flashDeck"></div></div>
+<div id="compare" class="view"><div class="alert alert-info"><b>⚖️ Compare.</b></div><div id="compareList"></div></div>
+<div id="numbers" class="view"><div class="alert alert-warn"><b>🔢 Memorize.</b></div><input class="search-box" placeholder="🔍 Search..." oninput="filterNums(this.value)"><div id="numList"></div></div>
+<div id="mcq" class="view">
+<div id="quizIntro">
+<div class="quiz-intro"><h2>📝 Module I Quiz</h2><p>45 questions • Para Banking drill</p><button class="quiz-btn" onclick="startQuiz()">▶️ Start</button></div>
+<div class="quiz-stats"><div class="quiz-stat"><div class="v" id="stAtt">0</div><div class="l">Attempted</div></div><div class="quiz-stat"><div class="v" id="stCor">0</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v" id="stAcc">0%</div><div class="l">Accuracy</div></div></div>
+<div class="action-row"><button class="btn btn-sec" onclick="reviewWeak()" style="flex:1">🎯 Review Weak</button></div>
+</div>
+<div id="quizArea" style="display:none"></div>
+</div>
+<div id="cases" class="view"><div class="alert alert-info"><b>📋 Scenarios.</b></div><div id="caseList"></div></div>
+</div>
+<button class="float-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const MOD_KEY='iob_mod_I_v1';
+let state=JSON.parse(localStorage.getItem(MOD_KEY)||'{}');
+if(!state.topics)state.topics={};if(!state.quiz)state.quiz={attempted:0,correct:0,perQuestion:{}};if(!state.weak)state.weak=[];if(!state.theme)state.theme='light';
+function save(){localStorage.setItem(MOD_KEY,JSON.stringify(state))}
+function toggleTheme(){state.theme=state.theme==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',state.theme);document.querySelector('.theme-btn').textContent=state.theme==='dark'?'☀️':'🌙';save()}
+function showTab(id,el){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.tab-chip').forEach(c=>c.classList.remove('active'));document.getElementById(id).classList.add('active');el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+function toggleTopic(id){document.getElementById(id).classList.toggle('open')}
+function toggleDone(id,el){state.topics[id]=!state.topics[id];if(state.topics[id])el.classList.add('done');else el.classList.remove('done');save();updateProgressBar()}
+function updateProgressBar(){const done=Object.keys(state.topics).filter(k=>state.topics[k]).length;document.getElementById('pbar').style.width=Math.round(done/20*100)+'%'}
+function filterTopics(q){q=q.toLowerCase();document.querySelectorAll('.topic').forEach(t=>{const text=t.innerText.toLowerCase();t.style.display=(!q||text.includes(q))?'':'none';if(q&&text.includes(q))t.classList.add('open')})}
+
+const FLASHCARDS=[
+{q:"PMJJBY age eligibility?",a:"18-50 years"},{q:"PMJJBY sum assured and premium?",a:"₹2 lakh sum assured; ₹436/year premium"},{q:"PMJJBY cover period?",a:"June 1 to May 31; day-45 lien except accidental death"},{q:"PMSBY age eligibility?",a:"18-70 years"},{q:"PMSBY sum assured?",a:"₹2 lakh (accidental death/TPD); ₹1 lakh (PPD)"},{q:"PMSBY premium?",a:"₹20/year"},
+{q:"APY age eligibility?",a:"18-40 years"},{q:"APY pension amount options?",a:"₹1,000 / ₹2,000 / ₹3,000 / ₹4,000 / ₹5,000 per month from age 60"},{q:"APY Taxpayers after 1 Oct 2022?",a:"NOT eligible"},
+{q:"NPS Tier 1 — withdrawal at 60 — tax-free lump sum %?",a:"60% lump sum tax-free; 40% annuity (taxable)"},{q:"NPS 80CCD(1) and 80CCD(1B)?",a:"80CCD(1): ₹1.5L (within 80C); 80CCD(1B): additional ₹50,000"},{q:"NPS 80CCD(2) employer contribution?",a:"Up to 10% of salary (14% for govt)"},
+{q:"NPS Vatsalya — launched when and for whom?",a:"2024, for minors below 18 (via guardian)"},
+{q:"PPF tenure and max deposit?",a:"15 years (extendable 5-year blocks); max ₹1.5 lakh/year"},{q:"PPF min annual deposit?",a:"₹500"},{q:"PPF current interest rate (quarterly notified)?",a:"~7.1% tax-free"},
+{q:"SSY age limit for opening?",a:"Up to 10 years of age (girl child only)"},{q:"SSY max accounts per family?",a:"2 (except twins/triplets)"},{q:"SSY maturity?",a:"21 years from opening OR marriage after 18"},{q:"SSY current rate?",a:"~8.2% (quarterly notified); tax-free"},
+{q:"SCSS age — defence retirees?",a:"50+"},{q:"SCSS max deposit (revised 2023)?",a:"₹30 lakh (up from ₹15 lakh)"},{q:"SCSS tenure?",a:"5 years + 3 years extension"},
+{q:"SGB tenure and interest?",a:"8 years; 2.50% p.a. half-yearly on nominal"},{q:"SGB max per FY?",a:"4 kg individual/HUF; 20 kg trusts"},{q:"SGB capital gains at maturity?",a:"Exempt for individuals"},
+{q:"KVP doubles in?",a:"115 months (indicative)"},{q:"NSC tenure and rate?",a:"5 years; ~7.7% compounded annually; 80C eligible"},
+{q:"Positive Pay System threshold?",a:"≥ ₹5 lakh (mandatory cheque pre-registration)"},
+{q:"Safe Deposit Locker relationship (RBI 2022)?",a:"Lessor-Lessee"},{q:"Locker compensation for bank negligence?",a:"Up to 100× annual rent"},
+{q:"Sec 80D health insurance deduction?",a:"₹25,000 self+family; +₹50,000 senior citizen parents"},
+{q:"Sec 10(10D) — life insurance maturity tax-free — premium condition?",a:"Premium ≤ 10% of sum assured (15% for disability)"},
+{q:"ULIP with premium > ₹2.5 lakh (from Apr 2023)?",a:"Loses 10(10D) exemption"},
+{q:"Traditional policy premium > ₹5 lakh (from Apr 2023)?",a:"Loses 10(10D) exemption"},
+{q:"ELSS lock-in?",a:"3 years; eligible for 80C"},
+{q:"ASBA — stands for?",a:"Application Supported by Blocked Amount (mandatory for IPO)"},
+{q:"UPI for IPO (retail)?",a:"Permitted for applications ₹2-5 lakh"},
+{q:"Minimum IPO subscription?",a:"90% of issue (else refund + fresh issuance)"},
+{q:"Jeevan Pramaan — purpose?",a:"Digital Life Certificate for pensioners (biometric-based)"},
+{q:"Digital Lending — DLG cap?",a:"5% of loan portfolio (Default Loss Guarantee)"},
+{q:"Post Office MIS tenure and max?",a:"5 years; max ₹9 lakh single / ₹15 lakh joint"},
+{q:"POTD 5-year — tax benefit?",a:"80C eligible (like FD tax saver)"},
+{q:"Pre-existing diseases waiting period (health insurance)?",a:"2-4 years typically"}
+];
+function renderFlashcards(){document.getElementById('flashDeck').innerHTML=FLASHCARDS.map((c,i)=>`<div class="flashcard" onclick="this.classList.toggle('flipped')"><div class="flashcard-inner"><div class="flashcard-face flashcard-front">${c.q}<div class="flashcard-hint">Tap to flip • Card ${i+1}/${FLASHCARDS.length}</div></div><div class="flashcard-face flashcard-back">${c.a}</div></div></div>`).join('')}
+
+const COMPARE=[
+{title:'PMJJBY vs PMSBY',rows:[['Age','18-50','18-70'],['Sum Assured','₹2 lakh death','₹2 lakh accidental death/TPD'],['Premium','₹436/year','₹20/year'],['Cover','Natural + Accidental','Accidental only'],['Insurer','LIC + others','Public Sector General Insurers']]},
+{title:'APY vs NPS',rows:[['Age Entry','18-40','18-70'],['Pension','Guaranteed ₹1K-₹5K','Market-linked'],['Regulator','PFRDA','PFRDA'],['Tax','80CCD available','80CCD(1), 80CCD(1B), 80CCD(2)'],['Taxpayers','NOT eligible (post 1 Oct 2022)','Eligible']]},
+{title:'NPS Tier 1 vs Tier 2',rows:[['Pension purpose','Yes','No, voluntary'],['Withdrawal','Restricted','Any time'],['Tax benefit','Yes','No'],['Minimum contribution','₹1,000/yr','₹250 per time']]},
+{title:'PPF vs SSY vs SCSS',rows:[['For whom','Any individual','Girl child ≤ 10','60+ seniors'],['Tenure','15 years + 5','21 years from opening','5 + 3 years'],['Max deposit','₹1.5 lakh/yr','₹1.5 lakh/yr','₹30 lakh (one-time)'],['Interest','~7.1%','~8.2%','~8.2% (quarterly)'],['Tax','EEE','EEE','80C + taxable interest']]},
+{title:'SGB vs Gold ETF vs Physical Gold',rows:[['Form','Bond','Dematerialised','Physical'],['Interest','2.5% p.a.','Nil','Nil'],['Storage','None','DP maintained','Locker needed'],['Capital gains at maturity','Exempt','Taxable','Taxable (LTCG)'],['Purity concern','None','Fund managed','Buyer\'s risk']]},
+{title:'NSC vs KVP',rows:[['Tenure','5 years','115 months (doubles)'],['Interest','~7.7% compounded','Compounded such that amount doubles'],['80C','Eligible','NOT eligible'],['Tax on interest','Taxable (reinvestment deemed 80C)','Taxable'],['Transfer','Allowed once','Freely transferable']]},
+{title:'Life Insurance Types',rows:[['Term','Pure risk; cheap; no maturity'],['Endowment','Risk + savings; maturity benefit'],['Whole Life','Lifetime coverage'],['Money-Back','Periodic + maturity'],['ULIP','Risk + market-linked investment'],['Annuity','Retirement income']]},
+{title:'Sec 10(10D) Conditions (from Apr 2023)',rows:[['Traditional policy premium','> ₹5 lakh — no exemption'],['ULIP','> ₹2.5 lakh — no exemption'],['Pre-2023 policies','Grandfathered — exemption continues'],['Condition','Premium ≤ 10% of sum assured (15% for disability)']]}
+];
+function renderCompare(){document.getElementById('compareList').innerHTML=COMPARE.map(c=>`<div class="compare-card"><div class="compare-head" onclick="this.parentElement.classList.toggle('open')"><span>${c.title}</span><span class="arrow">▼</span></div><div class="compare-body"><table>${c.rows.map(r=>`<tr>${r.map((cell,idx)=>idx===0?`<td><b>${cell}</b></td>`:`<td>${cell}</td>`).join('')}</tr>`).join('')}</table></div></div>`).join('')}
+
+const NUMBERS=[
+{v:'18-50 yrs',d:'PMJJBY age range',cat:'PMJJBY'},{v:'₹2 lakh',d:'PMJJBY sum assured',cat:'PMJJBY'},{v:'₹436/year',d:'PMJJBY premium',cat:'PMJJBY'},{v:'45 days',d:'PMJJBY lien period (except accidental)',cat:'PMJJBY'},
+{v:'18-70 yrs',d:'PMSBY age range',cat:'PMSBY'},{v:'₹2 lakh',d:'PMSBY accidental death/TPD',cat:'PMSBY'},{v:'₹1 lakh',d:'PMSBY partial permanent disability',cat:'PMSBY'},{v:'₹20/year',d:'PMSBY premium',cat:'PMSBY'},
+{v:'18-40 yrs',d:'APY age eligibility',cat:'APY'},{v:'60 years',d:'APY pension start age',cat:'APY'},{v:'₹1K-₹5K',d:'APY monthly pension options',cat:'APY'},
+{v:'18-70 yrs',d:'NPS entry age range',cat:'NPS'},{v:'60%',d:'NPS exit — tax-free lump sum',cat:'NPS'},{v:'40%',d:'NPS exit — annuity portion',cat:'NPS'},
+{v:'₹1.5 lakh',d:'80CCD(1) NPS deduction (within 80C)',cat:'NPS'},{v:'₹50,000',d:'80CCD(1B) additional NPS',cat:'NPS'},{v:'10% / 14%',d:'80CCD(2) employer contribution (private/govt)',cat:'NPS'},
+{v:'75%',d:'NPS equity cap till age 50',cat:'NPS'},
+{v:'15 yrs',d:'PPF tenure (extendable 5-yr blocks)',cat:'PPF'},{v:'₹500',d:'PPF min deposit/year',cat:'PPF'},{v:'₹1.5 lakh',d:'PPF max deposit/year',cat:'PPF'},{v:'12',d:'PPF max deposits/year',cat:'PPF'},{v:'~7.1%',d:'PPF current rate',cat:'PPF'},
+{v:'7th year',d:'PPF partial withdrawal starts',cat:'PPF'},{v:'3rd-6th yr',d:'PPF loan period',cat:'PPF'},
+{v:'10 yrs',d:'SSY max age at opening',cat:'SSY'},{v:'21 yrs',d:'SSY maturity from opening',cat:'SSY'},{v:'₹250',d:'SSY min deposit/year',cat:'SSY'},{v:'~8.2%',d:'SSY current rate',cat:'SSY'},
+{v:'60+ / 55+ / 50+',d:'SCSS age (normal/VRS/defence)',cat:'SCSS'},{v:'₹30 lakh',d:'SCSS max deposit',cat:'SCSS'},{v:'5+3 yrs',d:'SCSS tenure',cat:'SCSS'},
+{v:'8 yrs',d:'SGB tenure',cat:'SGB'},{v:'2.50%',d:'SGB interest p.a.',cat:'SGB'},{v:'4 kg / 20 kg',d:'SGB max FY (individual/trust)',cat:'SGB'},{v:'5 yrs',d:'SGB early exit on interest dates',cat:'SGB'},
+{v:'115 months',d:'KVP doubling period',cat:'KVP'},{v:'5 yrs',d:'NSC tenure',cat:'NSC'},{v:'~7.7%',d:'NSC rate',cat:'NSC'},
+{v:'₹9 lakh',d:'Post Office MIS max (single)',cat:'POMIS'},{v:'₹15 lakh',d:'Post Office MIS max (joint)',cat:'POMIS'},
+{v:'₹5 lakh',d:'Positive Pay System (PPS) threshold',cat:'CTS'},
+{v:'100×',d:'Locker — bank negligence compensation',cat:'Locker'},{v:'3 years',d:'Locker — rent unpaid before break-open',cat:'Locker'},
+{v:'₹25,000',d:'Sec 80D health insurance (self+family)',cat:'Health'},{v:'₹50,000',d:'Sec 80D additional for senior citizen parents',cat:'Health'},
+{v:'₹2.5 lakh',d:'ULIP threshold — loses 10(10D) exemption',cat:'Life Ins'},{v:'₹5 lakh',d:'Traditional policy threshold — loses 10(10D)',cat:'Life Ins'},
+{v:'3 years',d:'ELSS lock-in (shortest 80C)',cat:'MF'},{v:'90%',d:'IPO minimum subscription',cat:'IPO'},
+{v:'₹75',d:'Agency commission per pension transaction',cat:'Pension'},
+{v:'5%',d:'Digital Lending DLG cap',cat:'Digital'}
+];
+function renderNumbers(f=''){f=f.toLowerCase();const items=NUMBERS.filter(n=>!f||n.v.toLowerCase().includes(f)||n.d.toLowerCase().includes(f)||n.cat.toLowerCase().includes(f));document.getElementById('numList').innerHTML=items.map(n=>`<div class="num-card"><div class="num-badge">${n.v}</div><div class="num-desc"><div class="num-cat">${n.cat}</div>${n.d}</div></div>`).join('')||'<p style="text-align:center;padding:30px;color:var(--muted)">No matches</p>'}
+function filterNums(v){renderNumbers(v)}
+
+const QUIZ=[
+{q:"PMJJBY age eligibility?",o:["18-40","18-50","18-60","21-50"],a:1,e:"18-50 years. Cover till age 55."},
+{q:"PMJJBY sum assured?",o:["₹1 lakh","₹2 lakh","₹5 lakh","₹10 lakh"],a:1,e:"₹2 lakh on death (any reason)."},
+{q:"PMJJBY annual premium?",o:["₹330","₹400","₹436","₹500"],a:2,e:"₹436/year (auto-debited from SB)."},
+{q:"PMSBY age eligibility?",o:["18-50","18-60","18-70","21-65"],a:2,e:"18-70 years."},
+{q:"PMSBY annual premium?",o:["₹12","₹20","₹50","₹100"],a:1,e:"₹20/year."},
+{q:"PMSBY accidental death cover?",o:["₹1 lakh","₹2 lakh","₹5 lakh","₹10 lakh"],a:1,e:"₹2 lakh accidental death/TPD; ₹1 lakh PPD."},
+{q:"APY age eligibility?",o:["18-40","18-50","18-60","21-55"],a:0,e:"18-40 years."},
+{q:"APY maximum guaranteed pension/month?",o:["₹3,000","₹4,000","₹5,000","₹10,000"],a:2,e:"₹1,000/2,000/3,000/4,000/5,000 — max ₹5,000."},
+{q:"APY taxpayers — eligibility (post 1 Oct 2022)?",o:["Eligible","Partially eligible","Not eligible","Eligible with surcharge"],a:2,e:"Taxpayers NOT eligible for APY since 1 Oct 2022."},
+{q:"NPS Tier 1 — exit at 60 — tax-free lump sum %?",o:["20%","40%","60%","80%"],a:2,e:"60% lump sum tax-free; 40% mandatory annuity (taxable)."},
+{q:"NPS 80CCD(1B) additional deduction?",o:["₹10,000","₹25,000","₹50,000","₹1 lakh"],a:2,e:"₹50,000 additional exclusive of 80C limit."},
+{q:"NPS 80CCD(2) employer contribution for private sector?",o:["5%","10%","14%","15%"],a:1,e:"Up to 10% of salary. Government: 14%."},
+{q:"NPS Vatsalya — introduced?",o:["2021","2022","2023","2024"],a:3,e:"Launched 2024 for minors below 18 via guardian."},
+{q:"PPF tenure?",o:["7 years","10 years","15 years","20 years"],a:2,e:"15 years, extendable in 5-year blocks."},
+{q:"PPF maximum annual deposit?",o:["₹70,000","₹1 lakh","₹1.5 lakh","₹2 lakh"],a:2,e:"₹1.5 lakh/year. Min ₹500."},
+{q:"PPF interest tax treatment?",o:["Taxable","TDS 10%","Tax-free","Partial exemption"],a:2,e:"Tax-free (EEE status)."},
+{q:"SSY max age at opening?",o:["5 years","10 years","15 years","18 years"],a:1,e:"Girl child up to 10 years."},
+{q:"SSY maturity from opening?",o:["15 years","18 years","21 years","25 years"],a:2,e:"21 years from opening OR marriage after 18."},
+{q:"SSY minimum annual deposit?",o:["₹100","₹250","₹500","₹1,000"],a:1,e:"₹250/year. Max ₹1.5 lakh/year."},
+{q:"SCSS age — defence retirees?",o:["50","55","60","65"],a:0,e:"50+ for defence retirees. VRS: 55-60. Normal: 60+."},
+{q:"SCSS max deposit (post Budget 2023)?",o:["₹15 lakh","₹25 lakh","₹30 lakh","₹50 lakh"],a:2,e:"₹30 lakh (revised from ₹15 lakh)."},
+{q:"SCSS tenure?",o:["3 years","5 years + 3 extension","7 years","10 years"],a:1,e:"5 years initial, extendable by 3 years."},
+{q:"SGB tenure?",o:["5 years","7 years","8 years","10 years"],a:2,e:"8 years; exit after 5th year on interest dates."},
+{q:"SGB interest rate p.a. (nominal)?",o:["1.5%","2.0%","2.5%","3.0%"],a:2,e:"2.50% p.a. paid half-yearly."},
+{q:"SGB maximum per FY for individuals?",o:["1 kg","2 kg","4 kg","10 kg"],a:2,e:"4 kg individual/HUF. 20 kg for trusts."},
+{q:"SGB capital gains at maturity for individuals?",o:["20% tax","LTCG 10%","Exempt","TDS 1%"],a:2,e:"Exempt for individuals (only gains at maturity)."},
+{q:"KVP doubling period (approx)?",o:["5 years","7 years","115 months","15 years"],a:2,e:"115 months currently (notified by GoI)."},
+{q:"NSC tenure?",o:["3 years","5 years","7 years","10 years"],a:1,e:"5 years. ~7.7% compounded annually. 80C eligible."},
+{q:"Positive Pay System — mandatory threshold?",o:["₹1 lakh","₹2 lakh","₹5 lakh","₹10 lakh"],a:2,e:"≥ ₹5 lakh — mandatory cheque pre-registration."},
+{q:"Safe Deposit Locker relationship (RBI 2022)?",o:["Bailor-Bailee","Agent-Principal","Lessor-Lessee","Trustee-Beneficiary"],a:2,e:"RBI 2022 revised to Lessor-Lessee."},
+{q:"Locker — bank negligence compensation max?",o:["20× rent","50× rent","100× annual rent","200× rent"],a:2,e:"Up to 100× annual rent for bank negligence."},
+{q:"Sec 80D health insurance — self + family < 60?",o:["₹15,000","₹20,000","₹25,000","₹50,000"],a:2,e:"₹25,000 self + family. +₹50,000 for senior citizen parents."},
+{q:"ULIP premium threshold — loses 10(10D) from Apr 2023?",o:["₹1 lakh","₹2 lakh","₹2.5 lakh","₹5 lakh"],a:2,e:"ULIPs with premium > ₹2.5 lakh lose 10(10D) exemption."},
+{q:"Traditional policy premium — loses 10(10D) from Apr 2023?",o:["₹2 lakh","₹2.5 lakh","₹5 lakh","₹10 lakh"],a:2,e:"Traditional policies > ₹5 lakh premium lose 10(10D) exemption."},
+{q:"ELSS lock-in?",o:["1 year","3 years","5 years","7 years"],a:1,e:"3 years — shortest 80C-eligible mutual fund lock-in."},
+{q:"ASBA — stands for?",o:["Application Supported by Blocked Amount","Account Supported by Bank Agreement","Applicant Signed Bank Account","Auto-Sweep Bank Account"],a:0,e:"Application Supported by Blocked Amount — mandatory for IPO applications."},
+{q:"UPI route for IPO retail — amount range?",o:["< ₹1 lakh","₹1-5 lakh","₹2-5 lakh","> ₹5 lakh"],a:2,e:"UPI permitted for retail IPO applications ₹2-5 lakh."},
+{q:"Minimum IPO subscription?",o:["50%","75%","90%","100%"],a:2,e:"90% of issue else refund + fresh issuance."},
+{q:"Post Office MIS tenure?",o:["3 years","5 years","7 years","10 years"],a:1,e:"5 years. Max ₹9 lakh single / ₹15 lakh joint."},
+{q:"Post Office MIS — max single holder?",o:["₹5 lakh","₹7 lakh","₹9 lakh","₹15 lakh"],a:2,e:"₹9 lakh single; ₹15 lakh joint (Budget 2023 revision)."},
+{q:"POTD 5-year TD — tax benefit?",o:["No benefit","80C eligible","80D","80E"],a:1,e:"80C eligible (Tax Saver FD equivalent)."},
+{q:"Jeevan Pramaan — purpose?",o:["Life insurance","Digital Life Certificate for pensioners","Accident insurance","EPF account"],a:1,e:"Digital Life Certificate using biometric for pensioners — annual."},
+{q:"Agency commission per pension transaction?",o:["₹50","₹75","₹100","₹150"],a:1,e:"₹75 per transaction (agency commission from Govt/RBI)."},
+{q:"Digital Lending DLG (Default Loss Guarantee) cap?",o:["2%","5%","10%","20%"],a:1,e:"5% of loan portfolio under Digital Lending framework."},
+{q:"Green Deposits — introduced to?",o:["Reduce lending","Promote ESG-aligned projects","Replace fixed deposits","Reduce tax"],a:1,e:"To finance ESG-aligned (environment/sustainability) projects."},
+{q:"KYC updation frequency for Mutual Fund?",o:["Every year","When address changes","Linked to CKYC","Every 5 years"],a:2,e:"KYC via CKYCR / CVLKRA; update when info changes."}
+];
+
+let quizIndex=0;let currentOrder=[];
+function startQuiz(){currentOrder=QUIZ.map((_,i)=>i).sort(()=>Math.random()-0.5);quizIndex=0;document.getElementById('quizIntro').style.display='none';document.getElementById('quizArea').style.display='block';renderQuestion()}
+function renderQuestion(){if(quizIndex>=currentOrder.length){renderResult();return}const qid=currentOrder[quizIndex];const q=QUIZ[qid];const prev=state.quiz.perQuestion[qid];document.getElementById('quizArea').innerHTML=`<div class="quiz-stats"><div class="quiz-stat"><div class="v">${quizIndex+1}/${currentOrder.length}</div><div class="l">Progress</div></div><div class="quiz-stat"><div class="v">${state.quiz.correct}</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v">${state.quiz.attempted?Math.round(state.quiz.correct/state.quiz.attempted*100):0}%</div><div class="l">Accuracy</div></div></div><div class="question-card"><div class="q-num">Question ${quizIndex+1} of ${currentOrder.length}</div><div class="q-text">${q.q}</div>${q.o.map((opt,i)=>`<div class="option" onclick="pickOption(${qid},${i},this)" id="opt-${i}">${String.fromCharCode(65+i)}) ${opt}</div>`).join('')}<div class="explanation" id="exp"><b>💡 ${q.o[q.a]}</b><br>${q.e}</div><div class="nav-btns"><button class="btn-prev" onclick="prevQuestion()">← Prev</button><button class="btn-next" onclick="nextQuestion()">Next →</button></div></div>`;if(prev!==undefined){const sel=prev;document.getElementById('opt-'+sel).classList.add(sel===q.a?'correct':'wrong');if(sel!==q.a)document.getElementById('opt-'+q.a).classList.add('correct');document.getElementById('exp').classList.add('show')}}
+function pickOption(qid,idx,el){const q=QUIZ[qid];if(state.quiz.perQuestion[qid]!==undefined)return;state.quiz.perQuestion[qid]=idx;state.quiz.attempted++;if(idx===q.a){state.quiz.correct++;el.classList.add('correct')}else{el.classList.add('wrong');document.getElementById('opt-'+q.a).classList.add('correct');if(!state.weak.includes(qid))state.weak.push(qid)}document.getElementById('exp').classList.add('show');save();updateStatBoxes()}
+function nextQuestion(){quizIndex++;renderQuestion()}
+function prevQuestion(){if(quizIndex>0)quizIndex--;renderQuestion()}
+function renderResult(){const s=state.quiz.correct,t=state.quiz.attempted,p=t?Math.round(s/t*100):0;let m='Good effort!';if(p>=80)m='🎉 Excellent!';else if(p>=60)m='👍 Solid.';else if(p>=40)m='📚 More practice.';else m='💪 Keep going.';document.getElementById('quizArea').innerHTML=`<div class="result-card"><div style="font-size:50px">${p>=60?'🏆':'📖'}</div><div class="result-score">${p}%</div><div class="result-msg">${m}</div><div class="result-row"><div class="quiz-stat"><div class="v">${s}</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v">${t-s}</div><div class="l">Wrong</div></div></div><div class="action-row"><button class="btn" onclick="resetQuiz()">🔄 Retake</button><button class="btn btn-sec" onclick="reviewWeak()">🎯 Weak</button></div></div>`}
+function resetQuiz(){state.quiz={attempted:0,correct:0,perQuestion:{}};state.weak=[];save();document.getElementById('quizArea').style.display='none';document.getElementById('quizIntro').style.display='block';updateStatBoxes()}
+function reviewWeak(){if(state.weak.length===0){alert('No weak topics yet!');return}currentOrder=[...state.weak];quizIndex=0;document.getElementById('quizIntro').style.display='none';document.getElementById('quizArea').style.display='block';state.weak.forEach(w=>{delete state.quiz.perQuestion[w]});state.quiz.attempted=Math.max(0,state.quiz.attempted-state.weak.length);state.weak=[];save();renderQuestion()}
+function updateStatBoxes(){const a=state.quiz.attempted,c=state.quiz.correct,ac=a?Math.round(c/a*100):0;if(document.getElementById('stAtt'))document.getElementById('stAtt').textContent=a;if(document.getElementById('stCor'))document.getElementById('stCor').textContent=c;if(document.getElementById('stAcc'))document.getElementById('stAcc').textContent=ac+'%'}
+
+const CASES=[
+{t:'1. PMJJBY Claim',scenario:'Mrs. Kamala\'s husband (45, enrolled in PMJJBY 1 month ago) died of heart attack. Claim?',solution:'<b>PMJJBY Features:</b><br>• Age 18-50 at enrollment ✓ (45)<br>• Cover: ₹2 lakh on death (any reason).<br>• <b>Lien period: 45 days from enrollment</b> for natural death.<br>• Accidental death: no lien.<br><b>Analysis:</b> Enrolled 1 month ago (~30 days) → within lien period (45 days).<br>Death from heart attack = natural cause → NOT accidental.<br><b>Claim decision:</b> REJECTED under natural death during lien.<br><b>Exception:</b> Accidental death during lien — payable.<br><b>If enrolled > 45 days ago:</b> Full ₹2 lakh payable.<br><b>Documentation:</b> Death certificate, claim form, nominee KYC.<br><b>Timeline:</b> Settle within 30 days of complete claim.<br><b>Key learning:</b> 45-day lien period applies to natural death only.'},
+{t:'2. NPS Tax Benefits',scenario:'Mr. Rajesh invests ₹1.5 lakh in 80C (PPF/ELSS) + ₹50,000 in NPS Tier-1 + Employer contributes 10% of ₹8 lakh salary (₹80,000). What\'s his total NPS tax benefit?',solution:'<b>Sec 80CCD(1):</b> NPS within 80C limit of ₹1.5 lakh. Already fully utilised by PPF/ELSS. → NO additional benefit here.<br><b>Sec 80CCD(1B):</b> Additional ₹50,000 EXCLUSIVE of 80C. → ₹50,000 benefit ✓.<br><b>Sec 80CCD(2):</b> Employer contribution up to 10% of salary (private sector).<br>₹80,000 = 10% of ₹8L → ₹80,000 FULL benefit ✓.<br>(Note: employer contribution not included in Rajesh\'s salary for tax).<br><br><b>Total Rajesh\'s NPS tax benefit:</b><br>• 80CCD(1B): ₹50,000<br>• 80CCD(2): ₹80,000<br>• Total: <b>₹1.30 lakh</b><br><br><b>Plus his 80C: ₹1.5 lakh (PPF/ELSS).</b><br><b>Total tax benefit:</b> ₹2.8 lakh.<br><b>Key learning:</b> 80CCD(1B) + 80CCD(2) can be stacked outside 80C limit.'},
+{t:'3. PPF Optimal Strategy',scenario:'Ms. Priya (age 30) wants to plan long-term wealth with PPF. Starts with ₹1.5 lakh/year from today. Plan after 15 years?',solution:'<b>Year 1 to 15:</b> Annual ₹1.5 lakh × 15 = ₹22.5 lakh contributed.<br><b>Interest (compounded):</b> At ~7.1%, maturity value ≈ ₹40 lakh (varies with rate).<br><b>Options at year 15:</b><br>1. <b>Withdraw full amount</b> — tax-free (EEE status).<br>2. <b>Extend for 5 more years WITH deposits</b> — fresh 15-year block.<br>3. <b>Extend for 5 more years WITHOUT deposits</b> — existing balance continues earning interest; can withdraw partial.<br>4. <b>Withdraw + close</b>.<br><b>Best strategy (if long-term goal):</b> Extend WITHOUT deposits, keep withdrawing as needed. Interest tax-free compounds.<br><b>Sec 80C:</b> ₹1.5 lakh/yr deduction each year of fresh contribution.<br><b>Partial withdrawal allowed:</b> From 7th year, up to 50% of 4th preceding year\'s balance.<br><b>Key learning:</b> PPF = tax-free compounded long-term; extend without deposits for passive compounding.'},
+{t:'4. SGB vs Gold Jewellery',scenario:'Mr. Mahesh wants to invest ₹10 lakh in gold. Options: (a) Gold jewellery, (b) SGB. Compare.',solution:'<b>SGB (Sovereign Gold Bond):</b><br>• 10 gm = 1 unit (approx value ₹60,000). ₹10L = ~16 units = ~160 gm gold.<br>• Interest: 2.50% p.a. on nominal → ₹25,000/year.<br>• Tenure: 8 years; early exit after 5 years on interest dates.<br>• Storage: None (dematerialised).<br>• Making charge: None.<br>• Capital gains at maturity: EXEMPT.<br>• Interest: Taxable.<br><b>Gold Jewellery:</b><br>• ₹10L → depending on making charges, actual gold ~130-140 gm.<br>• No interest income.<br>• Storage: Locker fee (~₹2,000-5,000/yr).<br>• Making charges: 8-20% (loss on sale).<br>• LTCG on sale: 20% with indexation.<br>• GST on purchase: 3%.<br><b>8-year SGB value (projected):</b> Price appreciation + 8 × ₹25,000 interest.<br><b>8-year Jewellery value:</b> Price appreciation - locker costs - making charges lost.<br><b>Conclusion:</b> SGB superior for investment purpose. Jewellery only for personal use.<br><b>Key learning:</b> SGB = 2.5% + capital appreciation + no storage + tax-exempt gains.'},
+{t:'5. Locker Breakage',scenario:'Mr. Anand\'s locker rent (₹5,000/yr) unpaid for 4 years. Bank wants to break open. Procedure?',solution:'<b>Step 1:</b> RBI 2022 — bank can break open after 3 months of notice if rent unpaid for 3 years.<br><b>Step 2:</b> Rent unpaid 4 years → bank has right to recover arrears.<br><b>Step 3:</b> Process:<br>1. Send demand notice to hirer.<br>2. Give 3 months to settle.<br>3. If no response → break open under supervision.<br>4. Items to be inventoried + sealed in presence of 2 witnesses + locker officer.<br>5. Deposit in bank\'s safe custody until claimed.<br>6. Sale of contents to recover dues (per RBI procedure).<br><b>Step 4:</b> If customer not traceable:<br>• After reasonable time, contents treated as "Unclaimed."<br>• Deposited in Bank\'s General Pool; informed to RBI.<br><b>Step 5:</b> Bank\'s liability:<br>• Up to 100× annual rent for negligence.<br>• Not applicable here (customer\'s default).<br><b>Key learning:</b> Non-payment of rent for 3 years + 3 months notice = break-open permitted.'}
+];
+function renderCases(){document.getElementById('caseList').innerHTML=CASES.map((c,i)=>`<div class="case-card"><div class="case-head" onclick="this.parentElement.classList.toggle('open')"><span>${c.t}</span><span class="arrow">▼</span></div><div class="case-body"><div class="case-scenario"><b>📍 Scenario:</b> ${c.scenario}</div><button class="reveal-btn" onclick="this.nextElementSibling.classList.add('show'); this.style.display='none'">👁️ Reveal Solution</button><div class="case-solution">${c.solution}</div></div></div>`).join('')}
+
+function init(){document.documentElement.setAttribute('data-theme',state.theme);document.querySelector('.theme-btn').textContent=state.theme==='dark'?'☀️':'🌙';Object.keys(state.topics).forEach(id=>{const el=document.querySelector(`#${id} .topic-check`);if(el&&state.topics[id])el.classList.add('done')});updateProgressBar();renderFlashcards();renderCompare();renderNumbers();renderCases();updateStatBoxes()}
+init();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(e => console.log('SW failed:', e));
+  });
+}
+</script>
+</body>
+</html>

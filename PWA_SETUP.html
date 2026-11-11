@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PWA Setup — IOB Prep</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f5f7fb;color:#1a202c;line-height:1.6;max-width:720px;margin:0 auto;padding:16px;font-size:14px}
+h1{background:linear-gradient(135deg,#0a2540,#1e40af);color:#fff;padding:16px;border-radius:12px;margin:0 0 16px;font-size:18px}
+h2{color:#0a2540;font-size:16px;margin:20px 0 8px;padding:6px 0;border-bottom:2px solid #d4a017}
+h3{color:#1e40af;font-size:14px;margin:12px 0 6px}
+.card{background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);border:1px solid #e2e8f0}
+.option{background:#fff;border-radius:12px;padding:14px;margin-bottom:14px;border-left:4px solid #d4a017}
+.step{background:#f5f7fb;padding:10px 12px;margin:6px 0;border-radius:8px;border-left:3px solid #0a2540}
+code{background:#f1f5f9;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:13px;color:#0a2540}
+.imp{background:#fef3c7;border-left-color:#d4a017;padding:10px 12px;border-radius:6px;margin:8px 0;font-size:13px;border-left:3px solid #d4a017}
+.success{background:#d1fae5;color:#065f46;padding:10px 12px;border-radius:6px;margin:8px 0;font-size:13px}
+.danger{background:#fee2e2;color:#991b1b;padding:10px 12px;border-radius:6px;margin:8px 0;font-size:13px}
+ul,ol{padding-left:22px}li{margin:4px 0}
+a{color:#1e40af;text-decoration:none}a:hover{text-decoration:underline}
+.badge{display:inline-block;background:#0a2540;color:#fff;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700}
+.chip{display:inline-block;background:#d4a017;color:#0a2540;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:6px}
+</style>
+</head>
+<body>
+<h1>📱 PWA Setup Guide — IOB Prep</h1>
+
+<div class="card">
+<p><b>PWA (Progressive Web App)</b> lets you install IOB Prep like a native app on your phone — home-screen icon, full-screen mode, works 100% offline after first install.</p>
+<div class="imp">⚠️ <b>Important:</b> PWAs need to be served over <b>HTTPS</b>. Opening files directly (<code>file://</code>) won't register the service worker. Use one of the 3 options below.</div>
+</div>
+
+<h2>🎯 Option 1: GitHub Pages (Recommended, FREE)</h2>
+<div class="option">
+<p>Best for sharing + installing on phone. Takes 5 minutes.</p>
+<div class="step"><b>Step 1:</b> Create a GitHub account (if you don't have one) → <a href="https://github.com/signup">github.com/signup</a></div>
+<div class="step"><b>Step 2:</b> Create new repo named <code>iob-prep</code> → make it public.</div>
+<div class="step"><b>Step 3:</b> Upload ALL files from this folder (all .html + .png + .json + .js) to the repo root.</div>
+<div class="step"><b>Step 4:</b> Go to Settings → Pages → Source: "Deploy from branch" → Branch: <code>main</code> → Save.</div>
+<div class="step"><b>Step 5:</b> Wait 1-2 min. GitHub gives you a URL like <code>https://&lt;username&gt;.github.io/iob-prep/IOB_Study_Hub.html</code></div>
+<div class="step"><b>Step 6:</b> Open that URL on your phone (Chrome). Click the install banner, OR Chrome menu → "Install app" / "Add to Home Screen".</div>
+<div class="success">✅ Installed. Now works offline forever. Access via home-screen icon.</div>
+</div>
+
+<h2>📦 Option 2: Wrap as APK via PWABuilder</h2>
+<div class="option">
+<p>Install directly as Android app (like Play Store app but sideloaded).</p>
+<div class="step"><b>Prerequisite:</b> Complete Option 1 first (get a public HTTPS URL).</div>
+<div class="step"><b>Step 1:</b> Go to <a href="https://www.pwabuilder.com">pwabuilder.com</a></div>
+<div class="step"><b>Step 2:</b> Enter your GitHub Pages URL → click "Start".</div>
+<div class="step"><b>Step 3:</b> Review the PWA checks → click "Package For Stores".</div>
+<div class="step"><b>Step 4:</b> Choose "Android" → download signed APK.</div>
+<div class="step"><b>Step 5:</b> Transfer APK to phone → enable "Install from unknown sources" → install.</div>
+<div class="success">✅ Installed as native Android app with icon, splash screen, etc.</div>
+<div class="imp">📝 This is exactly how you built your other PWAs (Scroll Limit, Gut Reboot Tracker) — same process.</div>
+</div>
+
+<h2>💻 Option 3: Local Webserver (Quick test)</h2>
+<div class="option">
+<p>Test PWA on your phone without uploading anywhere.</p>
+<div class="step"><b>Step 1:</b> Install an app like <b>"PWA Server"</b> or <b>"Simple HTTP Server"</b> from Play Store.</div>
+<div class="step"><b>Step 2:</b> Point it to this folder on your phone.</div>
+<div class="step"><b>Step 3:</b> App gives local URL like <code>http://localhost:8080</code>.</div>
+<div class="step"><b>Step 4:</b> Open in Chrome → install.</div>
+<div class="danger">⚠️ Only works while the server app is running. GitHub Pages is better for permanent install.</div>
+</div>
+
+<h2>🔍 How to verify PWA is working</h2>
+<div class="card">
+<ul>
+<li>Open the Hub URL in Chrome.</li>
+<li>Chrome menu → "Install app" option should appear.</li>
+<li>Or install banner appears at bottom of Hub automatically.</li>
+<li>After install → app icon on home screen.</li>
+<li>Open app → should launch in full-screen (no browser bar).</li>
+<li>Turn off WiFi + data → open app → everything still works.</li>
+</ul>
+</div>
+
+<h2>📂 Files in your PWA</h2>
+<div class="card">
+<p>All 16 files are needed for the PWA to work offline:</p>
+<ul>
+<li><b>13 HTML files</b> — Study Hub + 11 Modules + Tracker + Crash Notes</li>
+<li><b>manifest.json</b> — PWA metadata (name, icons, start URL)</li>
+<li><b>sw.js</b> — Service Worker (caches everything for offline)</li>
+<li><b>icon-192.png, icon-512.png, icon-maskable-512.png</b> — App icons</li>
+</ul>
+</div>
+
+<h2>🔄 Updating the PWA</h2>
+<div class="card">
+<p>If I send you updated files later (e.g., new animations, more MCQs):</p>
+<ol>
+<li>Replace the files in your GitHub repo.</li>
+<li>Update <code>CACHE_NAME</code> in <code>sw.js</code> (e.g., <code>'iob-prep-v1.0.1'</code>).</li>
+<li>Within hours, PWA auto-updates on next launch.</li>
+</ol>
+</div>
+
+<h2>❓ Quickest Path for You (Recommended)</h2>
+<div class="success">
+<b>Based on your previous PWA experience:</b><br>
+1. Upload files to GitHub (new repo <code>iob-prep</code>).<br>
+2. Enable GitHub Pages.<br>
+3. Open URL on phone → Install.<br>
+<br>
+Done in 10 minutes. Same flow you used for Scroll Limit + Gut Reboot Tracker.
+</div>
+
+<div class="card" style="text-align:center;margin-top:20px;color:#64748b;font-size:12px">
+Open <a href="IOB_Study_Hub.html">IOB_Study_Hub.html</a> to start studying.<br>
+Best wishes for your exam, Srinivasan 🙏
+</div>
+</body>
+</html>

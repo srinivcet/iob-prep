@@ -1,0 +1,2576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a2540">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IOB Prep">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Module A: General Banking — IOB 2027</title>
+<style>
+:root {
+  --bg: #f5f7fb; --card: #ffffff; --text: #1a202c; --muted: #64748b;
+  --primary: #0a2540; --primary-light: #1e40af; --accent: #d4a017;
+  --success: #10b981; --warn: #f59e0b; --danger: #ef4444;
+  --border: #e2e8f0; --highlight: #fef3c7; --important: #fee2e2; --info: #dbeafe;
+}
+[data-theme="dark"] {
+  --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --muted: #94a3b8;
+  --primary: #3b82f6; --accent: #fbbf24; --border: #334155;
+  --highlight: #78350f; --important: #7f1d1d; --info: #1e3a8a;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.55;
+  font-size: 14px; padding-bottom: 80px;
+}
+.header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: white; padding: 14px 16px;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+.header-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.back-link {
+  color: white; text-decoration: none; font-size: 13px;
+  padding: 4px 8px; background: rgba(255,255,255,0.15);
+  border-radius: 8px; display: inline-block;
+}
+.header h1 { font-size: 16px; font-weight: 700; margin-top: 4px; }
+.header-sub { font-size: 11px; opacity: 0.85; }
+.theme-btn {
+  background: rgba(255,255,255,0.15); border: none; color: white;
+  padding: 8px 10px; border-radius: 8px; font-size: 15px; cursor: pointer;
+}
+.progress-strip {
+  height: 4px; background: rgba(255,255,255,0.2);
+  margin-top: 8px; border-radius: 10px; overflow: hidden;
+}
+.progress-strip-fill {
+  height: 100%; background: linear-gradient(90deg, var(--accent), #fbbf24);
+  transition: width 0.5s;
+}
+.tabs {
+  background: var(--card); padding: 8px; overflow-x: auto;
+  white-space: nowrap; border-bottom: 1px solid var(--border);
+  position: sticky; top: 85px; z-index: 50; scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab-chip {
+  display: inline-block; padding: 8px 14px; margin: 0 3px;
+  border-radius: 20px; background: var(--bg); color: var(--text);
+  border: 1px solid var(--border); font-size: 12px; font-weight: 600;
+  cursor: pointer;
+}
+.tab-chip.active { background: var(--primary); color: white; border-color: var(--primary); }
+[data-theme="dark"] .tab-chip.active { background: var(--accent); color: var(--primary); }
+.container { padding: 14px; max-width: 900px; margin: 0 auto; }
+.view { display: none; }
+.view.active { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.topic {
+  background: var(--card); border-radius: 12px;
+  margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  border: 1px solid var(--border); overflow: hidden;
+}
+.topic-head {
+  padding: 12px 14px; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+  background: linear-gradient(90deg, var(--card) 0%, var(--bg) 100%);
+  user-select: none;
+}
+.topic-title {
+  font-weight: 700; font-size: 14px; color: var(--primary);
+  display: flex; align-items: center; gap: 8px;
+}
+[data-theme="dark"] .topic-title { color: var(--accent); }
+.topic-num {
+  background: var(--primary); color: white; width: 24px; height: 24px;
+  border-radius: 50%; text-align: center; line-height: 24px;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+[data-theme="dark"] .topic-num { background: var(--accent); color: var(--primary); }
+.topic-check {
+  width: 22px; height: 22px; border: 2px solid var(--muted);
+  border-radius: 6px; cursor: pointer; display: flex;
+  align-items: center; justify-content: center;
+  color: white; font-weight: bold; font-size: 13px;
+  flex-shrink: 0;
+}
+.topic-check.done { background: var(--success); border-color: var(--success); }
+.topic-check.done::after { content: '✓'; }
+.topic-body { display: none; padding: 0 14px 14px; }
+.topic.open .topic-body { display: block; animation: fadeIn 0.3s ease; }
+.topic.open .topic-arrow { transform: rotate(90deg); }
+.topic-arrow { transition: transform 0.3s; color: var(--muted); font-size: 14px; }
+h3 {
+  margin: 14px 0 8px; font-size: 14px; color: var(--primary);
+  padding-bottom: 4px; border-bottom: 2px solid var(--accent);
+}
+[data-theme="dark"] h3 { color: var(--accent); }
+h4 {
+  margin: 12px 0 6px; font-size: 13px; color: var(--primary); font-weight: 700;
+}
+[data-theme="dark"] h4 { color: #93c5fd; }
+p { margin: 4px 0 8px; }
+ul, ol { margin: 4px 0 10px; padding-left: 22px; }
+li { margin: 3px 0; }
+.key {
+  background: var(--highlight); padding: 2px 6px; border-radius: 4px;
+  font-weight: 700; color: #92400e; font-size: 13px;
+}
+[data-theme="dark"] .key { color: #fde68a; }
+.imp {
+  background: var(--important); padding: 2px 6px; border-radius: 4px;
+  font-weight: 600; color: #991b1b;
+}
+[data-theme="dark"] .imp { color: #fecaca; }
+.num-pill {
+  display: inline-block; background: var(--accent); color: var(--primary);
+  padding: 2px 8px; border-radius: 10px; font-family: monospace;
+  font-weight: 700; font-size: 12px;
+}
+.alert {
+  padding: 10px 12px; margin: 10px 0; border-radius: 8px;
+  border-left: 3px solid; font-size: 13px;
+}
+.alert-info { background: var(--info); border-color: var(--primary-light); color: var(--primary); }
+.alert-danger { background: var(--important); border-color: var(--danger); color: #991b1b; }
+.alert-warn { background: var(--highlight); border-color: var(--warn); color: #92400e; }
+.alert-ok { background: #d1fae5; border-color: var(--success); color: #065f46; }
+[data-theme="dark"] .alert-info { color: #dbeafe; }
+[data-theme="dark"] .alert-danger { color: #fecaca; background: #7f1d1d; }
+[data-theme="dark"] .alert-warn { color: #fde68a; background: #78350f; }
+[data-theme="dark"] .alert-ok { background: #065f46; color: #d1fae5; }
+table {
+  width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12.5px;
+}
+th, td { padding: 6px 8px; text-align: left; border: 1px solid var(--border); }
+th { background: var(--bg); font-weight: 700; color: var(--primary); }
+[data-theme="dark"] th { color: var(--accent); }
+tr:nth-child(even) td { background: var(--bg); }
+
+/* FLASHCARD */
+.flashcard-deck { display: flex; flex-direction: column; gap: 12px; }
+.flashcard {
+  perspective: 1000px; height: 180px;
+  cursor: pointer;
+}
+.flashcard-inner {
+  position: relative; width: 100%; height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+.flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+.flashcard-face {
+  position: absolute; width: 100%; height: 100%;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border-radius: 14px; padding: 18px;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.flashcard-front {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: white; font-size: 16px; font-weight: 600;
+}
+.flashcard-back {
+  background: linear-gradient(135deg, var(--accent) 0%, #d97706 100%);
+  color: #1a202c; font-size: 13.5px; transform: rotateY(180deg);
+  font-weight: 500; overflow-y: auto; line-height: 1.5;
+}
+.flashcard-hint {
+  position: absolute; bottom: 8px; left: 0; right: 0;
+  font-size: 10px; opacity: 0.7; text-align: center;
+}
+
+/* COMPARE */
+.compare-card {
+  background: var(--card); border-radius: 12px;
+  margin-bottom: 10px; border: 1px solid var(--border);
+  overflow: hidden;
+}
+.compare-head {
+  padding: 12px 14px; background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  color: white; font-weight: 700; font-size: 14px;
+  cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+}
+.compare-body { display: none; padding: 10px; overflow-x: auto; }
+.compare-card.open .compare-body { display: block; animation: fadeIn 0.3s ease; }
+.compare-card.open .compare-head .arrow { transform: rotate(180deg); }
+.compare-head .arrow { transition: transform 0.3s; font-size: 14px; }
+
+/* NUMBERS */
+.num-card {
+  background: var(--card); border-radius: 12px;
+  padding: 12px; margin-bottom: 8px;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+}
+.num-badge {
+  background: var(--accent); color: var(--primary);
+  padding: 6px 10px; border-radius: 8px;
+  font-family: monospace; font-weight: 700; font-size: 13px;
+  min-width: 90px; text-align: center; flex-shrink: 0;
+}
+.num-desc { font-size: 13px; flex: 1; }
+.num-cat {
+  font-size: 10px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* MCQ */
+.quiz-intro {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white; padding: 20px; border-radius: 14px;
+  margin-bottom: 14px; text-align: center;
+}
+.quiz-intro h2 { font-size: 20px; margin-bottom: 8px; }
+.quiz-intro p { font-size: 13px; opacity: 0.9; margin-bottom: 14px; }
+.quiz-btn {
+  padding: 10px 20px; background: var(--accent); color: var(--primary);
+  border: none; border-radius: 10px; font-weight: 700; cursor: pointer;
+  font-size: 14px; font-family: inherit;
+}
+.quiz-stats {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+  margin-bottom: 14px;
+}
+.quiz-stat {
+  background: var(--card); padding: 10px; border-radius: 10px;
+  text-align: center; border: 1px solid var(--border);
+}
+.quiz-stat .v { font-size: 20px; font-weight: 700; color: var(--primary); }
+[data-theme="dark"] .quiz-stat .v { color: var(--accent); }
+.quiz-stat .l { font-size: 10px; color: var(--muted); text-transform: uppercase; }
+.question-card {
+  background: var(--card); border-radius: 14px; padding: 16px;
+  margin-bottom: 12px; border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.q-num { font-size: 11px; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
+.q-text { font-size: 14px; font-weight: 600; margin-bottom: 12px; line-height: 1.45; }
+.option {
+  padding: 10px 12px; margin-bottom: 6px;
+  background: var(--bg); border-radius: 8px;
+  border: 2px solid transparent; cursor: pointer;
+  font-size: 13px; transition: all 0.2s;
+}
+.option:hover { background: var(--card); border-color: var(--primary); }
+.option.selected { border-color: var(--primary); background: var(--card); }
+.option.correct { background: #d1fae5; border-color: var(--success); color: #065f46; }
+.option.wrong { background: #fee2e2; border-color: var(--danger); color: #991b1b; }
+[data-theme="dark"] .option.correct { background: #065f46; color: #d1fae5; }
+[data-theme="dark"] .option.wrong { background: #7f1d1d; color: #fecaca; }
+.explanation {
+  background: var(--info); padding: 10px 12px; margin-top: 10px;
+  border-radius: 8px; font-size: 12.5px;
+  border-left: 3px solid var(--primary-light);
+  display: none;
+}
+.explanation.show { display: block; animation: fadeIn 0.3s; }
+[data-theme="dark"] .explanation { background: #1e3a8a; color: #dbeafe; }
+.nav-btns { display: flex; gap: 8px; margin-top: 14px; }
+.nav-btns button {
+  flex: 1; padding: 10px; border: none; border-radius: 8px;
+  cursor: pointer; font-weight: 600; font-size: 13px; font-family: inherit;
+}
+.btn-prev { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+.btn-next { background: var(--primary); color: white; }
+[data-theme="dark"] .btn-next { background: var(--accent); color: var(--primary); }
+.btn-submit { background: var(--success); color: white; }
+
+/* CASE STUDY */
+.case-card {
+  background: var(--card); border-radius: 14px;
+  margin-bottom: 14px; border: 1px solid var(--border);
+  overflow: hidden;
+}
+.case-head {
+  padding: 12px 14px;
+  background: linear-gradient(135deg, var(--accent) 0%, #d97706 100%);
+  color: #1a202c; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+  font-weight: 700;
+}
+.case-body { display: none; padding: 14px; }
+.case-card.open .case-body { display: block; animation: fadeIn 0.3s; }
+.case-card.open .case-head .arrow { transform: rotate(180deg); }
+.case-scenario {
+  background: var(--info); padding: 10px 12px; border-radius: 8px;
+  margin-bottom: 10px; font-size: 13px;
+  border-left: 3px solid var(--primary-light);
+}
+[data-theme="dark"] .case-scenario { background: #1e3a8a; color: #dbeafe; }
+.case-solution {
+  background: var(--highlight); padding: 10px 12px; border-radius: 8px;
+  font-size: 13px; border-left: 3px solid var(--accent);
+  display: none;
+}
+.case-solution.show { display: block; animation: fadeIn 0.3s; }
+[data-theme="dark"] .case-solution { background: #78350f; color: #fde68a; }
+.reveal-btn {
+  padding: 8px 14px; background: var(--primary); color: white;
+  border: none; border-radius: 8px; cursor: pointer;
+  font-size: 12px; font-weight: 600; margin-top: 8px;
+}
+
+/* ANIMATION SVG */
+.flow-container {
+  background: var(--card); border-radius: 12px;
+  padding: 14px; margin: 10px 0; border: 1px solid var(--border);
+  overflow-x: auto;
+}
+.flow-title {
+  font-size: 13px; font-weight: 700; color: var(--primary);
+  margin-bottom: 8px; text-align: center;
+}
+[data-theme="dark"] .flow-title { color: var(--accent); }
+.flow-step {
+  display: inline-flex; flex-direction: column; align-items: center;
+  margin: 0 8px; vertical-align: top; width: 110px;
+}
+.flow-circle {
+  width: 50px; height: 50px; border-radius: 50%;
+  background: var(--primary); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 700;
+  animation: pulseStep 2s infinite;
+}
+.flow-step:nth-child(2) .flow-circle { animation-delay: 0.3s; background: #1e40af; }
+.flow-step:nth-child(3) .flow-circle { animation-delay: 0.6s; background: #2563eb; }
+.flow-step:nth-child(4) .flow-circle { animation-delay: 0.9s; background: var(--accent); color: var(--primary); }
+.flow-step:nth-child(5) .flow-circle { animation-delay: 1.2s; background: var(--success); }
+@keyframes pulseStep {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 currentColor; }
+  50% { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(10,37,64,0.1); }
+}
+.flow-label {
+  font-size: 10px; margin-top: 6px; text-align: center;
+  line-height: 1.3; color: var(--muted);
+}
+.flow-arrow {
+  color: var(--muted); font-size: 18px;
+  vertical-align: top; margin-top: 18px;
+  animation: slideRight 1.5s infinite;
+}
+@keyframes slideRight {
+  0%, 100% { transform: translateX(0); opacity: 0.5; }
+  50% { transform: translateX(3px); opacity: 1; }
+}
+
+/* QUIZ COMPLETE */
+.result-card {
+  background: var(--card); padding: 20px;
+  border-radius: 14px; text-align: center;
+  border: 1px solid var(--border);
+}
+.result-score {
+  font-size: 44px; font-weight: 800; color: var(--primary);
+  margin: 10px 0;
+}
+[data-theme="dark"] .result-score { color: var(--accent); }
+.result-msg { font-size: 14px; color: var(--muted); margin-bottom: 16px; }
+.result-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  margin-top: 14px;
+}
+
+/* FLOATING */
+.float-btn {
+  position: fixed; bottom: 16px; right: 16px;
+  background: var(--primary); color: white;
+  border: none; width: 48px; height: 48px;
+  border-radius: 50%; font-size: 22px; cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 200;
+}
+[data-theme="dark"] .float-btn { background: var(--accent); color: var(--primary); }
+
+.search-box {
+  width: 100%; padding: 10px 12px;
+  border-radius: 10px; border: 1px solid var(--border);
+  background: var(--card); color: var(--text);
+  font-size: 13px; margin-bottom: 10px; font-family: inherit;
+}
+
+@media (max-width: 400px) {
+  .header h1 { font-size: 15px; }
+  .tab-chip { font-size: 11px; padding: 6px 12px; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-row">
+    <div>
+      <a href="IOB_Study_Hub.html" class="back-link">← Hub</a>
+      <h1>Module A: General Banking</h1>
+      <div class="header-sub">36 topics • 45 MCQs • 7 Case Studies</div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+  </div>
+  <div class="progress-strip"><div class="progress-strip-fill" id="pbar" style="width:0%"></div></div>
+</div>
+
+<div class="tabs">
+  <div class="tab-chip active" onclick="showTab('content', this)">📖 Content</div>
+  <div class="tab-chip" onclick="showTab('flash', this)">🎴 Flashcards</div>
+  <div class="tab-chip" onclick="showTab('compare', this)">⚖️ Compare</div>
+  <div class="tab-chip" onclick="showTab('numbers', this)">🔢 Numbers</div>
+  <div class="tab-chip" onclick="showTab('mcq', this)">❓ Quiz</div>
+  <div class="tab-chip" onclick="showTab('cases', this)">📋 Cases</div>
+</div>
+
+<div class="container">
+
+<!-- ===================== CONTENT TAB ===================== -->
+<div id="content" class="view active">
+  <input class="search-box" placeholder="🔍 Search topics..." oninput="filterTopics(this.value)">
+
+  <!-- Topic 1: KYC/AML/CFT -->
+  <div class="topic" id="t1">
+    <div class="topic-head" onclick="toggleTopic('t1')">
+      <div class="topic-title"><span class="topic-num">1</span>KYC / AML / CFT Policy</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t1', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>Overview</h3>
+      <p>Policy on Know Your Customer (KYC) / Anti-Money Laundering (AML) / Combating of Financing of Terrorism (CFT).</p>
+      <ul>
+        <li>Board approval: <span class="key">18.02.2025</span>, valid upto <span class="key">31.10.2026</span>.</li>
+        <li>Addendum: <span class="key">14.07.2026</span>.</li>
+        <li>Based on RBI Master Directions.</li>
+        <li>Legal basis: Sec 35A of Banking Regulation Act, 1949 + Sec 45JA, 45K, 45L of RBI Act 1934 + Payment & Settlement Systems Act 2007 + FEMA 1999 + PMLA Rules 2005.</li>
+        <li>Applies to: every RBI-regulated entity; all home + overseas branches.</li>
+        <li>In case of conflict between RBI and Host country regulations: <b>more stringent</b> applies.</li>
+      </ul>
+
+      <h3>Objectives</h3>
+      <ul>
+        <li>Prevent misuse of banking channels for ML (Money Laundering) / TF (Terrorist Financing).</li>
+        <li>Guard against criminals, fraudsters, terrorists.</li>
+        <li>Understand risk per account/transaction.</li>
+        <li>Identify customer fully — identity, location, activity.</li>
+        <li>Implement FATF (Financial Action Task Force) + Basel Committee standards.</li>
+      </ul>
+
+      <h3>Key Definitions</h3>
+      <ul>
+        <li><b>CDD (Customer Due Diligence):</b> Identify + verify customer and beneficial owner.</li>
+        <li><b>Customer Identification:</b> Process of undertaking CDD.</li>
+        <li><b>Non-face-to-face customers:</b> Open accounts without visiting branch/meeting officials.</li>
+        <li><b>On-going Due Diligence:</b> Regular monitoring of transactions.</li>
+        <li><b>Periodic Updation:</b> Keep KYC records current.</li>
+        <li><b>V-CIP (Video-based CIP):</b> Live audio-visual, facial recognition — treated on par with face-to-face.</li>
+        <li><b>Digital KYC:</b> Live photo + OVD + geo-location by authorised officer.</li>
+        <li><b>CKYCR:</b> Central KYC Records Registry (14-digit for individuals, 15-digit for legal entities).</li>
+        <li><b>Equivalent e-document:</b> Electronic doc with valid digital signature or from DigiLocker.</li>
+      </ul>
+
+      <h3>Beneficial Owner (BO)</h3>
+      <table>
+      <tr><th>Entity Type</th><th>Controlling Ownership</th></tr>
+      <tr><td>Company</td><td><span class="key">>10%</span> of shares/capital/profits</td></tr>
+      <tr><td>Partnership Firm</td><td><span class="key">>10%</span> of capital/profits</td></tr>
+      <tr><td>Unincorporated Association/Trust</td><td><span class="key">>15%</span> of property/capital/profits</td></tr>
+      </table>
+      <div class="alert alert-info"><b>Control includes:</b> right to appoint majority of directors or to control management/policy decisions through shareholding, management rights, shareholders agreements, or voting agreements.</div>
+
+      <h3>Three Lines of Defence (KYC/AML Architecture)</h3>
+      <div class="flow-container">
+        <div class="flow-title">KYC/AML Three Lines of Defence</div>
+        <div style="text-align: center; white-space: nowrap;">
+          <div class="flow-step"><div class="flow-circle">1</div><div class="flow-label">Branches / Offices<br>(First Line)</div></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><div class="flow-circle">2</div><div class="flow-label">KYC/AML Dept<br>(Principal Officer)</div></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><div class="flow-circle">3</div><div class="flow-label">Internal Audit<br>(Third Line)</div></div>
+        </div>
+      </div>
+
+      <h3>4 Key Elements of KYC Policy</h3>
+      <ol>
+        <li><b>Customer Acceptance Policy (CAP)</b></li>
+        <li><b>Risk Management</b></li>
+        <li><b>Customer Identification Procedures (CIP)</b></li>
+        <li><b>Monitoring of Transactions</b></li>
+      </ol>
+
+      <h3>Customer Acceptance Policy</h3>
+      <ul>
+        <li>Comprehensive info at initial stage. Interview by BM/Officer.</li>
+        <li>No anonymous / fictitious accounts allowed.</li>
+        <li>No account if CDD not possible (non-cooperation / unreliable documents).</li>
+        <li>CDD applied at UCIC (Unique Customer Identification Code) level.</li>
+        <li>Fresh CDD not needed for an existing KYC-compliant customer opening another account.</li>
+        <li>PAN / e-document — verified from issuing authority.</li>
+        <li>GST number — verified from search facility.</li>
+        <li>If bank suspects ML/TF and CDD may tip off customer — file STR with FIU-IND.</li>
+      </ul>
+
+      <h3>Risk Management — RIP Categories</h3>
+      <table>
+      <tr><th>Risk</th><th>Who</th></tr>
+      <tr><td><b>RIP-1: Low</b></td><td>Individuals (salaried, govt employees, PSU, students).</td></tr>
+      <tr><td><b>RIP-2: Medium</b></td><td>Share brokers wholesalers, retail shops, blind/pardanashin women, dealers, service providers.</td></tr>
+      <tr><td><b>RIP-3: High</b></td><td>Trusts, Charities, NGOs; companies with close family shareholding; firms with sleeping partners; FCRA a/cs; PEPs + close relatives; dubious reputation; non-face-to-face; HNIs; NRIs; bullion dealers/jewellers; blocked a/cs; cash-intensive businesses; large court cases.</td></tr>
+      </table>
+
+      <h3>Periodic KYC Updation (Risk-wise)</h3>
+      <table>
+      <tr><th>Risk Category</th><th>Frequency</th></tr>
+      <tr><td>Low Risk</td><td><span class="key">10 years</span></td></tr>
+      <tr><td>Medium Risk</td><td><span class="key">8 years</span></td></tr>
+      <tr><td>High Risk</td><td><span class="key">2 years</span></td></tr>
+      </table>
+
+      <h3>Officially Valid Documents (OVDs)</h3>
+      <ul>
+        <li>Passport</li>
+        <li>Driving Licence</li>
+        <li>Voter ID Card</li>
+        <li>PAN Card (now permissible as OVD with address proof)</li>
+        <li>Aadhaar (with proof of possession)</li>
+        <li>NREGA Job Card signed by State officer</li>
+        <li>Letter from National Population Register (NPR) with name & address</li>
+      </ul>
+
+      <h3>Deemed OVDs (address mismatch)</h3>
+      <p>Where OVD has outdated address, the following are "deemed OVDs" for current address proof:</p>
+      <ul>
+        <li>Utility bill (electricity, telephone, post-paid mobile, piped gas, water) not older than 2 months</li>
+        <li>Property tax receipt</li>
+        <li>Pension/family pension payment orders (PPOs) with address</li>
+        <li>Letter of allotment of accommodation from employer (Govt / PSU / scheduled bank / listed companies)</li>
+      </ul>
+      <p><b>Must submit OVD with current address within 3 months.</b></p>
+
+      <h3>Monitoring of Transactions — Reports to FIU-IND</h3>
+      <div class="alert alert-danger">⚠️ These are EXAM FAVOURITES. Memorize thresholds and deadlines.</div>
+      <table>
+      <tr><th>Report</th><th>Threshold</th><th>Deadline</th></tr>
+      <tr><td><b>CTR</b> (Cash Transaction Report)</td><td>> ₹10 lakh (single or integrally connected series in a month; individual entries < ₹50,000 excluded)</td><td>15th of succeeding month</td></tr>
+      <tr><td><b>STR</b> (Suspicious Transaction Report)</td><td>Any suspicious transaction (cash or otherwise)</td><td>Within 7 working days of satisfaction</td></tr>
+      <tr><td><b>CCR</b> (Counterfeit Currency Report)</td><td>All counterfeit notes</td><td>Within 7 working days</td></tr>
+      <tr><td><b>NTR</b> (Non-profit Organisation Transaction Report)</td><td>Receipts > ₹10 lakh (NPO)</td><td>15th of succeeding month</td></tr>
+      <tr><td><b>CBWTR</b> (Cross Border Wire Transfer)</td><td>> ₹5 lakh</td><td>15th of succeeding month</td></tr>
+      </table>
+
+      <h3>Record Retention</h3>
+      <ul>
+        <li>Transaction records: <span class="key">5 years</span> from date of transaction.</li>
+        <li>KYC records: <span class="key">5 years</span> from date of cessation of business relationship or closure of account, whichever is later.</li>
+      </ul>
+
+      <h3>Simplified Measures</h3>
+      <ul>
+        <li>Small Account: balance ≤ ₹50,000 at any time; credits ≤ ₹1 lakh/year; withdrawals ≤ ₹10,000/month. No OVD needed; self-attested photograph + signature.</li>
+        <li>Opened subject to monitoring; valid 12 months (extendable 12 more with OVD application pending).</li>
+      </ul>
+
+      <h3>PEP (Politically Exposed Persons)</h3>
+      <ul>
+        <li>Individuals entrusted with prominent public functions in foreign countries.</li>
+        <li>Enhanced due diligence by senior management.</li>
+        <li>Source of funds + wealth to be verified.</li>
+        <li>Closely followed — periodic KYC updation every 2 years.</li>
+        <li>Relatives + close associates of PEPs — treated similarly.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 2: CKYCR -->
+  <div class="topic" id="t2">
+    <div class="topic-head" onclick="toggleTopic('t2')">
+      <div class="topic-title"><span class="topic-num">2</span>Central KYC Records Registry (CKYCR)</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t2', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <ul>
+        <li>Under Rule 2(1) of PMLA Rules. Receives, stores, safeguards, retrieves KYC records digitally.</li>
+        <li>CERSAI (Central Registry of Securitisation Asset Reconstruction) is the agency managing CKYCR.</li>
+        <li><b>KYC Identifier:</b> Unique 14-digit number (individuals) / 15-digit (legal entities).</li>
+        <li>Bank uploads KYC data within <span class="key">10 days</span> of account opening / updation.</li>
+        <li>Any KYC-compliant customer with CKYC number — can open account in any RE without physical KYC.</li>
+        <li>Registered Investment Advisers, NBFCs, Insurance Cos, Mutual Funds — all pool KYC via CKYCR.</li>
+        <li>Fetching KYC via CKYC Identifier reduces duplication.</li>
+      </ul>
+      <div class="alert alert-info"><b>Benefit:</b> Customer completes KYC once; usable across all regulated financial institutions.</div>
+    </div>
+  </div>
+
+  <!-- Topic 3: General Banking Points -->
+  <div class="topic" id="t3">
+    <div class="topic-head" onclick="toggleTopic('t3')">
+      <div class="topic-title"><span class="topic-num">3</span>General Banking — Important Points</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t3', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>Banker-Customer Relationship</h3>
+      <table>
+      <tr><th>Transaction</th><th>Relationship</th></tr>
+      <tr><td>Deposit Account</td><td>Debtor (Bank) — Creditor (Customer)</td></tr>
+      <tr><td>Loan Account</td><td>Creditor (Bank) — Debtor (Customer)</td></tr>
+      <tr><td>Safe Custody of Articles</td><td>Bailee (Bank) — Bailor (Customer)</td></tr>
+      <tr><td>Safe Deposit Locker</td><td>Lessor (Bank) — Lessee (Customer) — per RBI 2022</td></tr>
+      <tr><td>Collection of Cheques</td><td>Agent — Principal</td></tr>
+      <tr><td>Standing Instructions</td><td>Agent — Principal</td></tr>
+      <tr><td>Purchase of Bills / DD</td><td>Holder in Due Course — Purchaser</td></tr>
+      <tr><td>Deposit of Shares as security</td><td>Pledgee — Pledgor</td></tr>
+      <tr><td>Hypothecation</td><td>Hypothecatee — Hypothecator</td></tr>
+      <tr><td>Mortgage</td><td>Mortgagee — Mortgagor</td></tr>
+      <tr><td>DD / FDR / Cheque purchased by customer</td><td>Trustee — Beneficiary</td></tr>
+      </table>
+
+      <h3>Who can open account?</h3>
+      <ul>
+        <li>Individuals (resident / non-resident): 18+ with PAN/OVD. Minors — guardian.</li>
+        <li>HUF, Partnership Firm, LLP, Company, Trust, Society, Association, Govt/Semi-Govt Dept, Co-op Society.</li>
+        <li>NPO, Executors & Administrators, Clubs, Schools, Religious Institutions.</li>
+      </ul>
+
+      <h3>Banking Regulation Act, 1949</h3>
+      <ul>
+        <li>Sec 5(b): Banking = accepting deposits of money from public, for lending/investment, repayable on demand or otherwise, withdrawable by cheque/draft/order.</li>
+        <li>Sec 7: Use of word "bank" — only allowed to RBI-licensed entities.</li>
+        <li>Sec 20: Restriction on loans to directors.</li>
+        <li>Sec 21: RBI power to determine policy of banks.</li>
+        <li>Sec 22: License from RBI mandatory.</li>
+        <li>Sec 24: SLR maintenance.</li>
+        <li>Sec 29: Accounts and Balance Sheet.</li>
+        <li>Sec 35: Inspection by RBI.</li>
+        <li>Sec 35A: Power to issue directions.</li>
+        <li>Sec 45ZA-ZF: Nomination facility for deposits/lockers/articles.</li>
+      </ul>
+
+      <h3>RBI Act, 1934</h3>
+      <ul>
+        <li>Sec 42(1): CRR maintenance.</li>
+        <li>Sec 45JA, 45K, 45L: Regulation of NBFCs.</li>
+        <li>Sec 20: Issue of Bank Notes.</li>
+      </ul>
+
+      <h3>Prevention of Money Laundering Act (PMLA) 2002</h3>
+      <ul>
+        <li>Offence: proceeds of crime + schedule offences.</li>
+        <li>Punishment: 3 to 7 years imprisonment + fine (up to 10 years for drug-related).</li>
+        <li>Adjudicating Authority — attachment of property.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 4: Rights of Banker -->
+  <div class="topic" id="t4">
+    <div class="topic-head" onclick="toggleTopic('t4')">
+      <div class="topic-title"><span class="topic-num">4</span>Rights of Banker</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t4', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>1. Right of General Lien (Sec 171, Indian Contract Act)</h3>
+      <ul>
+        <li>Right to retain securities/property belonging to customer against general debt.</li>
+        <li>Applies to all securities (goods, documents) that come lawfully into bank's possession in course of business.</li>
+        <li>Doesn't apply to: safe custody articles, safe deposit locker contents, specific-purpose securities.</li>
+      </ul>
+
+      <h3>2. Right of Set-Off</h3>
+      <ul>
+        <li>Right to combine two or more accounts of same customer in same capacity.</li>
+        <li>Conditions:
+          <ul>
+            <li>Debts must be mutual.</li>
+            <li>Same capacity (SB + CA personal — yes; personal SB + partnership account — no).</li>
+            <li>Debts must be matured (for customer side).</li>
+            <li>Notice to customer preferred.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>3. Right of Appropriation (Clayton's Rule — Devaynes v. Noble)</h3>
+      <ul>
+        <li>In running accounts (CC/OD): First credit discharges first debit (FIFO).</li>
+        <li>Customer can appropriate at time of payment.</li>
+        <li>If customer doesn't — banker appropriates (notify).</li>
+        <li>If neither — Court applies Clayton's rule.</li>
+      </ul>
+
+      <h3>4. Right to Charge Interest, Commission, Service Charges</h3>
+      <ul>
+        <li>By implied agreement (customary).</li>
+        <li>Rates as per RBI guidelines + bank policy.</li>
+      </ul>
+
+      <h3>5. Right to Close Account</h3>
+      <ul>
+        <li>After reasonable notice to customer.</li>
+        <li>Grounds: suspected ML/TF, adverse customer behaviour, continuing fraud.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 5: Negotiable Instruments -->
+  <div class="topic" id="t5">
+    <div class="topic-head" onclick="toggleTopic('t5')">
+      <div class="topic-title"><span class="topic-num">5</span>Negotiable Instruments Act 1881</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t5', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>Three Types of Negotiable Instruments</h3>
+      <table>
+      <tr><th>Type</th><th>Sec</th><th>Essential</th></tr>
+      <tr><td><b>Promissory Note</b></td><td>4</td><td>Written, signed, promise to pay, definite sum, specified person/bearer</td></tr>
+      <tr><td><b>Bill of Exchange</b></td><td>5</td><td>Written, signed, order to pay, definite sum, drawer/drawee/payee</td></tr>
+      <tr><td><b>Cheque</b></td><td>6</td><td>BoE drawn on specified banker, payable on demand</td></tr>
+      </table>
+
+      <h3>Key Sections</h3>
+      <table>
+      <tr><th>Sec</th><th>Topic</th></tr>
+      <tr><td>Sec 7</td><td>Drawer, Drawee, Payee</td></tr>
+      <tr><td>Sec 8</td><td>Holder — in lawful possession</td></tr>
+      <tr><td>Sec 9</td><td>Holder in Due Course — holder before maturity, for consideration, in good faith</td></tr>
+      <tr><td>Sec 10</td><td>Payment in due course</td></tr>
+      <tr><td>Sec 14</td><td>Negotiation — by indorsement/delivery</td></tr>
+      <tr><td>Sec 15</td><td>Indorsement — signature on back</td></tr>
+      <tr><td>Sec 85</td><td>Protection to paying banker — cheque payable to order</td></tr>
+      <tr><td>Sec 85A</td><td>Protection to paying banker — draft</td></tr>
+      <tr><td>Sec 89</td><td>Payment of instrument on which alteration not apparent</td></tr>
+      <tr><td>Sec 118</td><td>Presumptions as to NI</td></tr>
+      <tr><td>Sec 131</td><td>Protection to collecting banker — good faith, without negligence</td></tr>
+      <tr><td>Sec 138</td><td>Dishonour for insufficient funds — 2 yrs + 2× fine</td></tr>
+      <tr><td>Sec 139</td><td>Presumption in favour of holder (consideration)</td></tr>
+      <tr><td>Sec 142</td><td>Cognizance of offences</td></tr>
+      </table>
+
+      <h3>Crossing</h3>
+      <ul>
+        <li><b>General Crossing (Sec 123):</b> Two parallel transverse lines with/without words "& Co.", "Not Negotiable".</li>
+        <li><b>Special Crossing (Sec 124):</b> Bank's name between two lines.</li>
+        <li><b>Account Payee Crossing:</b> Must be credited to that account only.</li>
+        <li><b>Not Negotiable (Sec 130):</b> Transferee gets no better title than transferor.</li>
+      </ul>
+
+      <h3>Endorsement Types</h3>
+      <ul>
+        <li><b>Blank:</b> Only signature.</li>
+        <li><b>Full / Special:</b> Signature + name of transferee.</li>
+        <li><b>Restrictive:</b> "Pay X only" — limits further negotiation.</li>
+        <li><b>Partial:</b> Not valid.</li>
+        <li><b>Conditional:</b> Valid between parties but bank can ignore.</li>
+      </ul>
+
+      <h3>Cheque — Specific Rules</h3>
+      <ul>
+        <li><b>Validity:</b> <span class="key">3 months</span> from date (earlier 6 months).</li>
+        <li>Post-dated / Ante-dated / Stale cheque — treatment specific.</li>
+        <li>Material alteration — authenticated with full signature.</li>
+        <li>Mutilated cheque — needs confirmation.</li>
+        <li>Minor can be a drawer (Sec 26) — binds other parties but not himself.</li>
+      </ul>
+
+      <h3>Sec 138 — Dishonour for Insufficient Funds</h3>
+      <ol>
+        <li>Cheque presented within 3 months of date.</li>
+        <li>Returned unpaid for insufficient funds / exceeds arrangement.</li>
+        <li>Payee issues demand notice within <span class="key">30 days</span> of return memo.</li>
+        <li>Drawer's payment time: <span class="key">15 days</span> of receipt.</li>
+        <li>Complaint filed within <span class="key">1 month</span> of failure to pay.</li>
+        <li>Punishment: Imprisonment up to <span class="key">2 years</span> + fine up to <span class="key">2× cheque amount</span>.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Topic 6: Nomination -->
+  <div class="topic" id="t6">
+    <div class="topic-head" onclick="toggleTopic('t6')">
+      <div class="topic-title"><span class="topic-num">6</span>Nomination</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t6', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <p>Governed by <b>Banking Companies (Nomination) Rules, 1985</b> + Sec 45ZA-ZF of BR Act.</p>
+
+      <h3>Forms</h3>
+      <table>
+      <tr><th>Form</th><th>Purpose</th><th>Section</th></tr>
+      <tr><td>DA1</td><td>Nomination — Deposit Account</td><td>45ZA</td></tr>
+      <tr><td>DA2</td><td>Cancellation — Deposit</td><td>45ZA</td></tr>
+      <tr><td>DA3</td><td>Variation — Deposit</td><td>45ZA</td></tr>
+      <tr><td>SC1 / SC2 / SC3</td><td>Safe Custody Articles</td><td>45ZC</td></tr>
+      <tr><td>SL1 / SL2 / SL3</td><td>Safe Deposit Locker</td><td>45ZE</td></tr>
+      </table>
+
+      <h3>Key Rules</h3>
+      <ul>
+        <li><b>Deposits:</b> Only <b>one nominee</b> per account.</li>
+        <li><b>Safe Custody:</b> Only one nominee.</li>
+        <li><b>Safe Deposit Locker:</b> Multiple survivors permitted (jointly operated locker).</li>
+        <li>Minor can be a nominee — <b>guardian must be named</b>.</li>
+        <li>Only one person can be guardian.</li>
+        <li>No witness required if form signed by account holder himself.</li>
+        <li>Witness required if signed by thumb impression.</li>
+        <li>Nomination can be made at any time — opening / later.</li>
+        <li>Joint holders: all must sign.</li>
+        <li>Settlement to nominee is <b>full discharge</b> for bank (even if legal heirs dispute).</li>
+      </ul>
+
+      <h3>Benefits of Nomination</h3>
+      <ul>
+        <li>Fast settlement without legal representation.</li>
+        <li>Nominee is only trustee for legal heirs.</li>
+        <li>Nominee's rights are subject to Succession Laws.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 7: Settlement of Claims -->
+  <div class="topic" id="t7">
+    <div class="topic-head" onclick="toggleTopic('t7')">
+      <div class="topic-title"><span class="topic-num">7</span>Settlement of Claims (Deceased Depositor)</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t7', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>With Nomination / Survivor Clause</h3>
+      <ul>
+        <li>Pay to nominee / survivor.</li>
+        <li>Documents: Death certificate + ID proof of nominee + claim form.</li>
+        <li>Timeline: within <span class="key">15 days</span> of receipt of complete claim.</li>
+      </ul>
+
+      <h3>Without Nomination — Non-contentious</h3>
+      <ul>
+        <li>Up to <span class="key">₹5 lakh</span> (RBI Guidelines): pay to legal heirs with:
+          <ul>
+            <li>Death certificate</li>
+            <li>Letter of Disclaimer</li>
+            <li>Indemnity by legal heirs</li>
+            <li>Succession affidavit</li>
+            <li>ID proofs</li>
+          </ul>
+        </li>
+        <li>Above ₹5 lakh: Succession Certificate / Letter of Administration / Probate of Will required.</li>
+      </ul>
+
+      <h3>Without Nomination — Contentious / Disputed</h3>
+      <ul>
+        <li>All amounts — Succession Certificate / Letter of Administration / Probate.</li>
+        <li>Interpleader suit if multiple claimants.</li>
+      </ul>
+
+      <h3>Processing Flow</h3>
+      <div class="flow-container">
+        <div class="flow-title">Deceased Claim Settlement Flow</div>
+        <div style="text-align: center; white-space: nowrap;">
+          <div class="flow-step"><div class="flow-circle">1</div><div class="flow-label">Death reported<br>Certificate</div></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><div class="flow-circle">2</div><div class="flow-label">Freeze operations<br>(no further txns)</div></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><div class="flow-circle">3</div><div class="flow-label">Check nomination<br>/ survivor</div></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><div class="flow-circle">4</div><div class="flow-label">Verify claimant<br>docs</div></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><div class="flow-circle">5</div><div class="flow-label">Settle in<br>15 days</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Topic 8: Special Customers -->
+  <div class="topic" id="t8">
+    <div class="topic-head" onclick="toggleTopic('t8')">
+      <div class="topic-title"><span class="topic-num">8</span>Special Types of Customers</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t8', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>Minor</h3>
+      <ul>
+        <li>Below 18 years (21 if guardian appointed by Court).</li>
+        <li><b>Self-operated account:</b> Age 10+, SB only, balance limit as per bank policy (typically ₹2 lakh now; was ₹2,500 historically — follow latest circular).</li>
+        <li>Natural guardian: Father (then Mother); Court-appointed guardian for orphan.</li>
+        <li>Mother as natural guardian (Hindu Minority Act): if father is alive & in India, Mother is NOT natural guardian — except for illegitimate child.</li>
+        <li>Minor can have TD jointly with guardian.</li>
+        <li>No cheque book for self-operated under 10.</li>
+      </ul>
+
+      <h3>Illiterate</h3>
+      <ul>
+        <li>No cheque book.</li>
+        <li>Thumb impression + 2 witnesses.</li>
+        <li>Introducer required.</li>
+        <li>Photo on passbook.</li>
+        <li>For withdrawals — physical presence + thumb impression.</li>
+      </ul>
+
+      <h3>Partnership Firm</h3>
+      <ul>
+        <li>Partnership Deed + Registration Certificate (preferred).</li>
+        <li>Max partners: 50 (except professional firms).</li>
+        <li>Minor can be admitted to benefits (not as full partner).</li>
+        <li>Mandate signed by all partners.</li>
+      </ul>
+
+      <h3>Companies</h3>
+      <ul>
+        <li>Certificate of Incorporation (CoI).</li>
+        <li>Memorandum of Association (MOA) + Articles of Association (AOA).</li>
+        <li>Board Resolution authorising account opening + operating signatories.</li>
+        <li>PAN, GST, Udyam (if MSME).</li>
+        <li>Max members: Private 200; Public — no max.</li>
+      </ul>
+
+      <h3>Hindu Undivided Family (HUF)</h3>
+      <ul>
+        <li>Karta operates account.</li>
+        <li>Letter of declaration by Karta + coparceners.</li>
+        <li>HUF PAN (separate from Karta).</li>
+        <li>On Karta's death, eldest male/female coparcener becomes Karta.</li>
+      </ul>
+
+      <h3>Trust</h3>
+      <ul>
+        <li>Trust Deed; 12A / 80G registration if applicable.</li>
+        <li>Trustees operate jointly / per Deed.</li>
+        <li>Public Trust / Private Trust / Charitable Trust.</li>
+      </ul>
+
+      <h3>Pardanashin Lady</h3>
+      <ul>
+        <li>Introduced by respectable person known to Bank.</li>
+        <li>Witness required.</li>
+        <li>Thumb impression / signature verification carefully.</li>
+      </ul>
+
+      <h3>Blind Person</h3>
+      <ul>
+        <li>Can operate SB/TD/Locker — RBI mandate.</li>
+        <li>Thumb impression with witness.</li>
+        <li>Transactions during business hours only.</li>
+      </ul>
+
+      <h3>Mentally Challenged / Insolvent</h3>
+      <ul>
+        <li>Lunatic: Manager appointed by Court; mandate from Court.</li>
+        <li>Insolvent: Official Assignee takes over.</li>
+      </ul>
+
+      <h3>Executor / Administrator</h3>
+      <ul>
+        <li>Executor: appointed by Will (needs Probate).</li>
+        <li>Administrator: appointed by Court (Letter of Administration).</li>
+        <li>Account in name "A, Executor/Administrator of late B."</li>
+      </ul>
+
+      <h3>Joint Accounts</h3>
+      <ul>
+        <li><b>Either or Survivor (E/S):</b> Any one; on death, survivor operates.</li>
+        <li><b>Former or Survivor (F/S):</b> First holder only; on death, second operates.</li>
+        <li><b>Jointly:</b> All must sign.</li>
+        <li><b>Jointly or Survivor:</b> Together during life; survivor after death of one.</li>
+      </ul>
+
+      <h3>NRI</h3>
+      <ul>
+        <li>Indian citizen residing abroad ≥ 182 days in prev FY.</li>
+        <li>Account types: NRE, NRO, FCNR(B).</li>
+        <li>On return to India: convert NRE/FCNR → RFC.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 9: Dormant Accounts -->
+  <div class="topic" id="t9">
+    <div class="topic-head" onclick="toggleTopic('t9')">
+      <div class="topic-title"><span class="topic-num">9</span>Dormant / Inoperative Accounts</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t9', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>Classification Timeline</h3>
+      <table>
+      <tr><th>Period of No Customer Txn</th><th>Status</th></tr>
+      <tr><td>&lt; 1 year</td><td>Active</td></tr>
+      <tr><td>1 year</td><td>Alert — send reminder</td></tr>
+      <tr><td><span class="key">2 years</span></td><td><b>Inoperative</b></td></tr>
+      </table>
+      <div class="alert alert-info"><b>Customer-induced transaction:</b> Any debit/credit initiated by customer (not bank-initiated like interest credit, charges debit).</div>
+
+      <h3>Activation Procedure</h3>
+      <ul>
+        <li>Written request from customer.</li>
+        <li>Fresh KYC documents.</li>
+        <li>Two debit entries in signature book attested.</li>
+        <li>No charges for activation.</li>
+      </ul>
+
+      <h3>Features of Inoperative Account</h3>
+      <ul>
+        <li>Interest continues to be credited (SB a/c).</li>
+        <li>No incidence of "no minimum balance" penalty.</li>
+        <li>Chequebook can be issued on activation.</li>
+        <li>Must display inoperative accounts list on bank website annually (as per RBI).</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 10: DEAF Scheme -->
+  <div class="topic" id="t10">
+    <div class="topic-head" onclick="toggleTopic('t10')">
+      <div class="topic-title"><span class="topic-num">10</span>DEAF Scheme 2014</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t10', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <p><b>Depositor Education and Awareness Fund (DEAF) Scheme, 2014</b> under Sec 26A of BR Act.</p>
+      <ul>
+        <li>Unclaimed / inoperative deposits for <span class="key">10 years</span> → transferred to RBI's DEAF.</li>
+        <li>Transfer by <b>last working day of the month succeeding</b> the month of 10 years.</li>
+        <li>Interest paid by RBI: <span class="key">3% p.a.</span> (revised from time to time).</li>
+        <li>Customer can still claim — bank refunds customer & claims refund from RBI.</li>
+        <li>Purpose: DEAF used for depositor education & awareness programmes.</li>
+        <li>Includes: SB, CA, FD, RD balances; dividend warrants; drafts; pay orders — unclaimed for 10 years.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 11: DICGC -->
+  <div class="topic" id="t11">
+    <div class="topic-head" onclick="toggleTopic('t11')">
+      <div class="topic-title"><span class="topic-num">11</span>DICGC</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t11', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <p>Deposit Insurance and Credit Guarantee Corporation (DICGC) — subsidiary of RBI, established under DICGC Act, 1961.</p>
+
+      <h3>Coverage</h3>
+      <ul>
+        <li><span class="key">₹5 lakh per depositor per bank</span> (principal + interest).</li>
+        <li>Covers: SB, CA, FD, RD.</li>
+        <li>Excludes: Govt deposits, Inter-bank deposits, Foreign Govt deposits, State Govt deposits (land dev banks).</li>
+      </ul>
+
+      <h3>Premium</h3>
+      <ul>
+        <li>Paid by Bank (not customer).</li>
+        <li>Rate: <span class="key">12 paise per ₹100</span> of assessable deposits per annum.</li>
+        <li>Half-yearly payment — April & October.</li>
+      </ul>
+
+      <h3>Settlement</h3>
+      <ul>
+        <li>Pay within <span class="key">90 days</span> of imposition of moratorium / bank failure (as per 2021 amendment).</li>
+        <li>Earlier: pay on liquidation.</li>
+        <li>Separate ₹5 lakh for same depositor in different banks.</li>
+        <li>Same depositor in different capacity in same bank — separate ₹5 lakh.</li>
+      </ul>
+
+      <h3>Multiple Capacity Examples</h3>
+      <ul>
+        <li>Mr. X — Individual + Partner in firm = Different capacities (2 × ₹5L).</li>
+        <li>Mr. X + Mrs. X joint = Different from Mr. X individual.</li>
+        <li>Minor through guardian = Minor's capacity.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 12: Customer Service -->
+  <div class="topic" id="t12">
+    <div class="topic-head" onclick="toggleTopic('t12')">
+      <div class="topic-title"><span class="topic-num">12</span>Customer Service (BCSBI / RBI)</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t12', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>Banking Codes & Standards Board of India (BCSBI)</h3>
+      <ul>
+        <li>Set up: 2006 (as autonomous body).</li>
+        <li>Wound up: 2020-21. Role absorbed by RBI/IBA.</li>
+      </ul>
+
+      <h3>Fair Practices Code (FPC)</h3>
+      <ul>
+        <li>Cover: deposits, loans, services, grievances.</li>
+        <li>Transparency, fairness, non-discrimination.</li>
+        <li>Clear disclosure of charges, interest rates, terms.</li>
+      </ul>
+
+      <h3>BCP (Banking Codes and Practices) — Key Areas</h3>
+      <ul>
+        <li>Personal information — confidentiality.</li>
+        <li>Information to be given to customer (charges, interest, products).</li>
+        <li>Fair treatment — no discrimination.</li>
+        <li>Prompt and courteous service.</li>
+        <li>Complaint handling.</li>
+        <li>Card products, home loans, personal loans, SHGs — special rules.</li>
+      </ul>
+
+      <h3>RBI Charter of Customer Rights (2014)</h3>
+      <ol>
+        <li>Right to Fair Treatment.</li>
+        <li>Right to Transparency, Fair & Honest Dealing.</li>
+        <li>Right to Suitability.</li>
+        <li>Right to Privacy.</li>
+        <li>Right to Grievance Redress and Compensation.</li>
+      </ol>
+
+      <h3>Compensation for Service Deficiencies</h3>
+      <ul>
+        <li>Delay in cheque collection — specific slabs.</li>
+        <li>Wrong debit — reverse + compensation.</li>
+        <li>Unauthorized electronic transactions — zero/limited/full liability framework.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 13: Doorstep Banking -->
+  <div class="topic" id="t13">
+    <div class="topic-head" onclick="toggleTopic('t13')">
+      <div class="topic-title"><span class="topic-num">13</span>Doorstep Banking Policy 2026</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t13', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>Services Offered</h3>
+      <ul>
+        <li>Pick up of cash for deposit to <b>own account only</b>.</li>
+        <li>Pick up of instruments for credit to own account only.</li>
+        <li>Delivery of cash by withdrawal from own account only.</li>
+        <li>Delivery of DDs issued by debit to own account only.</li>
+        <li>Submission of KYC documents + Life Certificate.</li>
+      </ul>
+
+      <h3>Target Customers (RBI dir 31.03.2020)</h3>
+      <ul>
+        <li>Senior Citizens aged <b>70 years+</b>.</li>
+        <li>Differently abled persons.</li>
+      </ul>
+
+      <h3>Eligibility</h3>
+      <ul>
+        <li>KYC compliant account.</li>
+        <li>Account should be operative.</li>
+        <li>Inoperative first to be made operative.</li>
+        <li>Minors, Illiterates, POA-operated — branch only.</li>
+      </ul>
+
+      <h3>Delivery Mode</h3>
+      <ul>
+        <li>Bank's own staff OR Business Correspondents.</li>
+        <li>Pan India coverage.</li>
+        <li>Mandatory list of branches on website.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 14: Grievance Redressal -->
+  <div class="topic" id="t14">
+    <div class="topic-head" onclick="toggleTopic('t14')">
+      <div class="topic-title"><span class="topic-num">14</span>Grievance Redressal Policy</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t14', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>Escalation Matrix</h3>
+      <div class="flow-container">
+        <div class="flow-title">Grievance Escalation Flow</div>
+        <div style="text-align: center; white-space: nowrap;">
+          <div class="flow-step"><div class="flow-circle">1</div><div class="flow-label">Branch</div></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><div class="flow-circle">2</div><div class="flow-label">Regional Office<br>Nodal Officer</div></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><div class="flow-circle">3</div><div class="flow-label">Internal<br>Ombudsman</div></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><div class="flow-circle">4</div><div class="flow-label">RBI Integrated<br>Ombudsman</div></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step"><div class="flow-circle">5</div><div class="flow-label">RBI Appellate<br>Authority</div></div>
+        </div>
+      </div>
+
+      <h3>Timelines</h3>
+      <ul>
+        <li>Acknowledge within <span class="key">3 working days</span>.</li>
+        <li>Resolution within <span class="key">30 days</span> of complaint.</li>
+        <li>Escalate to Ombudsman only after 30 days of complaint + unresolved reply.</li>
+        <li>Within <span class="key">1 year</span> of unresolved complaint.</li>
+      </ul>
+
+      <h3>Compensation</h3>
+      <ul>
+        <li>Delay beyond 30 days — pay interest + compensation.</li>
+        <li>Service deficiency: compensation as per policy.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 15: RTI -->
+  <div class="topic" id="t15">
+    <div class="topic-head" onclick="toggleTopic('t15')">
+      <div class="topic-title"><span class="topic-num">15</span>RTI Act 2005</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t15', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>Key Provisions</h3>
+      <table>
+      <tr><th>Item</th><th>Rule</th></tr>
+      <tr><td>Application Fee</td><td>₹10 (BPL: Nil)</td></tr>
+      <tr><td>Response time (normal)</td><td><span class="key">30 days</span></td></tr>
+      <tr><td>Life/Liberty</td><td><span class="key">48 hours</span></td></tr>
+      <tr><td>Third-party info</td><td>40 days (with third party consultation)</td></tr>
+      <tr><td>First Appeal</td><td>Within 30 days of reply</td></tr>
+      <tr><td>Second Appeal</td><td>To CIC within 90 days</td></tr>
+      <tr><td>Per page charge</td><td>₹2 (A4)</td></tr>
+      </table>
+
+      <h3>Authorities in Bank</h3>
+      <ul>
+        <li><b>CPIO:</b> Central Public Information Officer — handles RTI.</li>
+        <li><b>FAA:</b> First Appellate Authority — handles first appeal.</li>
+        <li><b>CIC:</b> Central Information Commission — handles second appeal.</li>
+      </ul>
+
+      <h3>Exemptions (Sec 8)</h3>
+      <ul>
+        <li>National security, foreign relations, trade secrets.</li>
+        <li>Personal information unrelated to public activity.</li>
+        <li>Fiduciary relationship.</li>
+        <li>Cabinet papers (during deliberation).</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 16: Integrated Ombudsman -->
+  <div class="topic" id="t16">
+    <div class="topic-head" onclick="toggleTopic('t16')">
+      <div class="topic-title"><span class="topic-num">16</span>Integrated Ombudsman Scheme 2021</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t16', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <p>"One Nation, One Ombudsman" — notified by RBI on 12.11.2021 under Sec 35A of BR Act.</p>
+
+      <h3>Coverage</h3>
+      <ul>
+        <li>Scheduled Commercial Banks.</li>
+        <li>Regional Rural Banks.</li>
+        <li>Primary (Urban) Co-op Banks.</li>
+        <li>NBFCs (eligible).</li>
+        <li>Payment System Participants.</li>
+        <li>Pre-paid Payment Instruments (PPIs).</li>
+      </ul>
+
+      <h3>Who can file?</h3>
+      <ul>
+        <li>Any customer (individual/entity).</li>
+        <li>After 30 days of no satisfactory reply from bank.</li>
+        <li>Within <span class="key">1 year</span> of reply (or 1 year 30 days from complaint).</li>
+      </ul>
+
+      <h3>Compensation Limits</h3>
+      <ul>
+        <li>Direct loss: up to <span class="key">₹20 lakh</span>.</li>
+        <li>Indirect loss (loss of time, expenses, harassment, mental agony): up to <span class="key">₹1 lakh</span>.</li>
+      </ul>
+
+      <h3>Procedure</h3>
+      <ul>
+        <li>Online complaint at cms.rbi.org.in</li>
+        <li>Helpline: 14448</li>
+        <li>Postal address (any of 22 Ombudsman offices).</li>
+        <li>Mediation preferred — if unresolved, award.</li>
+        <li>Appeal to Appellate Authority (Deputy Governor RBI) within 30 days.</li>
+      </ul>
+
+      <h3>Grounds for Complaint</h3>
+      <ul>
+        <li>Non-adherence to RBI guidelines.</li>
+        <li>Service deficiency — any banking service.</li>
+        <li>Delay / non-payment of cheques, drafts, DDs.</li>
+        <li>Unfair / discriminatory treatment.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 17: Internal Ombudsman -->
+  <div class="topic" id="t17">
+    <div class="topic-head" onclick="toggleTopic('t17')">
+      <div class="topic-title"><span class="topic-num">17</span>Internal Ombudsman Scheme 2026</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t17', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>Applicability</h3>
+      <ul>
+        <li>All Scheduled Commercial Banks (except RRBs).</li>
+        <li>NBFC-ND-SI with ≥ 10 branches.</li>
+        <li>Payment System Operators (threshold).</li>
+      </ul>
+
+      <h3>Role</h3>
+      <ul>
+        <li>Review complaints <b>partially or wholly rejected</b> by the bank.</li>
+        <li>Independent of bank management.</li>
+        <li>Appointed from outside: retired General Manager / CGM of scheduled commercial bank with 7 years' exp.</li>
+      </ul>
+
+      <h3>Features</h3>
+      <ul>
+        <li>Tenure: <span class="key">3 years</span>, extendable to 5 years.</li>
+        <li>Cannot be removed arbitrarily — Board approval required.</li>
+        <li>Reports to Managing Director / CEO administratively; functionally independent.</li>
+        <li>Quarterly report to Customer Service Committee of Board.</li>
+      </ul>
+
+      <h3>Workflow</h3>
+      <ul>
+        <li>Complaint rejected by bank → automatically goes to IO before informing customer.</li>
+        <li>IO reviews within 20 days.</li>
+        <li>If IO upholds rejection, customer can approach RBI Ombudsman.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 18: Garnishee Order -->
+  <div class="topic" id="t18">
+    <div class="topic-head" onclick="toggleTopic('t18')">
+      <div class="topic-title"><span class="topic-num">18</span>Garnishee Order</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t18', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <p>Court order under Order 21, Rule 46 of CPC — attaching debt owed by garnishee (bank) to judgment debtor (customer).</p>
+
+      <h3>Two Stages</h3>
+      <ol>
+        <li><b>Order Nisi:</b> Provisional order, directing bank not to pay customer; shows cause why absolute order should not be made.</li>
+        <li><b>Order Absolute:</b> After hearing, final order to pay to judgment creditor.</li>
+      </ol>
+
+      <h3>Applicability</h3>
+      <ul>
+        <li>Credit balance at time of receipt of order.</li>
+        <li><b>Not applicable to future credits.</b></li>
+      </ul>
+
+      <h3>Not Applicable To</h3>
+      <ul>
+        <li>Partnership account (for partner's debt).</li>
+        <li>Joint account (for one holder's debt) — unless specifically mentioned.</li>
+        <li>Trust account.</li>
+        <li>Cheques in course of collection.</li>
+        <li>Fixed Deposit (unmatured).</li>
+        <li>Minimum balance in SB (if scheme-specific exemption).</li>
+      </ul>
+
+      <h3>Bank's Course of Action</h3>
+      <ol>
+        <li>Mark lien on balance.</li>
+        <li>No notice to customer required under Nisi.</li>
+        <li>On Absolute, remit to court / judgment creditor.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Topic 19: Attachment Order -->
+  <div class="topic" id="t19">
+    <div class="topic-head" onclick="toggleTopic('t19')">
+      <div class="topic-title"><span class="topic-num">19</span>Attachment Order</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t19', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <ul>
+        <li>Issued by: Income Tax Dept (Sec 226(3)), GST Dept, Central Excise, Enforcement Directorate, etc.</li>
+        <li>Applies to <b>present and future credits</b> (unlike Garnishee).</li>
+        <li>Bank's own dues (loans, charges) take priority.</li>
+        <li>Bank must comply — refusal attracts penalty.</li>
+        <li>Customer to be informed (as per practice).</li>
+      </ul>
+      <h3>Difference: Garnishee vs Attachment</h3>
+      <table>
+      <tr><th>Point</th><th>Garnishee</th><th>Attachment</th></tr>
+      <tr><td>Authority</td><td>Court</td><td>IT/GST/ED/Revenue</td></tr>
+      <tr><td>Applies to</td><td>Only credit at time of order</td><td>Present + future credits</td></tr>
+      <tr><td>Bank's lien</td><td>Priority</td><td>Priority</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Topic 20: Currency Management -->
+  <div class="topic" id="t20">
+    <div class="topic-head" onclick="toggleTopic('t20')">
+      <div class="topic-title"><span class="topic-num">20</span>Currency Management</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t20', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>Clean Note Policy (RBI)</h3>
+      <ul>
+        <li>No stapling.</li>
+        <li>No writing on notes.</li>
+        <li>No pinning.</li>
+        <li>Store in loose bundles.</li>
+      </ul>
+
+      <h3>Note Categories</h3>
+      <ul>
+        <li><b>Clean/Fit:</b> Suitable for recirculation.</li>
+        <li><b>Soiled:</b> Dirty but intact — exchanged at any branch.</li>
+        <li><b>Mutilated:</b> Missing portion — exchanged under RBI Note Refund Rules 2009.</li>
+        <li><b>Imperfect:</b> Signs of wear, no essential feature missing.</li>
+      </ul>
+
+      <h3>Soiled Note Exchange</h3>
+      <ul>
+        <li>Free of cost.</li>
+        <li>Up to <span class="key">20 pieces or ₹5,000</span> per day at counter (no slip).</li>
+        <li>Above: with slip + ID.</li>
+      </ul>
+
+      <h3>Note Refund Rules 2009</h3>
+      <ul>
+        <li>Mutilated notes — partial/full value based on area of each piece.</li>
+        <li>Essential features (RBI Govr sign, serial no, Ashok Pillar, promise clause, Gandhi portrait).</li>
+      </ul>
+
+      <h3>Coin Exchange</h3>
+      <ul>
+        <li>Coins of all denominations are legal tender.</li>
+        <li>₹1, ₹2 up to ₹1,000 in a transaction (Sec 6, Coinage Act 2011).</li>
+        <li>₹5+ coins — any amount.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 21: Counterfeit Notes -->
+  <div class="topic" id="t21">
+    <div class="topic-head" onclick="toggleTopic('t21')">
+      <div class="topic-title"><span class="topic-num">21</span>Counterfeit Note Detection</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t21', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>On Detection</h3>
+      <ol>
+        <li><b>Impound immediately.</b></li>
+        <li>Issue acknowledgment to tenderer (receipt).</li>
+        <li>Stamp "COUNTERFEIT BANK NOTE" (red ink, 5cm × 5cm).</li>
+        <li>Make entry in Counterfeit Note Register.</li>
+      </ol>
+
+      <h3>Reporting</h3>
+      <ul>
+        <li>Up to 4 notes: Report monthly consolidated to Nodal Officer + Police.</li>
+        <li><b>5+ notes in single transaction:</b> Report to <b>Police + Nodal Officer within 3 working days</b> as per FIR.</li>
+        <li>CCR (Counterfeit Currency Report) to FIU-IND within 7 working days.</li>
+      </ul>
+
+      <h3>Compensation to Victim</h3>
+      <ul>
+        <li>No compensation payable by bank to tenderer.</li>
+        <li>If bank fails to impound: 4× face value as penalty by RBI.</li>
+      </ul>
+
+      <h3>Security Features of Current Notes</h3>
+      <ul>
+        <li>Watermark (Mahatma Gandhi).</li>
+        <li>Security thread.</li>
+        <li>Latent image.</li>
+        <li>Micro lettering.</li>
+        <li>Intaglio printing.</li>
+        <li>See-through register.</li>
+        <li>Fluorescence.</li>
+        <li>Optical variable ink (OVI).</li>
+        <li>Identification mark for visually impaired.</li>
+        <li>Year of printing on reverse.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 22: Inter-Branch CBS -->
+  <div class="topic" id="t22">
+    <div class="topic-head" onclick="toggleTopic('t22')">
+      <div class="topic-title"><span class="topic-num">22</span>Inter-Branch CBS Transactions</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t22', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <ul>
+        <li>CBS: Core Banking Solution — centralised system.</li>
+        <li>All branches connected — any-branch banking.</li>
+        <li>Transaction codes: controlled access via user roles.</li>
+        <li>Inter-branch adjustments auto-settled through CBS.</li>
+        <li>Branch Suspense Accounts — reconciled daily.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 23: Documents Handling -->
+  <div class="topic" id="t23">
+    <div class="topic-head" onclick="toggleTopic('t23')">
+      <div class="topic-title"><span class="topic-num">23</span>Documents Handling & Retention Policy</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t23', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>Record Retention Periods</h3>
+      <table>
+      <tr><th>Record</th><th>Retention</th></tr>
+      <tr><td>Daybook, Ledger</td><td>8 years</td></tr>
+      <tr><td>Voucher</td><td>8 years</td></tr>
+      <tr><td>Cheques (paid)</td><td>8 years</td></tr>
+      <tr><td>KYC + Transaction records (PMLA)</td><td><span class="key">5 years</span> from closure</td></tr>
+      <tr><td>Loan documents</td><td>Life of loan + 8 years post-closure</td></tr>
+      <tr><td>Loan Register, Securities</td><td>Permanent</td></tr>
+      <tr><td>Correspondence</td><td>3 years</td></tr>
+      <tr><td>Deceased claim records</td><td>Permanent</td></tr>
+      <tr><td>Nomination Forms</td><td>Permanent</td></tr>
+      <tr><td>Fraud records</td><td>Permanent</td></tr>
+      </table>
+
+      <h3>Destruction</h3>
+      <ul>
+        <li>After expiry — shredded or burnt.</li>
+        <li>Certificate of destruction maintained.</li>
+        <li>Branch Manager / Authorised officer witnesses.</li>
+      </ul>
+
+      <h3>Scanning / Digitisation</h3>
+      <ul>
+        <li>Permitted under IT Act 2000.</li>
+        <li>Digital signature for authentication.</li>
+        <li>Backup storage mandatory.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 24: Income Tax Highlights -->
+  <div class="topic" id="t24">
+    <div class="topic-head" onclick="toggleTopic('t24')">
+      <div class="topic-title"><span class="topic-num">24</span>Income Tax — Bank's Role</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t24', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>PAN / Aadhaar</h3>
+      <ul>
+        <li>PAN mandatory for accounts (CDD).</li>
+        <li>Form 60/61 if no PAN.</li>
+        <li>Aadhaar-PAN linking mandatory.</li>
+      </ul>
+
+      <h3>Form 15G / 15H</h3>
+      <ul>
+        <li><b>15G:</b> Resident individual < 60 years with total income below taxable limit.</li>
+        <li><b>15H:</b> Resident individual ≥ 60 years.</li>
+        <li>To avoid TDS on FD interest.</li>
+        <li>Annual submission (new financial year).</li>
+      </ul>
+
+      <h3>Tax Collection / Reporting</h3>
+      <ul>
+        <li>SFT (Statement of Financial Transactions) — annual.</li>
+        <li>High-value: Cash deposit > ₹10 lakh in SB; FD > ₹10 lakh; Credit card > ₹1 lakh cash / ₹10 lakh total; LC/BG > ₹1 lakh.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 25: TDS -->
+  <div class="topic" id="t25">
+    <div class="topic-head" onclick="toggleTopic('t25')">
+      <div class="topic-title"><span class="topic-num">25</span>TDS (Tax Deducted at Source)</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t25', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>Key Sections — TDS Rates</h3>
+      <table>
+      <tr><th>Section</th><th>Payment</th><th>Threshold</th><th>Rate</th></tr>
+      <tr><td>192</td><td>Salary</td><td>Slab</td><td>Slab</td></tr>
+      <tr><td>193</td><td>Interest on securities</td><td>₹10,000</td><td>10%</td></tr>
+      <tr><td><b>194A</b></td><td>Interest other than securities (FD/RD)</td><td>₹40,000 (SC: ₹50,000)</td><td>10%</td></tr>
+      <tr><td>194C</td><td>Contractor payments</td><td>Single ₹30,000 / Annual ₹1 lakh</td><td>1% (ind/HUF); 2% (others)</td></tr>
+      <tr><td>194H</td><td>Commission/Brokerage</td><td>₹15,000</td><td>5%</td></tr>
+      <tr><td>194I</td><td>Rent — Land/Bldg</td><td>₹2.4 lakh/yr</td><td>10%</td></tr>
+      <tr><td>194I</td><td>Rent — Plant/Mach</td><td>₹2.4 lakh/yr</td><td>2%</td></tr>
+      <tr><td>194J</td><td>Professional/Technical</td><td>₹30,000</td><td>10%</td></tr>
+      <tr><td><b>194N</b></td><td>Cash withdrawal</td><td>> ₹1 Cr (filer); > ₹20L/1Cr (non-filer)</td><td>2% / 5%</td></tr>
+      <tr><td>194O</td><td>E-commerce</td><td>₹5 lakh</td><td>1%</td></tr>
+      <tr><td>194Q</td><td>Purchase of goods</td><td>> ₹50 lakh</td><td>0.1%</td></tr>
+      <tr><td>194S</td><td>Virtual Digital Assets</td><td>₹10,000</td><td>1%</td></tr>
+      </table>
+      <div class="alert alert-info"><b>If PAN not quoted:</b> higher of 20% or applicable rate.</div>
+
+      <h3>TDS Return</h3>
+      <ul>
+        <li>24Q — Salary (quarterly).</li>
+        <li>26Q — Other (quarterly).</li>
+        <li>27Q — Non-resident.</li>
+        <li>Due dates: 31 July, 31 Oct, 31 Jan, 31 May.</li>
+        <li>Form 16 — issued by 15 June.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 26: GST -->
+  <div class="topic" id="t26">
+    <div class="topic-head" onclick="toggleTopic('t26')">
+      <div class="topic-title"><span class="topic-num">26</span>Goods and Service Tax (GST)</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t26', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>Overview</h3>
+      <ul>
+        <li>Levied: 1 July 2017.</li>
+        <li>Destination-based tax.</li>
+        <li>Four components: CGST + SGST / UTGST + IGST (inter-state).</li>
+        <li>Banking services: <span class="key">18% GST</span>.</li>
+      </ul>
+
+      <h3>Registration Threshold</h3>
+      <ul>
+        <li>Goods: ₹40 lakh turnover (₹20 lakh for special category states).</li>
+        <li>Services: ₹20 lakh (₹10 lakh for special states).</li>
+      </ul>
+
+      <h3>GST-Exempt (Banking Services)</h3>
+      <ul>
+        <li>Interest on loans / deposits.</li>
+        <li>Discount on bills.</li>
+        <li>Sale/purchase of forex at interbank rate.</li>
+        <li>Services by RBI.</li>
+      </ul>
+
+      <h3>GST-Applicable (Banking)</h3>
+      <ul>
+        <li>Loan processing fees.</li>
+        <li>Locker rent.</li>
+        <li>SB non-maintenance charges.</li>
+        <li>Issuance of DD, PO.</li>
+        <li>SMS alerts, debit card AMC.</li>
+        <li>SB account charges (chequebook, etc.).</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 27: CERSAI -->
+  <div class="topic" id="t27">
+    <div class="topic-head" onclick="toggleTopic('t27')">
+      <div class="topic-title"><span class="topic-num">27</span>CERSAI</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t27', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <p><b>Central Registry of Securitisation Asset Reconstruction and Security Interest of India</b> — under Sec 20 of SARFAESI Act 2002.</p>
+
+      <h3>Purpose</h3>
+      <ul>
+        <li>Single registry of security interests created by banks/FIs.</li>
+        <li>Prevent multiple financing against same asset.</li>
+        <li>Public searchable database.</li>
+      </ul>
+
+      <h3>Registration</h3>
+      <ul>
+        <li>Timeline: <span class="key">within 30 days</span> of creation of security interest.</li>
+        <li>Late registration permitted with additional fee.</li>
+        <li>Also: modification / satisfaction of charge.</li>
+      </ul>
+
+      <h3>Fees (indicative)</h3>
+      <ul>
+        <li>Loans ≤ ₹5 lakh: ₹50</li>
+        <li>Loans > ₹5 lakh: ₹100</li>
+        <li>Modification: ₹50 / ₹100</li>
+        <li>Search: ₹10 per transaction</li>
+      </ul>
+
+      <h3>Covered</h3>
+      <ul>
+        <li>Mortgages (equitable + registered).</li>
+        <li>Hypothecation of movables.</li>
+        <li>Assignment of receivables.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 28: Compensation Policy -->
+  <div class="topic" id="t28">
+    <div class="topic-head" onclick="toggleTopic('t28')">
+      <div class="topic-title"><span class="topic-num">28</span>Compensation Policy</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t28', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <h3>Delayed Cheque Collection</h3>
+      <table>
+      <tr><th>Delay</th><th>Compensation</th></tr>
+      <tr><td>Within normal period</td><td>Nil</td></tr>
+      <tr><td>Beyond normal + up to 14 days</td><td>SB rate</td></tr>
+      <tr><td>14-90 days delay</td><td>FD rate (corresponding period)</td></tr>
+      <tr><td>&gt; 90 days delay</td><td>2% above FD rate</td></tr>
+      </table>
+
+      <h3>Unauthorized Electronic Transactions (RBI July 2017)</h3>
+      <table>
+      <tr><th>Reporting Delay</th><th>Customer Liability</th></tr>
+      <tr><td>Contributory fraud by bank</td><td>Nil (irrespective of reporting)</td></tr>
+      <tr><td>Third-party breach — within 3 working days</td><td><b>Nil (Zero Liability)</b></td></tr>
+      <tr><td>4-7 working days</td><td>Limited (₹5,000 to ₹25,000 per txn type)</td></tr>
+      <tr><td>Beyond 7 days</td><td>As per bank policy</td></tr>
+      </table>
+
+      <h3>Wrong Debit / Credit</h3>
+      <ul>
+        <li>Reverse immediately on reporting.</li>
+        <li>Pay SB rate for period of wrong debit.</li>
+      </ul>
+
+      <h3>Failed ATM Transaction</h3>
+      <ul>
+        <li>Credit within <span class="key">T+5 days</span>.</li>
+        <li>Delay: ₹100 per day compensation.</li>
+      </ul>
+
+      <h3>Failed UPI/NEFT/RTGS</h3>
+      <ul>
+        <li>Credit by T+1 working day.</li>
+        <li>Delay: ₹100 per day.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Topic 29-36 combined -->
+  <div class="topic" id="t29">
+    <div class="topic-head" onclick="toggleTopic('t29')">
+      <div class="topic-title"><span class="topic-num">29</span>Accounting Policy of Bank</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t29', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <ul>
+        <li>Follows Generally Accepted Accounting Principles (GAAP) + Ind AS (as applicable).</li>
+        <li>Accrual basis (except interest on NPAs — cash basis).</li>
+        <li>Investments: classified HTM / AFS / HFT (now revised categories under Ind AS).</li>
+        <li>Depreciation: SLM method typically.</li>
+        <li>Provisions as per IRAC norms + prudential policies.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="topic" id="t30">
+    <div class="topic-head" onclick="toggleTopic('t30')">
+      <div class="topic-title"><span class="topic-num">30</span>Mandate Management System (MMS)</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t30', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <ul>
+        <li>Platform for standing instructions / direct debits.</li>
+        <li>ECS Mandate (Electronic Clearing System) — legacy.</li>
+        <li>NACH (National Automated Clearing House) by NPCI.</li>
+        <li>e-Mandate framework via UPI, Debit Card, Netbanking (2026 RBI).</li>
+        <li>24-hour pre-debit notification mandatory.</li>
+        <li>AFA waiver thresholds for recurring e-mandates.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="topic" id="t31">
+    <div class="topic-head" onclick="toggleTopic('t31')">
+      <div class="topic-title"><span class="topic-num">31</span>FCRA (Foreign Contribution Regulation Act)</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t31', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <ul>
+        <li>FCRA 2010 (replaces FCRA 1976).</li>
+        <li>Regulates foreign contribution to Indian NGOs/persons.</li>
+        <li>FCRA Registration — valid 5 years (renewable).</li>
+        <li>Prior Permission — for specific foreign donation.</li>
+        <li>FCRA account mandatorily opened at <b>SBI, New Delhi Main Branch</b>.</li>
+        <li>Sub-account at another FCRA-authorised bank possible.</li>
+        <li>Annual return in FC-4 by 31 December.</li>
+        <li>Administrative expenses: ≤ 20% of foreign contribution.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="topic" id="t32">
+    <div class="topic-head" onclick="toggleTopic('t32')">
+      <div class="topic-title"><span class="topic-num">32</span>Consumer Protection Act (COPRA) 2019</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t32', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <ul>
+        <li>Replaces CPA 1986.</li>
+        <li>Banking services covered.</li>
+      </ul>
+      <h3>Jurisdiction (2019)</h3>
+      <table>
+      <tr><th>Forum</th><th>Pecuniary Jurisdiction</th></tr>
+      <tr><td>District Commission</td><td>Up to ₹50 lakh</td></tr>
+      <tr><td>State Commission</td><td>₹50 lakh to ₹2 Cr</td></tr>
+      <tr><td>National Commission</td><td>Above ₹2 Cr</td></tr>
+      </table>
+      <ul>
+        <li>Complaint within 2 years of cause.</li>
+        <li>E-filing permitted.</li>
+        <li>Mediation at any stage.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="topic" id="t33">
+    <div class="topic-head" onclick="toggleTopic('t33')">
+      <div class="topic-title"><span class="topic-num">33</span>Security Arrangements in Bank</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t33', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <ul>
+        <li>CCTV coverage — all areas + ATM; recording 180 days min.</li>
+        <li>Armed guard / watchman (as per IBA circular).</li>
+        <li>Dual locking of strong room / vault.</li>
+        <li>Burglary alarm connected to police station.</li>
+        <li>Cash retention limit at branch — as per class.</li>
+        <li>Branch Holding Limit (BHL) — per branch.</li>
+        <li>Insurance: BBB (Bankers Blanket Bond), Electronic & Computer Crime, Cash in Transit.</li>
+        <li>Mock drill — fire + evacuation twice a year.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="topic" id="t34">
+    <div class="topic-head" onclick="toggleTopic('t34')">
+      <div class="topic-title"><span class="topic-num">34</span>General Branch Management</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t34', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <ul>
+        <li>Business targets: deposits, advances, CASA, cross-selling.</li>
+        <li>MIS reports: daily/weekly/monthly/quarterly.</li>
+        <li>Staff management: duty allocation, training.</li>
+        <li>Customer meets: quarterly CSC (Customer Service Committee).</li>
+        <li>Lead Bank function (if applicable).</li>
+        <li>Financial Literacy Centre support.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="topic" id="t35">
+    <div class="topic-head" onclick="toggleTopic('t35')">
+      <div class="topic-title"><span class="topic-num">35</span>Tax Compliance & Payment Cell</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t35', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <ul>
+        <li>Handles TDS compliance, GST filing, PT, advance tax.</li>
+        <li>TRACES portal for TDS reconciliation.</li>
+        <li>GSTN portal for GST.</li>
+        <li>Form 26AS — auto-reflects TDS deductions.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="topic" id="t36">
+    <div class="topic-head" onclick="toggleTopic('t36')">
+      <div class="topic-title"><span class="topic-num">36</span>CTS — Cheque Truncation System</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="topic-check" onclick="event.stopPropagation(); toggleDone('t36', this)"></span>
+        <span class="topic-arrow">▸</span>
+      </div>
+    </div>
+    <div class="topic-body">
+      <ul>
+        <li>Image-based clearing — physical cheque stops at presenting bank.</li>
+        <li>Three CTS grids: Chennai, Mumbai, New Delhi.</li>
+        <li>CTS-2010 standard: watermark, void pantograph, VOID background, MICR.</li>
+        <li>Continuous Clearing and On-Realisation Settlement (CCORS): same-day settlement under new framework.</li>
+        <li>Positive Pay System (PPS): mandatory for cheques ≥ ₹5 lakh.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===================== FLASHCARDS TAB ===================== -->
+<div id="flash" class="view">
+  <div class="alert alert-info"><b>💡 Tap any card to flip.</b> Read question → think answer → tap to verify. Spaced-repetition style.</div>
+  <div class="flashcard-deck" id="flashDeck"></div>
+</div>
+
+<!-- ===================== COMPARE TAB ===================== -->
+<div id="compare" class="view">
+  <div class="alert alert-info"><b>⚖️ Tap any card to reveal comparison.</b> Side-by-side differences are high-value exam material.</div>
+  <div id="compareList"></div>
+</div>
+
+<!-- ===================== NUMBERS TAB ===================== -->
+<div id="numbers" class="view">
+  <div class="alert alert-warn"><b>🔢 Memorize these.</b> Exams test these verbatim.</div>
+  <input class="search-box" placeholder="🔍 Search numbers..." oninput="filterNums(this.value)">
+  <div id="numList"></div>
+</div>
+
+<!-- ===================== MCQ TAB ===================== -->
+<div id="mcq" class="view">
+  <div id="quizIntro">
+    <div class="quiz-intro">
+      <h2>📝 Module A Quiz</h2>
+      <p>45 questions • Mixed difficulty • Immediate feedback</p>
+      <button class="quiz-btn" onclick="startQuiz()">▶️ Start Quiz</button>
+    </div>
+    <div class="quiz-stats">
+      <div class="quiz-stat"><div class="v" id="stAtt">0</div><div class="l">Attempted</div></div>
+      <div class="quiz-stat"><div class="v" id="stCor">0</div><div class="l">Correct</div></div>
+      <div class="quiz-stat"><div class="v" id="stAcc">0%</div><div class="l">Accuracy</div></div>
+    </div>
+    <div class="action-row" style="display:flex; gap: 8px;">
+      <button class="btn-prev" onclick="reviewWeak()" style="flex:1;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);cursor:pointer;font-weight:600">🎯 Review Weak Topics</button>
+    </div>
+  </div>
+  <div id="quizArea" style="display:none"></div>
+</div>
+
+<!-- ===================== CASES TAB ===================== -->
+<div id="cases" class="view">
+  <div class="alert alert-info"><b>📋 Branch-level real scenarios.</b> Think through each before tapping reveal.</div>
+  <div id="caseList"></div>
+</div>
+
+</div>
+
+<button class="float-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// ============ STATE ============
+const MOD_KEY = 'iob_mod_A_v1';
+let state = JSON.parse(localStorage.getItem(MOD_KEY) || '{}');
+if (!state.topics) state.topics = {};
+if (!state.quiz) state.quiz = { attempted: 0, correct: 0, perQuestion: {} };
+if (!state.weak) state.weak = [];
+if (!state.theme) state.theme = 'light';
+
+function save() { localStorage.setItem(MOD_KEY, JSON.stringify(state)); }
+
+function toggleTheme() {
+  state.theme = state.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', state.theme);
+  document.querySelector('.theme-btn').textContent = state.theme === 'dark' ? '☀️' : '🌙';
+  save();
+}
+
+// ============ TAB NAV ============
+function showTab(id, el) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab-chip').forEach(c => c.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ============ CONTENT: TOPIC TOGGLE ============
+function toggleTopic(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+
+function toggleDone(id, checkEl) {
+  state.topics[id] = !state.topics[id];
+  if (state.topics[id]) checkEl.classList.add('done');
+  else checkEl.classList.remove('done');
+  save();
+  updateProgressBar();
+}
+
+function updateProgressBar() {
+  const total = 36;
+  const done = Object.keys(state.topics).filter(k => state.topics[k]).length;
+  const pct = Math.round((done/total)*100);
+  document.getElementById('pbar').style.width = pct + '%';
+}
+
+function filterTopics(q) {
+  q = q.toLowerCase();
+  document.querySelectorAll('.topic').forEach(t => {
+    const text = t.innerText.toLowerCase();
+    t.style.display = (!q || text.includes(q)) ? '' : 'none';
+    if (q && text.includes(q)) t.classList.add('open');
+  });
+}
+
+// ============ FLASHCARDS ============
+const FLASHCARDS = [
+  { q: "What is the periodic KYC updation frequency for Low-Risk customers?", a: "10 years" },
+  { q: "What is the periodic KYC updation frequency for Medium-Risk customers?", a: "8 years" },
+  { q: "What is the periodic KYC updation frequency for High-Risk customers?", a: "2 years" },
+  { q: "What is the CTR (Cash Transaction Report) threshold?", a: "> ₹10 lakh (single or integrally-connected series in a month). Individual entries below ₹50,000 excluded." },
+  { q: "By when must CTR be reported to FIU-IND?", a: "15th of succeeding month" },
+  { q: "By when must STR (Suspicious Transaction Report) be filed?", a: "Within 7 working days of satisfaction of suspicion" },
+  { q: "What is the CBWTR threshold (Cross Border Wire Transfer)?", a: "> ₹5 lakh — report by 15th of succeeding month" },
+  { q: "Beneficial Owner — Company (controlling ownership)?", a: "More than 10% of shares, capital, or profits" },
+  { q: "Beneficial Owner — Unincorporated Association?", a: "More than 15% of property, capital, or profits" },
+  { q: "What is DICGC coverage per depositor per bank?", a: "₹5 lakh (principal + interest)" },
+  { q: "What is the DICGC premium rate?", a: "12 paise per ₹100 of assessable deposits per annum (paid by bank)" },
+  { q: "DEAF — transfer period of unclaimed balance?", a: "10 years of inoperative/unclaimed → transferred to RBI DEAF" },
+  { q: "DEAF interest rate paid by RBI?", a: "3% p.a. (subject to RBI revision)" },
+  { q: "When does an account become Inoperative?", a: "2 years of no customer-induced transaction" },
+  { q: "Cheque validity period?", a: "3 months from the date of the cheque" },
+  { q: "Section 138 NI Act punishment?", a: "Imprisonment up to 2 years or fine up to 2× cheque amount or both" },
+  { q: "Settlement of Deceased Claim — timeline?", a: "Within 15 days of receipt of complete claim documents" },
+  { q: "Without nomination, up to what amount can be paid to legal heirs without succession certificate?", a: "₹5 lakh (with indemnity + declaration + death certificate)" },
+  { q: "RTI Act — normal response time?", a: "30 days" },
+  { q: "RTI Act — life/liberty response time?", a: "48 hours" },
+  { q: "Integrated Ombudsman — compensation ceiling for direct loss?", a: "₹20 lakh" },
+  { q: "Integrated Ombudsman — compensation for indirect loss (time, expenses, harassment)?", a: "Up to ₹1 lakh additional" },
+  { q: "Internal Ombudsman tenure?", a: "3 years, extendable to 5 years" },
+  { q: "TDS u/s 194A threshold (FD interest for individuals)?", a: "₹40,000 (Senior Citizen: ₹50,000)" },
+  { q: "TDS u/s 194N — cash withdrawal threshold for IT filers?", a: "> ₹1 Crore (rate 2%)" },
+  { q: "GST rate on banking services?", a: "18%" },
+  { q: "CERSAI registration timeline?", a: "Within 30 days of creation of security interest" },
+  { q: "Zero liability for unauthorized electronic transactions — reporting window?", a: "Within 3 working days of receipt of communication from bank" },
+  { q: "Form 15G — for whom?", a: "Resident individual below 60 years with income below taxable limit (to avoid TDS on FD interest)" },
+  { q: "Form 15H — for whom?", a: "Resident individual aged 60 years or more (senior citizen)" },
+  { q: "Garnishee Order — Order Nisi vs Absolute?", a: "Nisi = provisional (show cause); Absolute = final order to pay. Applies only to credit balance at time of receipt, not future credits." },
+  { q: "Counterfeit notes — stamp specification?", a: "COUNTERFEIT BANK NOTE in red ink, 5cm × 5cm, across the face of the note" },
+  { q: "Soiled note exchange — how many free pieces per day at counter?", a: "Up to 20 pieces or ₹5,000 value without slip" },
+  { q: "FCRA account — where must it be opened?", a: "SBI, New Delhi Main Branch (mandatory)" },
+  { q: "Consumer Protection Act 2019 — District Commission jurisdiction?", a: "Up to ₹50 lakh" },
+  { q: "Consumer Protection Act 2019 — State Commission jurisdiction?", a: "₹50 lakh to ₹2 Crore" },
+  { q: "V-CIP stands for?", a: "Video-based Customer Identification Process — alternate to face-to-face KYC with facial recognition + live audio-visual" },
+  { q: "CKYC Identifier — digits for individuals vs legal entities?", a: "14-digit for individuals; 15-digit for legal entities" },
+  { q: "Small Account — max balance / credits / withdrawals?", a: "Balance ≤ ₹50,000; credits ≤ ₹1 lakh/year; withdrawals ≤ ₹10,000/month" },
+  { q: "Minor — self-operated SB account minimum age?", a: "10 years (SB only, within bank's limits; cheque book permitted per policy)" },
+  { q: "DEAF — transfer deadline each month?", a: "Last working day of the month succeeding the month of completing 10 years" },
+  { q: "Record retention under PMLA?", a: "Transaction records: 5 years from txn date; KYC records: 5 years from closure of account/relationship" },
+  { q: "Loan documents — retention?", a: "Life of loan + 8 years post-closure" },
+  { q: "Three Lines of Defence in KYC/AML?", a: "1st = Branches/Offices; 2nd = KYC/AML Dept (Principal Officer); 3rd = Internal Audit" },
+  { q: "Doorstep Banking — target customers?", a: "Senior citizens aged 70+ years and differently abled persons" },
+];
+
+function renderFlashcards() {
+  document.getElementById('flashDeck').innerHTML = FLASHCARDS.map((c, i) => `
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-face flashcard-front">
+          ${c.q}
+          <div class="flashcard-hint">Tap to flip • Card ${i+1}/${FLASHCARDS.length}</div>
+        </div>
+        <div class="flashcard-face flashcard-back">${c.a}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ============ COMPARE ============
+const COMPARE = [
+  { title: 'Garnishee Order vs Attachment Order', rows: [
+      ['Authority', 'Civil Court (Order 21 Rule 46 CPC)', 'IT Dept / GST / Excise / ED'],
+      ['Applies to', 'Credit balance at time of order only', 'Present + future credits'],
+      ['Stages', 'Order Nisi → Order Absolute', 'Single notice'],
+      ['Notice to customer', 'Not needed', 'Practice: informed'],
+      ['Bank lien priority', 'Yes', 'Yes']
+  ]},
+  { title: 'Hypothecation vs Pledge vs Mortgage', rows: [
+      ['Governed by', 'SARFAESI + Transfer of Property Act', 'Indian Contract Act Sec 172-181', 'Transfer of Property Act 1882'],
+      ['Possession', 'With borrower', 'With lender (pledgee)', 'With mortgagor'],
+      ['Asset type', 'Movables (stocks, vehicles, machinery)', 'Movables (gold, securities)', 'Immovables (land, building)'],
+      ['On default', 'Convert to pledge first', 'Direct sale with notice', 'Sale via SARFAESI / Court']
+  ]},
+  { title: 'Sec 85 vs Sec 131 (NI Act)', rows: [
+      ['Who protected', 'Paying Banker', 'Collecting Banker'],
+      ['When applicable', 'Payment in due course', 'Collection in good faith, without negligence'],
+      ['Condition', 'Cheque payable to order', 'Account properly opened; endorsement regular'],
+      ['Scope', 'Pays the cheque', 'Collects proceeds for customer']
+  ]},
+  { title: 'NRE vs NRO vs FCNR(B)', rows: [
+      ['Currency', 'INR', 'INR', 'USD, GBP, EUR, JPY, CAD, AUD'],
+      ['Source', 'Foreign inward only', 'Local Indian + foreign', 'Foreign inward only'],
+      ['Repatriable', 'Yes, fully', 'Yes, up to USD 1M/yr', 'Yes, fully'],
+      ['Interest tax', 'Tax-free', 'TDS 30%', 'Tax-free'],
+      ['Tenure (TD)', '1-10 years', '7 days-10 years', '1-5 years']
+  ]},
+  { title: 'CTR vs STR vs CCR', rows: [
+      ['Threshold', '> ₹10 lakh cash', 'Any suspicious', 'All counterfeit notes'],
+      ['Deadline', '15th of next month', 'Within 7 working days', 'Within 7 working days'],
+      ['Triggered by', 'Cash volume', 'Suspicion (any txn)', 'Counterfeit detection'],
+      ['To whom', 'FIU-IND', 'FIU-IND', 'FIU-IND + Police']
+  ]},
+  { title: 'DICGC vs DEAF', rows: [
+      ['Purpose', 'Deposit insurance on bank failure', 'Unclaimed deposit transfer'],
+      ['Trigger', 'Bank failure / moratorium', '10 years no customer txn'],
+      ['Who holds funds', 'DICGC (RBI subsidiary)', 'RBI (DEAF)'],
+      ['Customer recovery', '₹5L per depositor per bank', 'Full balance (via bank from RBI)'],
+      ['Premium', '12p per ₹100 (bank pays)', 'None (bank transfers to RBI)']
+  ]},
+  { title: 'Integrated Ombudsman vs Internal Ombudsman', rows: [
+      ['Appointed by', 'RBI', 'Bank Board (approved by RBI)'],
+      ['Jurisdiction', 'All banks, NBFCs, PSOs', 'Within one bank'],
+      ['Reviews', 'Complaints unresolved at bank', 'Complaints partially/wholly rejected by bank'],
+      ['Tenure', 'RBI-defined', '3 years (extendable to 5)'],
+      ['Compensation', '₹20L direct + ₹1L indirect', 'Internal recommendation']
+  ]},
+  { title: 'Promissory Note vs Bill of Exchange vs Cheque', rows: [
+      ['Who writes', 'Maker (debtor)', 'Drawer (creditor)', 'Account holder'],
+      ['Payment terms', 'Promise to pay', 'Order to pay', 'Order to pay'],
+      ['Drawn on', 'Self', 'Drawee', 'Banker'],
+      ['Acceptance required', 'No', 'Yes', 'No'],
+      ['Grace days', '3 days (if time bill)', '3 days (if time bill)', 'No'],
+      ['NI Section', 'Sec 4', 'Sec 5', 'Sec 6']
+  ]}
+];
+
+function renderCompare() {
+  document.getElementById('compareList').innerHTML = COMPARE.map((c, i) => {
+    const colCount = c.rows[0].length;
+    const headers = colCount === 3 ? ['Feature', 'A', 'B'] : ['Feature'].concat(['A','B','C']);
+    return `
+      <div class="compare-card">
+        <div class="compare-head" onclick="this.parentElement.classList.toggle('open')">
+          <span>${c.title}</span><span class="arrow">▼</span>
+        </div>
+        <div class="compare-body">
+          <table>
+            ${c.rows.map(r => `<tr>${r.map((cell, idx) => idx === 0 ? `<td><b>${cell}</b></td>` : `<td>${cell}</td>`).join('')}</tr>`).join('')}
+          </table>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ============ NUMBERS ============
+const NUMBERS = [
+  { v: '₹10 lakh', d: 'CTR threshold — cash transactions above this', cat: 'KYC/AML' },
+  { v: '₹50,000', d: 'Individual entries below this excluded from CTR aggregation', cat: 'KYC/AML' },
+  { v: '15th', d: 'CTR to FIU-IND by this of succeeding month', cat: 'KYC/AML' },
+  { v: '7 working days', d: 'STR / CCR filing deadline', cat: 'KYC/AML' },
+  { v: '₹5 lakh', d: 'CBWTR (cross-border wire transfer) threshold', cat: 'KYC/AML' },
+  { v: '> 10%', d: 'Beneficial Owner — company shares/capital/profits', cat: 'KYC/AML' },
+  { v: '> 10%', d: 'Beneficial Owner — partnership capital/profits', cat: 'KYC/AML' },
+  { v: '> 15%', d: 'Beneficial Owner — unincorporated body property/capital', cat: 'KYC/AML' },
+  { v: '10 years', d: 'Low-risk periodic KYC updation', cat: 'KYC/AML' },
+  { v: '8 years', d: 'Medium-risk periodic KYC updation', cat: 'KYC/AML' },
+  { v: '2 years', d: 'High-risk periodic KYC updation', cat: 'KYC/AML' },
+  { v: '5 years', d: 'KYC + transaction record retention (PMLA)', cat: 'KYC/AML' },
+  { v: '10 days', d: 'CKYCR upload timeline post account opening', cat: 'KYC/AML' },
+  { v: '14-digit', d: 'CKYC Identifier (individuals)', cat: 'KYC/AML' },
+  { v: '15-digit', d: 'CKYC Identifier (legal entities)', cat: 'KYC/AML' },
+  { v: '₹50,000', d: 'Small Account — max balance at any time', cat: 'KYC/AML' },
+  { v: '₹1 lakh', d: 'Small Account — annual credits limit', cat: 'KYC/AML' },
+  { v: '₹10,000', d: 'Small Account — monthly withdrawal limit', cat: 'KYC/AML' },
+  { v: '₹5 lakh', d: 'DICGC — insurance cover per depositor per bank', cat: 'Deposits' },
+  { v: '12 paise', d: 'DICGC premium per ₹100 of deposits per annum', cat: 'Deposits' },
+  { v: '90 days', d: 'DICGC payment post moratorium', cat: 'Deposits' },
+  { v: '2 years', d: 'Dormant/Inoperative classification (no customer txn)', cat: 'Deposits' },
+  { v: '10 years', d: 'DEAF transfer period (unclaimed)', cat: 'Deposits' },
+  { v: '3%', d: 'DEAF interest paid by RBI', cat: 'Deposits' },
+  { v: '3 months', d: 'Cheque validity', cat: 'NI Act' },
+  { v: '2 years / 2× amount', d: 'Sec 138 NI Act punishment', cat: 'NI Act' },
+  { v: '30 days', d: 'Sec 138 — payee demand notice after dishonour', cat: 'NI Act' },
+  { v: '15 days', d: 'Sec 138 — drawer payment time after demand notice', cat: 'NI Act' },
+  { v: '1 month', d: 'Sec 138 — complaint filing time after failure to pay', cat: 'NI Act' },
+  { v: '15 days', d: 'Settlement of claim (deceased) — timeline from complete docs', cat: 'Claims' },
+  { v: '₹5 lakh', d: 'No-nomination non-contentious claim — threshold', cat: 'Claims' },
+  { v: '30 days', d: 'RTI response time (normal)', cat: 'RTI' },
+  { v: '48 hours', d: 'RTI response time (life/liberty)', cat: 'RTI' },
+  { v: '40 days', d: 'RTI third-party response time', cat: 'RTI' },
+  { v: '₹10', d: 'RTI application fee', cat: 'RTI' },
+  { v: '₹2/page', d: 'RTI per page charge', cat: 'RTI' },
+  { v: '₹20 lakh', d: 'Ombudsman compensation ceiling (direct)', cat: 'Ombudsman' },
+  { v: '₹1 lakh', d: 'Ombudsman indirect compensation (time/expenses)', cat: 'Ombudsman' },
+  { v: '1 year', d: 'Ombudsman filing time from unresolved reply', cat: 'Ombudsman' },
+  { v: '3 years', d: 'Internal Ombudsman tenure (extendable to 5)', cat: 'Ombudsman' },
+  { v: '14448', d: 'RBI Ombudsman helpline', cat: 'Ombudsman' },
+  { v: '70 years', d: 'Doorstep Banking — senior citizen eligibility age', cat: 'Services' },
+  { v: '₹40,000', d: 'TDS 194A threshold (FD interest — individuals)', cat: 'TDS' },
+  { v: '₹50,000', d: 'TDS 194A threshold (FD interest — senior citizens)', cat: 'TDS' },
+  { v: '₹1 Crore', d: 'TDS 194N — cash withdrawal threshold (filers)', cat: 'TDS' },
+  { v: '2% / 5%', d: 'TDS 194N rate (filer / non-filer)', cat: 'TDS' },
+  { v: '18%', d: 'GST on banking services', cat: 'GST' },
+  { v: '30 days', d: 'CERSAI registration timeline', cat: 'CERSAI' },
+  { v: '₹50 / ₹100', d: 'CERSAI fees (≤ ₹5L / > ₹5L loans)', cat: 'CERSAI' },
+  { v: '3 working days', d: 'Zero liability — unauthorized e-txn reporting', cat: 'Compensation' },
+  { v: 'T+5 days', d: 'Failed ATM — reversal timeline', cat: 'Compensation' },
+  { v: '₹100/day', d: 'Delayed ATM reversal compensation', cat: 'Compensation' },
+  { v: '20 pieces / ₹5,000', d: 'Soiled note exchange — no-slip limit', cat: 'Currency' },
+  { v: '5cm × 5cm', d: 'Counterfeit note stamp dimensions', cat: 'Currency' },
+  { v: '5+ notes', d: 'Counterfeit — report to police in 3 working days', cat: 'Currency' },
+  { v: '4× face value', d: 'Penalty for bank failing to impound counterfeit', cat: 'Currency' },
+  { v: '₹5 lakh', d: 'PPS (Positive Pay) mandatory threshold', cat: 'CTS' },
+  { v: '₹50 lakh', d: 'COPRA 2019 — District Commission jurisdiction', cat: 'COPRA' },
+  { v: '₹2 Crore', d: 'COPRA 2019 — State Commission ceiling', cat: 'COPRA' },
+  { v: '2 years', d: 'COPRA 2019 — complaint filing time', cat: 'COPRA' },
+  { v: '20%', d: 'FCRA — max administrative expenses', cat: 'FCRA' },
+  { v: '5 years', d: 'FCRA registration validity', cat: 'FCRA' },
+];
+
+function renderNumbers(filter = '') {
+  const f = filter.toLowerCase();
+  const items = NUMBERS.filter(n => !f || n.v.toLowerCase().includes(f) || n.d.toLowerCase().includes(f) || n.cat.toLowerCase().includes(f));
+  document.getElementById('numList').innerHTML = items.map(n => `
+    <div class="num-card">
+      <div class="num-badge">${n.v}</div>
+      <div class="num-desc"><div class="num-cat">${n.cat}</div>${n.d}</div>
+    </div>
+  `).join('') || '<p style="text-align:center;padding:30px;color:var(--muted)">No matches</p>';
+}
+
+function filterNums(v) { renderNumbers(v); }
+
+// ============ MCQ QUIZ ============
+const QUIZ = [
+  { q: "What is the Cash Transaction Report (CTR) threshold?", o: ["> ₹5 lakh", "> ₹10 lakh", "> ₹20 lakh", "> ₹50 lakh"], a: 1, e: "CTR is for cash transactions above ₹10 lakh (single or integrally connected in a month). Individual entries below ₹50,000 excluded." },
+  { q: "By when must CTR be submitted to FIU-IND?", o: ["7th of succeeding month", "10th of succeeding month", "15th of succeeding month", "Last day of succeeding month"], a: 2, e: "CTR deadline: 15th of the succeeding month." },
+  { q: "KYC periodic updation frequency for Low-Risk customers?", o: ["2 years", "5 years", "8 years", "10 years"], a: 3, e: "Low-Risk: 10 years. Medium: 8 years. High: 2 years." },
+  { q: "DICGC deposit insurance coverage per depositor per bank?", o: ["₹1 lakh", "₹2 lakh", "₹5 lakh", "₹10 lakh"], a: 2, e: "Revised to ₹5 lakh from Feb 2020; includes principal + interest." },
+  { q: "DICGC premium rate?", o: ["5 paise", "10 paise", "12 paise", "15 paise"], a: 2, e: "12 paise per ₹100 of assessable deposits per annum, paid by the bank." },
+  { q: "An account becomes Inoperative after how many years of no customer-induced transaction?", o: ["1 year", "2 years", "3 years", "5 years"], a: 1, e: "Inoperative = 2 years of no customer-induced transaction. Bank-initiated entries (interest credit, charges debit) don't count." },
+  { q: "DEAF transfer — after how many years?", o: ["5 years", "7 years", "10 years", "15 years"], a: 2, e: "DEAF Scheme 2014 (Sec 26A BR Act): 10 years of inoperative/unclaimed → transferred to RBI DEAF." },
+  { q: "Cheque validity period as per current RBI rules?", o: ["30 days", "3 months", "6 months", "1 year"], a: 1, e: "Cheque is valid for 3 months from date (earlier was 6 months — changed April 2012)." },
+  { q: "Section 138 NI Act punishment (maximum)?", o: ["6 months + fine", "1 year + 1× fine", "2 years + 2× cheque amount fine", "5 years + fine"], a: 2, e: "Imprisonment up to 2 years or fine up to 2× cheque amount or both." },
+  { q: "Beneficial owner in a company — minimum ownership threshold?", o: ["5%", "10%", "15%", "25%"], a: 1, e: "> 10% of shares, capital, or profits (or control via other means)." },
+  { q: "Beneficial owner in an unincorporated association?", o: ["10%", "15%", "20%", "25%"], a: 1, e: "> 15% for unincorporated associations/trusts." },
+  { q: "RTI application response time (normal)?", o: ["7 days", "15 days", "30 days", "60 days"], a: 2, e: "RTI Act: 30 days normal; 48 hours for life/liberty." },
+  { q: "RTI — life/liberty response time?", o: ["24 hours", "48 hours", "72 hours", "7 days"], a: 1, e: "48 hours for life/liberty matters." },
+  { q: "Integrated Ombudsman — compensation ceiling (direct loss)?", o: ["₹5 lakh", "₹10 lakh", "₹20 lakh", "₹25 lakh"], a: 2, e: "Direct loss: up to ₹20 lakh; indirect (time/expenses): up to ₹1 lakh additional." },
+  { q: "Settlement of deceased claim — timeline?", o: ["7 days", "15 days", "30 days", "45 days"], a: 1, e: "Within 15 days of receipt of complete claim documents." },
+  { q: "Without nomination — non-contentious claim threshold (no succession certificate)?", o: ["₹1 lakh", "₹2 lakh", "₹5 lakh", "₹10 lakh"], a: 2, e: "Up to ₹5 lakh can be paid with indemnity + declaration + death certificate." },
+  { q: "TDS u/s 194A on FD interest — threshold for individuals?", o: ["₹10,000", "₹20,000", "₹40,000", "₹50,000"], a: 2, e: "₹40,000 for individuals; ₹50,000 for senior citizens. Rate: 10%." },
+  { q: "TDS u/s 194N — cash withdrawal threshold for IT filers?", o: ["₹10 lakh", "₹50 lakh", "₹1 Crore", "₹2 Crore"], a: 2, e: "> ₹1 Cr for filers (rate 2%); lower thresholds for non-filers." },
+  { q: "GST rate on banking services?", o: ["12%", "15%", "18%", "28%"], a: 2, e: "18% GST on banking services (loan processing, locker rent, etc.). Interest itself is GST-exempt." },
+  { q: "CERSAI registration — timeline after creation of charge?", o: ["15 days", "30 days", "45 days", "60 days"], a: 1, e: "Must register with CERSAI within 30 days of creating security interest." },
+  { q: "V-CIP stands for?", o: ["Verified-CIP", "Video-based CIP", "Virtual CIP", "Vendor CIP"], a: 1, e: "Video-based Customer Identification Process — RBI alternate to face-to-face with facial recognition + live audio-visual." },
+  { q: "CKYCR Identifier for individuals — number of digits?", o: ["10", "12", "14", "16"], a: 2, e: "14-digit for individuals; 15-digit for legal entities." },
+  { q: "Small Account — maximum balance at any time?", o: ["₹10,000", "₹25,000", "₹50,000", "₹1 lakh"], a: 2, e: "Small Account: balance ≤ ₹50,000; credits ≤ ₹1 lakh/yr; withdrawals ≤ ₹10,000/month." },
+  { q: "Minimum age for a minor's self-operated SB account?", o: ["7 years", "10 years", "12 years", "14 years"], a: 1, e: "10 years — as per RBI; SB only; max balance per bank policy." },
+  { q: "FCRA account must be opened at:", o: ["Any PSB in Delhi", "RBI, Mumbai", "SBI, New Delhi Main Branch", "Any nationalized bank"], a: 2, e: "FCRA 2010 mandates main FCRA account at SBI, New Delhi Main Branch." },
+  { q: "COPRA 2019 — District Commission pecuniary jurisdiction?", o: ["Up to ₹20 lakh", "Up to ₹50 lakh", "Up to ₹1 Crore", "Up to ₹2 Crore"], a: 1, e: "District: up to ₹50 lakh; State: ₹50L-₹2Cr; National: above ₹2Cr." },
+  { q: "Garnishee Order applies to:", o: ["Future credits only", "Credit balance at time of order only", "Both present and future", "Only current balance in SB"], a: 1, e: "Garnishee: only credit balance at receipt of order. Attachment Order: present + future." },
+  { q: "Attachment Order under Sec 226(3) is issued by:", o: ["Court", "RBI", "Income Tax Dept", "SEBI"], a: 2, e: "IT Dept (Sec 226(3)) and similar: IT, GST, Excise, ED. Court issues Garnishee orders." },
+  { q: "Soiled note exchange — free of cost up to:", o: ["10 pieces or ₹2,000", "15 pieces or ₹3,000", "20 pieces or ₹5,000", "50 pieces or ₹10,000"], a: 2, e: "20 pieces or ₹5,000 per day at counter without slip. Above — with slip + ID." },
+  { q: "Counterfeit note — if 5+ notes detected in single txn, report to Police within:", o: ["Same day", "3 working days", "7 working days", "15 days"], a: 1, e: "Report to Police + Nodal Officer within 3 working days (FIR). CCR to FIU-IND within 7 working days." },
+  { q: "The banker-customer relationship in a loan account is:", o: ["Debtor-Creditor", "Creditor-Debtor", "Bailee-Bailor", "Agent-Principal"], a: 1, e: "Loan: Bank is Creditor, Customer is Debtor. Deposits: reverse (Bank = Debtor)." },
+  { q: "Safe deposit locker relationship (as per RBI 2022)?", o: ["Bailee-Bailor", "Trustee-Beneficiary", "Lessor-Lessee", "Debtor-Creditor"], a: 2, e: "Per RBI 2022: Lessor (Bank) — Lessee (Customer). Earlier interpretation was bailee-bailor." },
+  { q: "Clayton's Rule (Rule in Devaynes v Noble) deals with:", o: ["Lien", "Set-off", "Appropriation of payments", "Nomination"], a: 2, e: "Clayton's Rule: FIFO appropriation of payments in a running account (CC/OD). First credit discharges first debit." },
+  { q: "Sec 85 of NI Act protects:", o: ["Collecting banker", "Paying banker", "Holder in due course", "Drawer"], a: 1, e: "Sec 85 = protection to Paying Banker (payment in due course). Sec 131 = Collecting Banker." },
+  { q: "Minimum age for Doorstep Banking eligibility (senior citizens)?", o: ["60 years", "65 years", "70 years", "75 years"], a: 2, e: "RBI directive 31.03.2020: senior citizens aged 70+ and differently abled." },
+  { q: "Internal Ombudsman tenure (initial + extension)?", o: ["3 + 2 = 5", "2 + 3 = 5", "5 + 5 = 10", "3 + 3 = 6"], a: 0, e: "3 years initial tenure, extendable to 5 years total. Appointed from outside (retired GM/CGM)." },
+  { q: "RBI Ombudsman helpline number?", o: ["155270", "14440", "14448", "1800425"], a: 2, e: "14448 — common helpline for all RBI Ombudsman offices." },
+  { q: "'Officially Valid Document' (OVD) does NOT include:", o: ["Passport", "Driving Licence", "Ration Card", "Voter ID"], a: 2, e: "Ration Card is NOT an OVD under current RBI KYC norms. OVDs: Passport, DL, Voter ID, PAN, Aadhaar (with possession proof), NREGA Job Card, NPR letter." },
+  { q: "Unauthorized electronic transaction — zero liability reporting window?", o: ["Within 24 hours", "Within 3 working days", "Within 7 working days", "Within 30 days"], a: 1, e: "Zero Liability: reported within 3 working days of communication from bank." },
+  { q: "Failed ATM transaction — reversal must happen by:", o: ["T+1 days", "T+3 days", "T+5 days", "T+7 days"], a: 2, e: "T+5 working days; delay attracts ₹100/day compensation." },
+  { q: "FCRA registration validity?", o: ["3 years", "5 years", "7 years", "10 years"], a: 1, e: "FCRA 2010: 5-year validity (renewable)." },
+  { q: "FCRA — max administrative expenses allowed?", o: ["10%", "15%", "20%", "25%"], a: 2, e: "20% of foreign contribution can be used for administrative expenses." },
+  { q: "Three Lines of Defence in KYC/AML — 2nd line?", o: ["Branches", "Internal Audit", "KYC/AML Dept", "RBI"], a: 2, e: "1st = Branches/Offices; 2nd = KYC/AML Dept (Principal Officer); 3rd = Internal Audit." },
+  { q: "An ODF (OVD) must be followed by a current-address OVD within:", o: ["1 month", "3 months", "6 months", "1 year"], a: 1, e: "If OVD doesn't have current address, deemed OVDs are accepted. OVD with current address must be submitted within 3 months." },
+  { q: "Record retention under PMLA for KYC records?", o: ["3 years from closure", "5 years from closure", "8 years from closure", "10 years from closure"], a: 1, e: "KYC records: 5 years from closure of account/relationship. Transaction records: 5 years from txn date." },
+];
+
+let quizIndex = 0;
+let currentOrder = [];
+
+function startQuiz() {
+  currentOrder = QUIZ.map((_, i) => i).sort(() => Math.random() - 0.5);
+  quizIndex = 0;
+  document.getElementById('quizIntro').style.display = 'none';
+  document.getElementById('quizArea').style.display = 'block';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  if (quizIndex >= currentOrder.length) {
+    renderResult();
+    return;
+  }
+  const qid = currentOrder[quizIndex];
+  const q = QUIZ[qid];
+  const prev = state.quiz.perQuestion[qid];
+  const area = document.getElementById('quizArea');
+  area.innerHTML = `
+    <div class="quiz-stats">
+      <div class="quiz-stat"><div class="v">${quizIndex+1}/${currentOrder.length}</div><div class="l">Progress</div></div>
+      <div class="quiz-stat"><div class="v">${state.quiz.correct}</div><div class="l">Correct</div></div>
+      <div class="quiz-stat"><div class="v">${state.quiz.attempted ? Math.round(state.quiz.correct/state.quiz.attempted*100) : 0}%</div><div class="l">Accuracy</div></div>
+    </div>
+    <div class="question-card">
+      <div class="q-num">Question ${quizIndex+1} of ${currentOrder.length}</div>
+      <div class="q-text">${q.q}</div>
+      ${q.o.map((opt, i) => `<div class="option" onclick="pickOption(${qid}, ${i}, this)" id="opt-${i}">${String.fromCharCode(65+i)}) ${opt}</div>`).join('')}
+      <div class="explanation" id="exp"><b>💡 ${q.o[q.a]}</b><br>${q.e}</div>
+      <div class="nav-btns">
+        <button class="btn-prev" onclick="prevQuestion()">← Prev</button>
+        <button class="btn-next" onclick="nextQuestion()">Next →</button>
+      </div>
+    </div>
+  `;
+  if (prev !== undefined) {
+    // Show already-answered state
+    const sel = prev;
+    document.getElementById('opt-'+sel).classList.add(sel === q.a ? 'correct' : 'wrong');
+    if (sel !== q.a) document.getElementById('opt-'+q.a).classList.add('correct');
+    document.getElementById('exp').classList.add('show');
+  }
+}
+
+function pickOption(qid, idx, el) {
+  const q = QUIZ[qid];
+  if (state.quiz.perQuestion[qid] !== undefined) return; // already answered
+  state.quiz.perQuestion[qid] = idx;
+  state.quiz.attempted++;
+  if (idx === q.a) {
+    state.quiz.correct++;
+    el.classList.add('correct');
+  } else {
+    el.classList.add('wrong');
+    document.getElementById('opt-'+q.a).classList.add('correct');
+    if (!state.weak.includes(qid)) state.weak.push(qid);
+  }
+  document.getElementById('exp').classList.add('show');
+  save();
+  updateStatBoxes();
+}
+
+function nextQuestion() {
+  quizIndex++;
+  renderQuestion();
+}
+
+function prevQuestion() {
+  if (quizIndex > 0) quizIndex--;
+  renderQuestion();
+}
+
+function renderResult() {
+  const score = state.quiz.correct;
+  const total = state.quiz.attempted;
+  const pct = total ? Math.round(score/total*100) : 0;
+  let msg = 'Good effort! Keep studying.';
+  if (pct >= 80) msg = '🎉 Excellent — you\'re exam-ready!';
+  else if (pct >= 60) msg = '👍 Solid — tighten up on the weak topics.';
+  else if (pct >= 40) msg = '📚 Needs more practice — revise and retake.';
+  else msg = '💪 Keep going — review content first, then quiz again.';
+
+  document.getElementById('quizArea').innerHTML = `
+    <div class="result-card">
+      <div style="font-size:50px">${pct >= 60 ? '🏆' : '📖'}</div>
+      <div class="result-score">${pct}%</div>
+      <div class="result-msg">${msg}</div>
+      <div class="result-row">
+        <div class="quiz-stat"><div class="v">${score}</div><div class="l">Correct</div></div>
+        <div class="quiz-stat"><div class="v">${total - score}</div><div class="l">Wrong</div></div>
+      </div>
+      <div class="action-row" style="margin-top:14px">
+        <button class="btn" onclick="resetQuiz()">🔄 Retake All</button>
+        <button class="btn btn-sec" onclick="reviewWeak()">🎯 Only Weak</button>
+      </div>
+    </div>
+  `;
+}
+
+function resetQuiz() {
+  state.quiz = { attempted: 0, correct: 0, perQuestion: {} };
+  state.weak = [];
+  save();
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('quizIntro').style.display = 'block';
+  updateStatBoxes();
+}
+
+function reviewWeak() {
+  if (state.weak.length === 0) {
+    alert('No weak topics yet! Take the quiz first.');
+    return;
+  }
+  currentOrder = [...state.weak];
+  quizIndex = 0;
+  document.getElementById('quizIntro').style.display = 'none';
+  document.getElementById('quizArea').style.display = 'block';
+  // Reset answers for these so they can re-attempt
+  state.weak.forEach(w => { delete state.quiz.perQuestion[w]; });
+  state.quiz.attempted = state.quiz.attempted - state.weak.length;
+  if (state.quiz.attempted < 0) state.quiz.attempted = 0;
+  state.weak = [];
+  save();
+  renderQuestion();
+}
+
+function updateStatBoxes() {
+  const att = state.quiz.attempted;
+  const cor = state.quiz.correct;
+  const acc = att ? Math.round(cor/att*100) : 0;
+  if (document.getElementById('stAtt')) document.getElementById('stAtt').textContent = att;
+  if (document.getElementById('stCor')) document.getElementById('stCor').textContent = cor;
+  if (document.getElementById('stAcc')) document.getElementById('stAcc').textContent = acc+'%';
+}
+
+// ============ CASE STUDIES ============
+const CASES = [
+  {
+    t: '1. Deceased Depositor Claim',
+    scenario: 'Mr. Kumar held a SB account with ₹4.5 lakh balance at your Thadikombu branch. He died. There is NO nomination. His wife and two adult children approach you with his death certificate. What is the process?',
+    solution: '<b>Step 1:</b> Freeze the account (no further transactions).<br><b>Step 2:</b> Ask for: Death Certificate + Legal Heir Certificate / Affidavit + Indemnity by all legal heirs + Letter of Disclaimer from others + ID proofs.<br><b>Step 3:</b> Since amount is ≤ ₹5 lakh (RBI guideline), succession certificate is NOT required.<br><b>Step 4:</b> Settle in favour of legal heirs (jointly or per mutual agreement).<br><b>Step 5:</b> Settle within 15 days of complete documentation.<br><b>Key learning:</b> Up to ₹5 lakh, no succession certificate needed in non-contentious cases.'
+  },
+  {
+    t: '2. Garnishee Order Scenario',
+    scenario: 'Court sends a Garnishee Order Nisi against Mr. Prakash\'s account. His SB a/c has ₹1,00,000 balance when order is received. Next day, ₹50,000 is credited via NEFT from his customer. Then ₹2 lakh is demanded by his son from the account. What do you do?',
+    solution: '<b>Step 1:</b> Freeze ₹1,00,000 (balance AT TIME OF ORDER) — this is subject to Garnishee.<br><b>Step 2:</b> The ₹50,000 NEFT credit received AFTER the order is NOT covered by Garnishee — Garnishee doesn\'t apply to future credits.<br><b>Step 3:</b> Allow withdrawal from the fresh ₹50,000 if balance permits after Garnishee lien.<br><b>Step 4:</b> Await Order Absolute. On Absolute, remit ₹1,00,000 to court/decree holder.<br><b>Key learning:</b> Garnishee applies ONLY to credit at time of receipt. Attachment Order (IT/GST) applies to future credits too.'
+  },
+  {
+    t: '3. Counterfeit Note Detection',
+    scenario: 'A customer deposits ₹50,000 cash at your branch. On examination, 7 notes of ₹500 denomination are found to be counterfeit. What is your immediate action?',
+    solution: '<b>Step 1:</b> Impound immediately. Do NOT return any of the 7 notes to tenderer.<br><b>Step 2:</b> Stamp each: "COUNTERFEIT BANK NOTE" in red ink, 5cm × 5cm.<br><b>Step 3:</b> Issue acknowledgment receipt to the depositor (statement of seizure).<br><b>Step 4:</b> Credit ONLY the genuine amount to depositor\'s account. No compensation for counterfeit.<br><b>Step 5:</b> Since 5+ notes — <b>FIR with Police within 3 working days</b>. Also notify Nodal Officer.<br><b>Step 6:</b> File CCR (Counterfeit Currency Report) to FIU-IND within 7 working days.<br><b>Key learning:</b> If bank fails to impound → 4× face value penalty by RBI.'
+  },
+  {
+    t: '4. Cheque Dishonour (Sec 138)',
+    scenario: 'Mrs. Lakshmi\'s customer gave her a cheque of ₹1 lakh dated 10-Oct-2026 against supply of goods. On 25-Nov-2026 Lakshmi presents it — returned "Insufficient Funds." She approaches you for advice. Dates for Sec 138?',
+    solution: '<b>Fact check:</b> Cheque dated 10-Oct-2026, presented 25-Nov-2026 — within 3 months, valid presentation. ✅<br><b>Step 1 (Payee):</b> Issue DEMAND NOTICE to drawer within <b>30 days</b> of return memo — i.e., by 25-Dec-2026.<br><b>Step 2 (Drawer):</b> Must pay within <b>15 days</b> of receiving notice.<br><b>Step 3 (Payee):</b> If no payment, file complaint within <b>1 month</b> of failure to pay (i.e., 1 month from end of 15-day window).<br><b>Step 4 (Court):</b> Imprisonment up to 2 years OR fine up to 2× cheque amount OR both.<br><b>Key learning:</b> Strict timelines — miss any, case fails.'
+  },
+  {
+    t: '5. Dormant Account Activation',
+    scenario: 'A SB account holder visits you after 3 years of no transaction (interest credit happened but no customer-initiated txn). He wants to withdraw ₹20,000 immediately for medical emergency. What is the process?',
+    solution: '<b>Step 1:</b> Account is now INOPERATIVE (2 years no customer txn — bank-initiated interest doesn\'t count).<br><b>Step 2:</b> Require written request for activation.<br><b>Step 3:</b> Fresh KYC documents (updated OVDs if periodic updation is due).<br><b>Step 4:</b> Attest two debit entries in signature book.<br><b>Step 5:</b> NO charges for activation.<br><b>Step 6:</b> For urgent medical need, process quickly; interest continues to accrue in SB.<br><b>Key learning:</b> Only customer-induced transactions count for dormancy; interest/charges don\'t.'
+  },
+  {
+    t: '6. KYC Risk Classification',
+    scenario: 'The following customers walk in: (a) Dr. Ramesh — Govt hospital doctor, salary a/c; (b) Mr. Mukesh — HNI with ₹5 Cr FD, cash-intensive gold jewellery business; (c) Smt. Kamala — vegetable vendor at local market; (d) Bharat Trust — charitable trust registered under FCRA. Classify each.',
+    solution: '<b>(a) Dr. Ramesh:</b> LOW RISK (RIP-1) — salaried govt employee.<br><b>(b) Mr. Mukesh:</b> HIGH RISK (RIP-3) — HNI + cash-intensive bullion/jewellery business, both indicators of high risk.<br><b>(c) Smt. Kamala:</b> MEDIUM RISK (RIP-2) — small retail trader.<br><b>(d) Bharat Trust:</b> HIGH RISK (RIP-3) — FCRA account, charitable trust (donations), enhanced due diligence required.<br><b>Action:</b> High-risk — enhanced monitoring, periodic KYC every 2 years, verify source of funds for every large txn.'
+  },
+  {
+    t: '7. Integrated Ombudsman — Unresolved Complaint',
+    scenario: 'Customer complained to bank about wrong debit of ₹15,000 from his SB account. Bank replied after 25 days, partially rejecting the claim. Customer approached RBI Ombudsman. The Ombudsman passes award of ₹15,000 + ₹5,000 compensation. Bank disagrees. What next?',
+    solution: '<b>Step 1:</b> Customer\'s complaint to Ombudsman was valid — 30 days passed OR unsatisfactory reply.<br><b>Step 2:</b> Ombudsman award of ₹15,000 (loss) + ₹5,000 (compensation) — within ceiling of ₹20L direct + ₹1L indirect.<br><b>Step 3:</b> Bank can appeal to RBI APPELLATE AUTHORITY (Deputy Governor) within 30 days of receipt of award.<br><b>Step 4:</b> If no appeal filed OR appeal rejected — Bank MUST comply with award.<br><b>Step 5:</b> Non-compliance can lead to RBI supervisory action.<br><b>Key learning:</b> Integrated Ombudsman compensation ceiling: ₹20L direct + ₹1L indirect; 30-day appeal window.'
+  },
+];
+
+function renderCases() {
+  document.getElementById('caseList').innerHTML = CASES.map((c, i) => `
+    <div class="case-card">
+      <div class="case-head" onclick="this.parentElement.classList.toggle('open')">
+        <span>${c.t}</span><span class="arrow">▼</span>
+      </div>
+      <div class="case-body">
+        <div class="case-scenario"><b>📍 Scenario:</b> ${c.scenario}</div>
+        <button class="reveal-btn" onclick="this.nextElementSibling.classList.add('show'); this.style.display='none'">👁️ Reveal Solution</button>
+        <div class="case-solution">${c.solution}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ============ INIT ============
+function init() {
+  document.documentElement.setAttribute('data-theme', state.theme);
+  document.querySelector('.theme-btn').textContent = state.theme === 'dark' ? '☀️' : '🌙';
+  // Restore topic checks
+  Object.keys(state.topics).forEach(id => {
+    const el = document.querySelector(`#${id} .topic-check`);
+    if (el && state.topics[id]) el.classList.add('done');
+  });
+  updateProgressBar();
+  renderFlashcards();
+  renderCompare();
+  renderNumbers();
+  renderCases();
+  updateStatBoxes();
+}
+init();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(e => console.log('SW failed:', e));
+  });
+}
+</script>
+</body>
+</html>

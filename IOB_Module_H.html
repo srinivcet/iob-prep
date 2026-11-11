@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a2540">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IOB Prep">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Module H: Treasury & Risk — IOB 2027</title>
+<style>:root{--bg:#f5f7fb;--card:#fff;--text:#1a202c;--muted:#64748b;--primary:#0a2540;--primary-light:#1e40af;--accent:#d4a017;--success:#10b981;--warn:#f59e0b;--danger:#ef4444;--border:#e2e8f0;--highlight:#fef3c7;--important:#fee2e2;--info:#dbeafe}[data-theme="dark"]{--bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--muted:#94a3b8;--primary:#3b82f6;--accent:#fbbf24;--border:#334155;--highlight:#78350f;--important:#7f1d1d;--info:#1e3a8a}*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;font-size:14px;padding-bottom:80px}.header{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:14px 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.15)}.header-row{display:flex;justify-content:space-between;align-items:center;gap:10px}.back-link{color:#fff;text-decoration:none;font-size:13px;padding:4px 8px;background:rgba(255,255,255,.15);border-radius:8px;display:inline-block}.header h1{font-size:16px;font-weight:700;margin-top:4px}.header-sub{font-size:11px;opacity:.85}.theme-btn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:8px 10px;border-radius:8px;font-size:15px;cursor:pointer}.progress-strip{height:4px;background:rgba(255,255,255,.2);margin-top:8px;border-radius:10px;overflow:hidden}.progress-strip-fill{height:100%;background:linear-gradient(90deg,var(--accent),#fbbf24);transition:width .5s}.tabs{background:var(--card);padding:8px;overflow-x:auto;white-space:nowrap;border-bottom:1px solid var(--border);position:sticky;top:85px;z-index:50;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab-chip{display:inline-block;padding:8px 14px;margin:0 3px;border-radius:20px;background:var(--bg);color:var(--text);border:1px solid var(--border);font-size:12px;font-weight:600;cursor:pointer}.tab-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}[data-theme="dark"] .tab-chip.active{background:var(--accent);color:var(--primary)}.container{padding:14px;max-width:900px;margin:0 auto}.view{display:none}.view.active{display:block;animation:fadeIn .3s ease}@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.topic{background:var(--card);border-radius:12px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid var(--border);overflow:hidden}.topic-head{padding:12px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(90deg,var(--card),var(--bg));user-select:none}.topic-title{font-weight:700;font-size:14px;color:var(--primary);display:flex;align-items:center;gap:8px}[data-theme="dark"] .topic-title{color:var(--accent)}.topic-num{background:var(--primary);color:#fff;width:24px;height:24px;border-radius:50%;text-align:center;line-height:24px;font-size:11px;font-weight:700;flex-shrink:0}[data-theme="dark"] .topic-num{background:var(--accent);color:var(--primary)}.topic-check{width:22px;height:22px;border:2px solid var(--muted);border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}.topic-check.done{background:var(--success);border-color:var(--success)}.topic-check.done::after{content:'✓'}.topic-body{display:none;padding:0 14px 14px}.topic.open .topic-body{display:block;animation:fadeIn .3s ease}.topic.open .topic-arrow{transform:rotate(90deg)}.topic-arrow{transition:transform .3s;color:var(--muted);font-size:14px}h3{margin:14px 0 8px;font-size:14px;color:var(--primary);padding-bottom:4px;border-bottom:2px solid var(--accent)}[data-theme="dark"] h3{color:var(--accent)}h4{margin:12px 0 6px;font-size:13px;color:var(--primary);font-weight:700}[data-theme="dark"] h4{color:#93c5fd}p{margin:4px 0 8px}ul,ol{margin:4px 0 10px;padding-left:22px}li{margin:3px 0}.key{background:var(--highlight);padding:2px 6px;border-radius:4px;font-weight:700;color:#92400e;font-size:13px}[data-theme="dark"] .key{color:#fde68a}.alert{padding:10px 12px;margin:10px 0;border-radius:8px;border-left:3px solid;font-size:13px}.alert-info{background:var(--info);border-color:var(--primary-light);color:var(--primary)}.alert-warn{background:var(--highlight);border-color:var(--warn);color:#92400e}[data-theme="dark"] .alert-info{color:#dbeafe}[data-theme="dark"] .alert-warn{color:#fde68a;background:#78350f}table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12.5px}th,td{padding:6px 8px;text-align:left;border:1px solid var(--border)}th{background:var(--bg);font-weight:700;color:var(--primary)}[data-theme="dark"] th{color:var(--accent)}tr:nth-child(even) td{background:var(--bg)}.flashcard-deck{display:flex;flex-direction:column;gap:12px}.flashcard{perspective:1000px;height:180px;cursor:pointer}.flashcard-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}.flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}.flashcard-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;padding:18px;display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.1)}.flashcard-front{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;font-size:15px;font-weight:600}.flashcard-back{background:linear-gradient(135deg,var(--accent),#d97706);color:#1a202c;font-size:13px;transform:rotateY(180deg);font-weight:500;overflow-y:auto;line-height:1.5}.flashcard-hint{position:absolute;bottom:8px;left:0;right:0;font-size:10px;opacity:.7;text-align:center}.compare-card{background:var(--card);border-radius:12px;margin-bottom:10px;border:1px solid var(--border);overflow:hidden}.compare-head{padding:12px 14px;background:linear-gradient(90deg,var(--primary),var(--primary-light));color:#fff;font-weight:700;font-size:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}.compare-body{display:none;padding:10px;overflow-x:auto}.compare-card.open .compare-body{display:block;animation:fadeIn .3s ease}.compare-card.open .compare-head .arrow{transform:rotate(180deg)}.compare-head .arrow{transition:transform .3s;font-size:14px}.num-card{background:var(--card);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid var(--border);display:flex;align-items:center;gap:12px}.num-badge{background:var(--accent);color:var(--primary);padding:6px 10px;border-radius:8px;font-family:monospace;font-weight:700;font-size:13px;min-width:90px;text-align:center;flex-shrink:0}.num-desc{font-size:13px;flex:1}.num-cat{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}.quiz-intro{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:20px;border-radius:14px;margin-bottom:14px;text-align:center}.quiz-intro h2{font-size:20px;margin-bottom:8px}.quiz-intro p{font-size:13px;opacity:.9;margin-bottom:14px}.quiz-btn{padding:10px 20px;background:var(--accent);color:var(--primary);border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px;font-family:inherit}.quiz-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}.quiz-stat{background:var(--card);padding:10px;border-radius:10px;text-align:center;border:1px solid var(--border)}.quiz-stat .v{font-size:20px;font-weight:700;color:var(--primary)}[data-theme="dark"] .quiz-stat .v{color:var(--accent)}.quiz-stat .l{font-size:10px;color:var(--muted);text-transform:uppercase}.question-card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.05)}.q-num{font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:600}.q-text{font-size:14px;font-weight:600;margin-bottom:12px;line-height:1.45}.option{padding:10px 12px;margin-bottom:6px;background:var(--bg);border-radius:8px;border:2px solid transparent;cursor:pointer;font-size:13px;transition:all .2s}.option:hover{background:var(--card);border-color:var(--primary)}.option.correct{background:#d1fae5;border-color:var(--success);color:#065f46}.option.wrong{background:#fee2e2;border-color:var(--danger);color:#991b1b}[data-theme="dark"] .option.correct{background:#065f46;color:#d1fae5}[data-theme="dark"] .option.wrong{background:#7f1d1d;color:#fecaca}.explanation{background:var(--info);padding:10px 12px;margin-top:10px;border-radius:8px;font-size:12.5px;border-left:3px solid var(--primary-light);display:none}.explanation.show{display:block;animation:fadeIn .3s}[data-theme="dark"] .explanation{background:#1e3a8a;color:#dbeafe}.nav-btns{display:flex;gap:8px;margin-top:14px}.nav-btns button{flex:1;padding:10px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit}.btn-prev{background:var(--card);color:var(--text);border:1px solid var(--border)}.btn-next{background:var(--primary);color:#fff}[data-theme="dark"] .btn-next{background:var(--accent);color:var(--primary)}.case-card{background:var(--card);border-radius:14px;margin-bottom:14px;border:1px solid var(--border);overflow:hidden}.case-head{padding:12px 14px;background:linear-gradient(135deg,var(--accent),#d97706);color:#1a202c;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:700}.case-body{display:none;padding:14px}.case-card.open .case-body{display:block;animation:fadeIn .3s}.case-card.open .case-head .arrow{transform:rotate(180deg)}.case-scenario{background:var(--info);padding:10px 12px;border-radius:8px;margin-bottom:10px;font-size:13px;border-left:3px solid var(--primary-light)}[data-theme="dark"] .case-scenario{background:#1e3a8a;color:#dbeafe}.case-solution{background:var(--highlight);padding:10px 12px;border-radius:8px;font-size:13px;border-left:3px solid var(--accent);display:none}.case-solution.show{display:block;animation:fadeIn .3s}[data-theme="dark"] .case-solution{background:#78350f;color:#fde68a}.reveal-btn{padding:8px 14px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;margin-top:8px}.result-card{background:var(--card);padding:20px;border-radius:14px;text-align:center;border:1px solid var(--border)}.result-score{font-size:44px;font-weight:800;color:var(--primary);margin:10px 0}[data-theme="dark"] .result-score{color:var(--accent)}.result-msg{font-size:14px;color:var(--muted);margin-bottom:16px}.result-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.float-btn{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;width:48px;height:48px;border-radius:50%;font-size:22px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:200}[data-theme="dark"] .float-btn{background:var(--accent);color:var(--primary)}.search-box{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px;margin-bottom:10px;font-family:inherit}.btn{padding:10px 14px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;background:var(--primary);color:#fff;font-family:inherit}.btn-sec{background:var(--card);color:var(--text);border:1px solid var(--border)}.action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}</style>
+</head>
+<body>
+<div class="header"><div class="header-row"><div><a href="IOB_Study_Hub.html" class="back-link">← Hub</a><h1>Module H: Treasury & Risk</h1><div class="header-sub">CRR/SLR • Basel • Risk Mgmt • 45 MCQs</div></div><button class="theme-btn" onclick="toggleTheme()">🌙</button></div><div class="progress-strip"><div class="progress-strip-fill" id="pbar" style="width:0%"></div></div></div>
+<div class="tabs"><div class="tab-chip active" onclick="showTab('content',this)">📖 Content</div><div class="tab-chip" onclick="showTab('flash',this)">🎴 Flashcards</div><div class="tab-chip" onclick="showTab('compare',this)">⚖️ Compare</div><div class="tab-chip" onclick="showTab('numbers',this)">🔢 Numbers</div><div class="tab-chip" onclick="showTab('mcq',this)">❓ Quiz</div><div class="tab-chip" onclick="showTab('cases',this)">📋 Cases</div></div>
+<div class="container">
+<div id="content" class="view active"><input class="search-box" placeholder="🔍 Search..." oninput="filterTopics(this.value)">
+
+<div class="topic" id="t1"><div class="topic-head" onclick="toggleTopic('t1')"><div class="topic-title"><span class="topic-num">1</span>Money Market Instruments</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t1',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Certificate of Deposit (CD)</h3>
+<ul>
+<li>Issuer: Scheduled Commercial Banks (except RRBs, LABs) + specified AIFIs.</li>
+<li>Minimum: <span class="key">₹5 lakh</span>; multiples of ₹5 lakh.</li>
+<li>Tenure: Banks 7 days to 1 year; AIFIs 1 to 3 years.</li>
+<li>Issued at discount; no premature repayment.</li>
+<li>Negotiable instrument; transferable.</li>
+<li>Not callable (except specific conditions).</li>
+</ul>
+<h3>Commercial Paper (CP)</h3>
+<ul>
+<li>Issuer: Companies / NBFCs with net worth ≥ ₹4 Cr.</li>
+<li>Minimum rating: A2 / A3 (short-term credit rating).</li>
+<li>Minimum: ₹5 lakh; multiples of ₹5 lakh.</li>
+<li>Tenure: 7 days to 1 year.</li>
+<li>Unsecured; issued at discount.</li>
+<li>IPA (Issuing & Paying Agent) = Scheduled commercial bank.</li>
+</ul>
+<h3>Call Money / Notice Money / Term Money</h3>
+<ul>
+<li><b>Call:</b> Up to 1 day (overnight).</li>
+<li><b>Notice:</b> 2-14 days.</li>
+<li><b>Term:</b> 15+ days up to 1 year.</li>
+<li>Participants: Banks (both borrowers + lenders), Primary Dealers.</li>
+</ul>
+<h3>Treasury Bills (T-Bills)</h3>
+<ul>
+<li>Issued by GoI (via RBI).</li>
+<li>Three types: 91-day, 182-day, 364-day.</li>
+<li>Minimum: ₹25,000; multiples of ₹25,000.</li>
+<li>Issued at discount; redeemed at face value.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t2"><div class="topic-head" onclick="toggleTopic('t2')"><div class="topic-title"><span class="topic-num">2</span>MCLR & External Benchmark Based Rate</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t2',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>MCLR — Marginal Cost of Funds Based Lending Rate</h3>
+<ul>
+<li>Introduced: 1 April 2016 (replaced Base Rate).</li>
+<li>Components:
+<ol>
+<li>Marginal Cost of Funds (weighted avg of borrowing rates).</li>
+<li>Negative Carry on CRR.</li>
+<li>Operating Costs.</li>
+<li>Tenor Premium.</li>
+</ol></li>
+<li>Tenors: Overnight, 1 month, 3 months, 6 months, 1 year.</li>
+<li>Review: Monthly.</li>
+<li>Reset: Minimum every 3 months.</li>
+</ul>
+
+<h3>EBLR / RLLR — External Benchmark Based Rate</h3>
+<ul>
+<li>Effective 1 October 2019 for all floating rate retail + MSE loans.</li>
+<li>Benchmarks allowed (RBI):
+<ul>
+<li>Policy Repo Rate.</li>
+<li>Government of India 3-month Treasury Bill yield (FBIL).</li>
+<li>Government of India 6-month Treasury Bill yield (FBIL).</li>
+<li>Any other benchmark published by FBIL.</li>
+</ul></li>
+<li>Reset: minimum every 3 months.</li>
+<li>Most banks use <b>Repo-Linked Lending Rate (RLLR)</b> = Repo + Spread.</li>
+<li>Spread = Credit risk premium + Operating cost + Bank margin.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t3"><div class="topic-head" onclick="toggleTopic('t3')"><div class="topic-title"><span class="topic-num">3</span>CRR & SLR Requirements</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t3',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>CRR — Cash Reserve Ratio</h3>
+<ul>
+<li>Current: <span class="key">4.00%</span> of NDTL (Net Demand and Time Liabilities).</li>
+<li>Maintained with RBI as cash balance.</li>
+<li>No interest earned.</li>
+<li>Calculated on fortnightly average basis.</li>
+<li>Minimum daily maintenance: 95% of required.</li>
+<li>Sec 42(1) of RBI Act 1934.</li>
+</ul>
+
+<h3>SLR — Statutory Liquidity Ratio</h3>
+<ul>
+<li>Current: <span class="key">18.00%</span> of NDTL.</li>
+<li>Maintained in cash, gold, approved Govt securities.</li>
+<li>Earns interest (on Govt securities).</li>
+<li>Sec 24 of BR Act 1949.</li>
+<li>Also fortnightly basis.</li>
+</ul>
+
+<h3>LAF — Liquidity Adjustment Facility</h3>
+<ul>
+<li>RBI's tool for day-to-day liquidity management.</li>
+<li>Repo Rate: Rate at which banks borrow from RBI (short-term).</li>
+<li>Current Repo: <span class="key">5.50%</span> (verify latest).</li>
+<li>Reverse Repo: Replaced by Standing Deposit Facility (SDF).</li>
+<li>SDF Rate: Repo - 25 bps.</li>
+<li>MSF (Marginal Standing Facility): Repo + 25 bps (emergency).</li>
+<li>Bank Rate: typically MSF rate.</li>
+</ul>
+
+<h3>Monetary Policy Framework</h3>
+<ul>
+<li>MPC (Monetary Policy Committee): 6 members — 3 RBI + 3 external.</li>
+<li>Inflation targeting: 4% (±2% tolerance band).</li>
+<li>Meeting frequency: at least once in 2 months.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t4"><div class="topic-head" onclick="toggleTopic('t4')"><div class="topic-title"><span class="topic-num">4</span>Treasury Operations</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t4',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Investment Classification (Pre Sep 2024)</h3>
+<table>
+<tr><th>Category</th><th>Features</th></tr>
+<tr><td>HTM (Held to Maturity)</td><td>Intended till maturity; cost basis; no MTM</td></tr>
+<tr><td>AFS (Available for Sale)</td><td>Periodic MTM; MTM gain/loss to Investment Reserve</td></tr>
+<tr><td>HFT (Held for Trading)</td><td>Short-term trading; daily MTM to P&L</td></tr>
+</table>
+
+<h3>New Investment Categorisation (Sep 2024 RBI Directions)</h3>
+<ul>
+<li>HTM — permitted for SLR, equity in subsidiaries, etc.</li>
+<li>AFS — Available for Sale.</li>
+<li>FVTPL (Fair Value Through P&L) — replaces HFT; broader scope.</li>
+<li>Investments in subsidiaries, JVs, associates — separate category.</li>
+</ul>
+
+<h3>Investment Fluctuation Reserve (IFR)</h3>
+<ul>
+<li>Minimum 2% of HFT + AFS portfolio.</li>
+<li>Buffer against adverse price movements.</li>
+<li>Appropriated from profit.</li>
+</ul>
+
+<h3>Dealers</h3>
+<ul>
+<li>Primary Dealers (PD): 21 PDs in India; deal in G-Secs directly with RBI.</li>
+<li>Standalone PD vs Bank PD (subsidiary of bank).</li>
+</ul>
+
+<h3>Key Trading Platforms</h3>
+<ul>
+<li>CCIL (Clearing Corporation of India Ltd): Clearing + Settlement.</li>
+<li>NDS (Negotiated Dealing System): Govt securities.</li>
+<li>CROMS: Market borrowing operations.</li>
+<li>CBLO: Collateralized Borrowing & Lending Obligation.</li>
+<li>FBIL: Financial Benchmarks India Limited.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t5"><div class="topic-head" onclick="toggleTopic('t5')"><div class="topic-title"><span class="topic-num">5</span>Basel III Capital Framework</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t5',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Capital Adequacy Ratio (CAR / CRAR)</h3>
+<ul>
+<li>RBI: <span class="key">9%</span> minimum (Basel III mandates 8%).</li>
+<li>Formula: (Tier 1 + Tier 2) / RWA × 100.</li>
+<li>RWA = Risk Weighted Assets.</li>
+</ul>
+
+<h3>Capital Components</h3>
+<table>
+<tr><th>Component</th><th>RBI Requirement</th></tr>
+<tr><td>CET1 (Common Equity Tier 1)</td><td>5.5%</td></tr>
+<tr><td>Additional Tier 1 (AT1)</td><td>1.5%</td></tr>
+<tr><td>Total Tier 1</td><td>7.0%</td></tr>
+<tr><td>Tier 2 (max)</td><td>2.0%</td></tr>
+<tr><td>Total Capital (CAR)</td><td><span class="key">9.0%</span></td></tr>
+<tr><td>Capital Conservation Buffer (CCB)</td><td>2.5% above regulatory minimum</td></tr>
+<tr><td>Countercyclical Buffer</td><td>0-2.5%</td></tr>
+</table>
+
+<h3>Liquidity Standards</h3>
+<ul>
+<li><b>LCR (Liquidity Coverage Ratio):</b> 100% — HQLA ≥ 30-day net cash outflow.</li>
+<li><b>NSFR (Net Stable Funding Ratio):</b> ≥ 100% — Available Stable Funding / Required Stable Funding.</li>
+</ul>
+
+<h3>Leverage Ratio</h3>
+<ul>
+<li>≥ 3.5% for D-SIBs.</li>
+<li>≥ 4% for others.</li>
+<li>Formula: Tier 1 / Total Exposure.</li>
+</ul>
+
+<h3>D-SIBs (Domestic Systemically Important Banks)</h3>
+<ul>
+<li>SBI, HDFC, ICICI (currently).</li>
+<li>Higher capital requirements due to size/connectedness.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t6"><div class="topic-head" onclick="toggleTopic('t6')"><div class="topic-title"><span class="topic-num">6</span>Risk Management — Overview</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t6',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Types of Risk</h3>
+<ul>
+<li><b>Credit Risk:</b> Default by borrower / counterparty.</li>
+<li><b>Market Risk:</b> Interest rate, forex, equity, commodity price movements.</li>
+<li><b>Operational Risk:</b> Fraud, process failure, system failure, external events.</li>
+<li><b>Liquidity Risk:</b> Asset-liability mismatch; funding shortfall.</li>
+<li><b>Reputation Risk:</b> Loss of trust, brand damage.</li>
+<li><b>Strategic Risk:</b> Business model errors.</li>
+<li><b>Legal / Compliance Risk:</b> Violation of laws, regulations.</li>
+<li><b>Systemic Risk:</b> Risk to entire financial system.</li>
+</ul>
+
+<h3>Credit Risk Management</h3>
+<ul>
+<li>Credit Policy + credit appraisal.</li>
+<li>Rating models (internal + external).</li>
+<li>Collateral management.</li>
+<li>Diversification (sector, geography).</li>
+<li>Monitoring + EWS.</li>
+<li>Portfolio stress testing.</li>
+</ul>
+
+<h3>Market Risk Management</h3>
+<ul>
+<li>VaR (Value at Risk) — statistical measure.</li>
+<li>Stress testing.</li>
+<li>Scenario analysis.</li>
+<li>Duration + convexity analysis.</li>
+<li>Position limits.</li>
+<li>Stop-loss limits.</li>
+</ul>
+
+<h3>Operational Risk Management</h3>
+<ul>
+<li>Risk Control Self-Assessment (RCSA).</li>
+<li>Key Risk Indicators (KRIs).</li>
+<li>Internal Loss Data.</li>
+<li>Business Continuity Planning (BCP).</li>
+<li>Disaster Recovery Planning.</li>
+</ul>
+
+<h3>Measurement Models (Basel)</h3>
+<ul>
+<li><b>Credit Risk:</b> Standardised (CRAR), IRB (Foundation + Advanced).</li>
+<li><b>Market Risk:</b> Standardised, Internal Models (VaR-based).</li>
+<li><b>Operational Risk:</b> Basic Indicator, Standardised, Advanced Measurement.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t7"><div class="topic-head" onclick="toggleTopic('t7')"><div class="topic-title"><span class="topic-num">7</span>Asset Liability Management (ALM)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t7',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Objective: Manage mismatch between assets and liabilities.</li>
+<li>ALCO (Asset Liability Committee) — meets weekly/fortnightly.</li>
+</ul>
+
+<h3>Tools</h3>
+<ul>
+<li><b>Interest Rate Sensitivity Gap (IRS Gap):</b> Rate-sensitive Assets - Rate-sensitive Liabilities.</li>
+<li><b>Duration Gap:</b> Weighted avg time to cash flow.</li>
+<li><b>Dynamic Liquidity Statement.</b></li>
+<li><b>Structural Liquidity Statement.</b></li>
+<li><b>Interest Rate Sensitivity Report.</b></li>
+</ul>
+
+<h3>Tolerance Limits</h3>
+<ul>
+<li>Up to 14 days: Cumulative mismatch ≤ 5% of outflows.</li>
+<li>14-28 days: ≤ 10%.</li>
+<li>Monitored by ALCO.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t8"><div class="topic-head" onclick="toggleTopic('t8')"><div class="topic-title"><span class="topic-num">8</span>Fraud Risk Management</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t8',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Fraud Categories (Classification)</h3>
+<ul>
+<li>Misappropriation + criminal breach of trust.</li>
+<li>Fraudulent encashment through forged instruments.</li>
+<li>Manipulation of books.</li>
+<li>Cheating / Forgery.</li>
+<li>Irregularities in advances (false documents, diversion).</li>
+<li>Cash shortages.</li>
+<li>Fraudulent remittances.</li>
+<li>Cyber frauds.</li>
+</ul>
+
+<h3>Reporting to RBI</h3>
+<ul>
+<li><b>FMR-1:</b> ≥ ₹1 Cr — within 21 days of detection.</li>
+<li><b>FMR-2:</b> Quarterly progress.</li>
+<li><b>FMR-3:</b> Annual review.</li>
+<li>CFR (Central Fraud Registry) — RBI's central database.</li>
+</ul>
+
+<h3>EWS (Early Warning Signals) Framework</h3>
+<ul>
+<li>45+ indicators of stress / fraud.</li>
+<li>For accounts > ₹25 Cr typically.</li>
+<li>Red Flagged Accounts (RFA) classification.</li>
+<li>6 months investigation → fraud / genuine stress.</li>
+</ul>
+
+<h3>Fraud Prevention</h3>
+<ul>
+<li>KYC / AML strict enforcement.</li>
+<li>Segregation of duties (maker-checker).</li>
+<li>Access controls.</li>
+<li>Periodic rotation.</li>
+<li>Whistleblower policy.</li>
+<li>Training + awareness.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t9"><div class="topic-head" onclick="toggleTopic('t9')"><div class="topic-title"><span class="topic-num">9</span>ICON Rating (IOB)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t9',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>ICON = IOB Credit Rating Model (internal).</li>
+<li>Ratings: ICON 1 (lowest risk) to ICON 10 (highest risk).</li>
+<li>Parameters:
+<ul>
+<li>Financial: ratios, performance.</li>
+<li>Management: experience, integrity.</li>
+<li>Industry: dynamics, cycle.</li>
+<li>Operational: capacity, utilization.</li>
+</ul></li>
+<li>Used for:
+<ul>
+<li>Pricing (interest rate spread based on rating).</li>
+<li>Sanction authority delegation.</li>
+<li>Provisioning (migration-based).</li>
+<li>Portfolio monitoring.</li>
+</ul></li>
+<li>Rating migration tracked quarterly.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t10"><div class="topic-head" onclick="toggleTopic('t10')"><div class="topic-title"><span class="topic-num">10</span>Climate Risk</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t10',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>RBI Framework 2024-onwards.</li>
+<li>Climate Risk Questionnaire for credit proposals ≥ <span class="key">₹100 Cr</span>.</li>
+<li>Assesses:
+<ul>
+<li>Physical risk (floods, droughts, cyclones impact on borrower).</li>
+<li>Transition risk (carbon regulation, shift away from fossil).</li>
+<li>Reputation risk.</li>
+<li>Environmental impact.</li>
+</ul></li>
+<li>Green Finance — separate framework.</li>
+<li>Reporting to Board + RBI.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t11"><div class="topic-head" onclick="toggleTopic('t11')"><div class="topic-title"><span class="topic-num">11</span>Treasury Bills + Govt Securities</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t11',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>T-Bills</h3>
+<ul>
+<li>91-day, 182-day, 364-day.</li>
+<li>Min: ₹25,000.</li>
+<li>Zero coupon; issued at discount.</li>
+</ul>
+
+<h3>G-Secs</h3>
+<ul>
+<li>Dated Securities — 5 to 30 years.</li>
+<li>Coupon-bearing semi-annually.</li>
+<li>Issued by RBI via auction (On behalf of GoI).</li>
+<li>Primary market: Weekly auctions.</li>
+<li>Secondary market: NDS-OM.</li>
+</ul>
+
+<h3>SDLs (State Development Loans)</h3>
+<ul>
+<li>Issued by state governments.</li>
+<li>Semi-annual coupon.</li>
+<li>Riskier than Central G-Sec (though AAA by rating).</li>
+</ul>
+
+<h3>Bond Terminology</h3>
+<ul>
+<li>Coupon = Interest rate.</li>
+<li>YTM (Yield to Maturity): Return till maturity.</li>
+<li>Duration: Price sensitivity to interest rate change.</li>
+<li>Modified Duration: Duration / (1 + YTM).</li>
+<li>Convexity: 2nd-order price sensitivity.</li>
+<li>Credit Spread: Corporate bond yield - G-Sec yield.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t12"><div class="topic-head" onclick="toggleTopic('t12')"><div class="topic-title"><span class="topic-num">12</span>Policy on Fraud Risk Management</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t12',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>RBI Directions on Frauds (July 2024 revised).</li>
+<li>Covers detection, reporting, investigation, action.</li>
+</ul>
+
+<h3>Timelines</h3>
+<ul>
+<li>Fraud detection → Classification: Within 7 days.</li>
+<li>FMR-1 submission: Within 21 days.</li>
+<li>Internal action: Within 90 days.</li>
+<li>CRILC reporting: Daily.</li>
+</ul>
+
+<h3>Action Points</h3>
+<ul>
+<li>FIR with police.</li>
+<li>CBI referral (for large frauds > ₹25 Cr).</li>
+<li>Internal disciplinary action.</li>
+<li>Staff accountability examination.</li>
+<li>Recovery from fraudster.</li>
+</ul>
+
+<h3>Prevention Framework</h3>
+<ul>
+<li>Fraud Risk Management Committee (FRMC) at board level.</li>
+<li>Fraud Monitoring Officer at Central Office.</li>
+<li>Whistleblower protection.</li>
+<li>Vigilance Department oversight.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t13"><div class="topic-head" onclick="toggleTopic('t13')"><div class="topic-title"><span class="topic-num">13</span>Interest Rate Policy 2026 (IOB)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t13',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Reviewed annually; approved by Board.</li>
+<li>Governs:
+<ul>
+<li>Deposit rates (SB, TD, specialised).</li>
+<li>Lending rates (RLLR, MCLR-linked, specific schemes).</li>
+<li>Non-funded (BG, LC) charges.</li>
+</ul></li>
+<li>Rate changes communicated to branches with effect date.</li>
+<li>Must be transparent + non-discriminatory.</li>
+<li>Reset: minimum every 3 months.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t14"><div class="topic-head" onclick="toggleTopic('t14')"><div class="topic-title"><span class="topic-num">14</span>Monetary Policy Transmission</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t14',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>RBI's challenge: Transmission of policy rate changes to lending/deposit rates.</li>
+<li>Repo cut → RLLR cut → Lower EMI → Growth stimulus.</li>
+<li>Repo hike → RLLR hike → Higher borrowing cost → Inflation control.</li>
+</ul>
+
+<h3>Why RLLR?</h3>
+<ul>
+<li>MCLR-based loans had slow transmission.</li>
+<li>External benchmark forces immediate pass-through.</li>
+<li>Still: Spread can change (not transparent).</li>
+</ul>
+
+<h3>Timelines</h3>
+<ul>
+<li>Benchmark change → EMI reset within 3 months.</li>
+<li>Reset must be as per loan agreement.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t15"><div class="topic-head" onclick="toggleTopic('t15')"><div class="topic-title"><span class="topic-num">15</span>Capital Adequacy — Risk Weights</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t15',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Standardised Approach Risk Weights</h3>
+<table>
+<tr><th>Asset Class</th><th>Risk Weight</th></tr>
+<tr><td>Govt Securities / G-Sec</td><td>0%</td></tr>
+<tr><td>Cash + Balance with RBI</td><td>0%</td></tr>
+<tr><td>Housing Loan (LTV ≤ 80%)</td><td>35% (up to ₹30L); 50% (above)</td></tr>
+<tr><td>Housing Loan (LTV > 80%)</td><td>50% / 75%</td></tr>
+<tr><td>CRE</td><td>100%</td></tr>
+<tr><td>CRE-RH</td><td>75%</td></tr>
+<tr><td>Retail (Credit Card, Personal)</td><td>75-150%</td></tr>
+<tr><td>Corporate (AAA)</td><td>20%</td></tr>
+<tr><td>Corporate (AA)</td><td>30%</td></tr>
+<tr><td>Corporate (A)</td><td>50%</td></tr>
+<tr><td>Corporate (BBB)</td><td>100%</td></tr>
+<tr><td>Corporate (Below BBB)</td><td>150%</td></tr>
+<tr><td>Unrated Corporate</td><td>150% (above ₹200 Cr)</td></tr>
+<tr><td>NPAs</td><td>150%</td></tr>
+</table>
+
+<h3>Credit Risk Mitigation (CRM)</h3>
+<ul>
+<li>Eligible collaterals reduce RWA.</li>
+<li>Cash, Govt sec, LC confirmed by banks, LIC policy surrender value.</li>
+<li>Guarantees from banks, Govt.</li>
+<li>Haircuts applied.</li>
+</ul>
+</div></div>
+
+</div>
+
+<div id="flash" class="view"><div class="alert alert-info"><b>💡 Tap to flip.</b></div><div class="flashcard-deck" id="flashDeck"></div></div>
+<div id="compare" class="view"><div class="alert alert-info"><b>⚖️ Compare.</b></div><div id="compareList"></div></div>
+<div id="numbers" class="view"><div class="alert alert-warn"><b>🔢 Memorize.</b></div><input class="search-box" placeholder="🔍 Search..." oninput="filterNums(this.value)"><div id="numList"></div></div>
+<div id="mcq" class="view">
+<div id="quizIntro">
+<div class="quiz-intro"><h2>📝 Module H Quiz</h2><p>45 questions • Treasury & Risk drill</p><button class="quiz-btn" onclick="startQuiz()">▶️ Start</button></div>
+<div class="quiz-stats"><div class="quiz-stat"><div class="v" id="stAtt">0</div><div class="l">Attempted</div></div><div class="quiz-stat"><div class="v" id="stCor">0</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v" id="stAcc">0%</div><div class="l">Accuracy</div></div></div>
+<div class="action-row"><button class="btn btn-sec" onclick="reviewWeak()" style="flex:1">🎯 Review Weak</button></div>
+</div>
+<div id="quizArea" style="display:none"></div>
+</div>
+<div id="cases" class="view"><div class="alert alert-info"><b>📋 Scenarios.</b></div><div id="caseList"></div></div>
+</div>
+<button class="float-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const MOD_KEY='iob_mod_H_v1';
+let state=JSON.parse(localStorage.getItem(MOD_KEY)||'{}');
+if(!state.topics)state.topics={};if(!state.quiz)state.quiz={attempted:0,correct:0,perQuestion:{}};if(!state.weak)state.weak=[];if(!state.theme)state.theme='light';
+function save(){localStorage.setItem(MOD_KEY,JSON.stringify(state))}
+function toggleTheme(){state.theme=state.theme==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',state.theme);document.querySelector('.theme-btn').textContent=state.theme==='dark'?'☀️':'🌙';save()}
+function showTab(id,el){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.tab-chip').forEach(c=>c.classList.remove('active'));document.getElementById(id).classList.add('active');el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+function toggleTopic(id){document.getElementById(id).classList.toggle('open')}
+function toggleDone(id,el){state.topics[id]=!state.topics[id];if(state.topics[id])el.classList.add('done');else el.classList.remove('done');save();updateProgressBar()}
+function updateProgressBar(){const done=Object.keys(state.topics).filter(k=>state.topics[k]).length;document.getElementById('pbar').style.width=Math.round(done/15*100)+'%'}
+function filterTopics(q){q=q.toLowerCase();document.querySelectorAll('.topic').forEach(t=>{const text=t.innerText.toLowerCase();t.style.display=(!q||text.includes(q))?'':'none';if(q&&text.includes(q))t.classList.add('open')})}
+
+const FLASHCARDS=[
+{q:"CD (Certificate of Deposit) — min amount?",a:"₹5 lakh (multiples of ₹5 lakh)"},
+{q:"CD — tenure range (banks)?",a:"7 days to 1 year (AIFIs: 1 to 3 years)"},
+{q:"CP (Commercial Paper) — minimum rating?",a:"A2/A3 (short-term credit rating)"},
+{q:"CP — net worth requirement of issuer?",a:"≥ ₹4 Crore"},
+{q:"T-Bill tenors?",a:"91-day, 182-day, 364-day"},
+{q:"T-Bill minimum investment?",a:"₹25,000"},
+{q:"MCLR — introduced in?",a:"1 April 2016 (replaced Base Rate)"},
+{q:"MCLR tenors?",a:"Overnight, 1 month, 3 months, 6 months, 1 year"},
+{q:"EBLR / RLLR — mandatory from?",a:"1 October 2019 for retail and MSE floating rate loans"},
+{q:"Permitted external benchmarks for RLLR?",a:"Repo Rate, 3-m/6-m T-Bill yield, any FBIL benchmark"},
+{q:"Current CRR %?",a:"4.00% of NDTL (verify latest)"},
+{q:"Current SLR %?",a:"18.00% of NDTL"},
+{q:"CRR section / Act?",a:"Sec 42(1) RBI Act 1934"},
+{q:"SLR section / Act?",a:"Sec 24 BR Act 1949"},
+{q:"Current Repo Rate (indicative)?",a:"5.50% (verify latest from RBI)"},
+{q:"SDF — what replaced?",a:"Standing Deposit Facility replaced Reverse Repo as liquidity-absorbing tool"},
+{q:"MSF rate vs Repo?",a:"Repo + 25 bps (emergency liquidity)"},
+{q:"MPC composition?",a:"6 members: 3 RBI + 3 external"},
+{q:"MPC inflation target?",a:"4% with ±2% tolerance band"},
+{q:"Investment categories (post Sep 2024 RBI)?",a:"HTM, AFS, FVTPL (Fair Value Through P&L — replaces HFT), Investments in subs/JV/associates"},
+{q:"Investment Fluctuation Reserve (IFR) min?",a:"2% of HFT + AFS portfolio"},
+{q:"CAR (RBI minimum)?",a:"9% of RWA (Basel III mandates 8%)"},
+{q:"CET1 minimum?",a:"5.5% of RWA"},
+{q:"Tier 1 total minimum?",a:"7.0% (CET1 5.5% + AT1 1.5%)"},
+{q:"Capital Conservation Buffer?",a:"2.5% above regulatory minimum"},
+{q:"LCR minimum?",a:"100% — HQLA ≥ 30-day net cash outflow"},
+{q:"NSFR minimum?",a:"≥ 100% — ASF / RSF"},
+{q:"Leverage Ratio for D-SIBs?",a:"≥ 3.5%; others ≥ 4%"},
+{q:"D-SIBs currently?",a:"SBI, HDFC, ICICI"},
+{q:"4 primary risk types?",a:"Credit, Market, Operational, Liquidity"},
+{q:"VaR — stands for?",a:"Value at Risk (statistical measure of market risk)"},
+{q:"Operational Risk measurement models (Basel)?",a:"Basic Indicator, Standardised, Advanced Measurement"},
+{q:"FMR-1 fraud reporting — timeline?",a:"Within 21 days of detection; frauds ≥ ₹1 Cr"},
+{q:"CRILC reporting frequency for SMA?",a:"Daily for borrowers with aggregate exposure ≥ ₹5 Cr"},
+{q:"EWS — Early Warning Signals framework coverage?",a:"Accounts > ₹25 Cr typically"},
+{q:"RFA — Red Flagged Account investigation period?",a:"6 months to decide fraud vs genuine stress"},
+{q:"ICON Rating range?",a:"ICON 1 (lowest risk) to ICON 10 (highest risk)"},
+{q:"Climate Risk Questionnaire applies to credit proposals above?",a:"₹100 Crore"},
+{q:"CCIL — role?",a:"Clearing Corporation of India — Clearing + Settlement for G-Sec, Forex"},
+{q:"ALM primary objective?",a:"Manage asset-liability mismatch; interest rate + liquidity risk"},
+{q:"ALCO meeting frequency?",a:"Weekly or fortnightly"},
+{q:"Risk weight on housing loan LTV ≤ 80%, loan ≤ ₹30 lakh?",a:"35%"},
+{q:"Risk weight on CRE (standard)?",a:"100%"},
+{q:"Risk weight on NPAs (Standardised Approach)?",a:"150%"},
+{q:"Risk weight on unrated corporate > ₹200 Cr?",a:"150%"}
+];
+function renderFlashcards(){document.getElementById('flashDeck').innerHTML=FLASHCARDS.map((c,i)=>`<div class="flashcard" onclick="this.classList.toggle('flipped')"><div class="flashcard-inner"><div class="flashcard-face flashcard-front">${c.q}<div class="flashcard-hint">Tap to flip • Card ${i+1}/${FLASHCARDS.length}</div></div><div class="flashcard-face flashcard-back">${c.a}</div></div></div>`).join('')}
+
+const COMPARE=[
+{title:'CD vs CP vs T-Bill',rows:[['Issuer','SCBs + AIFIs','Companies / NBFCs','Govt (via RBI)'],['Min amount','₹5 lakh','₹5 lakh','₹25,000'],['Tenure','7d-1yr (banks); 1-3yrs (AIFIs)','7d-1yr','91/182/364 days'],['Nature','Discount','Discount','Discount'],['Rating','Not required','A2/A3 min','Sovereign']]},
+{title:'MCLR vs RLLR',rows:[['Base','Marginal cost of funds','External benchmark (Repo)'],['Reset','Monthly review','Quarterly min'],['Transmission','Slow','Fast (direct)'],['Applicability','All loans','Retail + MSE floating']]},
+{title:'CRR vs SLR',rows:[['Governed by','Sec 42(1) RBI Act 1934','Sec 24 BR Act 1949'],['Form','Cash with RBI','Cash + Gold + Approved G-Sec'],['Interest','Nil','Earns interest on G-Sec'],['Rate','4.00%','18.00%'],['Basis','Fortnightly avg','Fortnightly avg']]},
+{title:'Basel III Capital',rows:[['CET1','5.5%'],['AT1 (Additional Tier 1)','1.5%'],['Total Tier 1','7.0%'],['Tier 2 max','2.0%'],['Total CAR','9.0%'],['CCB','2.5% additional'],['Countercyclical Buffer','0-2.5%']]},
+{title:'LAF Instruments',rows:[['Repo','Banks borrow from RBI (current 5.50%)'],['SDF (Standing Deposit Facility)','Replaced Reverse Repo'],['MSF','Repo + 25 bps (emergency)'],['Bank Rate','Typically MSF rate']]},
+{title:'Investment Categories (New 2024)',rows:[['HTM','Held to Maturity — cost basis'],['AFS','Available for Sale — MTM to reserve'],['FVTPL','Fair Value Through P&L — daily MTM (replaces HFT)'],['Subs/JV/Associates','Separate category']]},
+{title:'Risk Types',rows:[['Credit Risk','Default by borrower'],['Market Risk','Price movements'],['Operational Risk','Process/system failure'],['Liquidity Risk','Funding mismatch'],['Reputation Risk','Brand damage'],['Compliance Risk','Regulatory violation']]},
+{title:'Risk Weights (Standardised)',rows:[['G-Sec, Cash with RBI','0%'],['Housing (LTV ≤ 80%, ≤ ₹30L)','35%'],['Housing (above ₹30L)','50%'],['Corporate AAA','20%'],['Corporate A','50%'],['Corporate BBB','100%'],['CRE','100%'],['NPA','150%']]}
+];
+function renderCompare(){document.getElementById('compareList').innerHTML=COMPARE.map(c=>`<div class="compare-card"><div class="compare-head" onclick="this.parentElement.classList.toggle('open')"><span>${c.title}</span><span class="arrow">▼</span></div><div class="compare-body"><table>${c.rows.map(r=>`<tr>${r.map((cell,idx)=>idx===0?`<td><b>${cell}</b></td>`:`<td>${cell}</td>`).join('')}</tr>`).join('')}</table></div></div>`).join('')}
+
+const NUMBERS=[
+{v:'4.00%',d:'CRR of NDTL',cat:'CRR/SLR'},{v:'18.00%',d:'SLR of NDTL',cat:'CRR/SLR'},
+{v:'5.50%',d:'Current Repo Rate (indicative)',cat:'LAF'},{v:'+25 bps',d:'MSF above Repo',cat:'LAF'},
+{v:'-25 bps',d:'SDF below Repo (indicative)',cat:'LAF'},
+{v:'4% ± 2%',d:'MPC inflation target with tolerance',cat:'MPC'},{v:'6',d:'MPC members (3 RBI + 3 external)',cat:'MPC'},
+{v:'₹5 lakh',d:'CD/CP minimum amount',cat:'MM'},{v:'₹25,000',d:'T-Bill minimum',cat:'MM'},
+{v:'₹4 Cr',d:'CP issuer min net worth',cat:'MM'},{v:'A2/A3',d:'CP min rating',cat:'MM'},
+{v:'91/182/364',d:'T-Bill tenors (days)',cat:'MM'},
+{v:'01-Apr-2016',d:'MCLR effective',cat:'MCLR'},{v:'01-Oct-2019',d:'RLLR mandatory',cat:'RLLR'},
+{v:'3 months',d:'RLLR reset minimum',cat:'RLLR'},
+{v:'9%',d:'CAR minimum (RBI)',cat:'Basel'},
+{v:'5.5%',d:'CET1 minimum',cat:'Basel'},{v:'1.5%',d:'AT1 minimum',cat:'Basel'},
+{v:'7.0%',d:'Total Tier 1 minimum',cat:'Basel'},{v:'2.0%',d:'Tier 2 maximum',cat:'Basel'},
+{v:'2.5%',d:'Capital Conservation Buffer',cat:'Basel'},{v:'0-2.5%',d:'Countercyclical Buffer',cat:'Basel'},
+{v:'100%',d:'LCR minimum',cat:'Basel'},{v:'100%',d:'NSFR minimum',cat:'Basel'},
+{v:'3.5%',d:'Leverage Ratio for D-SIBs',cat:'Basel'},{v:'4.0%',d:'Leverage Ratio for others',cat:'Basel'},
+{v:'2%',d:'IFR minimum of HFT+AFS',cat:'Treasury'},
+{v:'21 PDs',d:'Primary Dealers in India',cat:'Treasury'},
+{v:'₹100 Cr',d:'Climate Risk Questionnaire threshold',cat:'Risk'},
+{v:'₹25 Cr',d:'EWS tracking threshold (typical)',cat:'Risk'},
+{v:'₹5 Cr',d:'CRILC exposure threshold',cat:'Risk'},
+{v:'₹1 Cr',d:'FMR-1 fraud threshold',cat:'Fraud'},{v:'21 days',d:'FMR-1 filing from detection',cat:'Fraud'},
+{v:'6 months',d:'RFA investigation period',cat:'Fraud'},
+{v:'1-10',d:'ICON Rating range',cat:'ICON'},
+{v:'5%',d:'ALM — 14-day mismatch tolerance',cat:'ALM'},
+{v:'10%',d:'ALM — 14-28 day mismatch tolerance',cat:'ALM'}
+];
+function renderNumbers(f=''){f=f.toLowerCase();const items=NUMBERS.filter(n=>!f||n.v.toLowerCase().includes(f)||n.d.toLowerCase().includes(f)||n.cat.toLowerCase().includes(f));document.getElementById('numList').innerHTML=items.map(n=>`<div class="num-card"><div class="num-badge">${n.v}</div><div class="num-desc"><div class="num-cat">${n.cat}</div>${n.d}</div></div>`).join('')||'<p style="text-align:center;padding:30px;color:var(--muted)">No matches</p>'}
+function filterNums(v){renderNumbers(v)}
+
+const QUIZ=[
+{q:"Current CRR % (RBI)?",o:["3%","4%","4.5%","5%"],a:1,e:"CRR = 4.00% of NDTL (verify latest RBI)."},
+{q:"Current SLR %?",o:["15%","18%","20%","22%"],a:1,e:"SLR = 18.00% of NDTL."},
+{q:"CRR governed by?",o:["Sec 24 BR Act","Sec 42(1) RBI Act","Sec 35A BR Act","Sec 45JA RBI Act"],a:1,e:"Sec 42(1) RBI Act 1934."},
+{q:"SLR governed by?",o:["Sec 24 BR Act 1949","Sec 42(1) RBI Act","Sec 20 RBI Act","Sec 5(b) BR Act"],a:0,e:"Sec 24 BR Act 1949."},
+{q:"MSF rate vs Repo?",o:["Same as Repo","Repo + 25 bps","Repo + 50 bps","Repo - 25 bps"],a:1,e:"MSF = Repo + 25 bps for emergency liquidity."},
+{q:"MPC composition?",o:["3 members","5 members","6 members","9 members"],a:2,e:"6 members: 3 RBI (incl. Governor as chair) + 3 external."},
+{q:"MPC inflation target with tolerance?",o:["2% ± 1%","4% ± 2%","5% ± 2%","6% ± 1%"],a:1,e:"4% with ±2% tolerance band."},
+{q:"Certificate of Deposit minimum amount?",o:["₹1 lakh","₹5 lakh","₹10 lakh","₹25 lakh"],a:1,e:"₹5 lakh and in multiples of ₹5 lakh."},
+{q:"CD tenure for banks?",o:["3-7 days","7 days to 1 year","1-3 years","1-10 years"],a:1,e:"Banks: 7 days to 1 year. AIFIs: 1-3 years."},
+{q:"Commercial Paper minimum rating?",o:["AAA","A1","A2/A3","B1"],a:2,e:"Minimum A2/A3 short-term credit rating."},
+{q:"CP issuer minimum net worth?",o:["₹1 Cr","₹2 Cr","₹4 Cr","₹10 Cr"],a:2,e:"Net worth ≥ ₹4 Crore."},
+{q:"T-Bill minimum investment?",o:["₹10,000","₹25,000","₹50,000","₹1 lakh"],a:1,e:"₹25,000 and in multiples of ₹25,000."},
+{q:"T-Bill tenors?",o:["3/6/12 months","91/182/364 days","1/3/5 years","30/60/90 days"],a:1,e:"91-day, 182-day, 364-day T-Bills."},
+{q:"MCLR effective from?",o:["Apr 2014","Apr 2015","Apr 2016","Oct 2016"],a:2,e:"1 April 2016 (replaced Base Rate)."},
+{q:"EBLR / RLLR mandatory from?",o:["Jan 2019","Oct 2019","Apr 2020","Jul 2020"],a:1,e:"1 October 2019 for all floating rate retail and MSE loans."},
+{q:"Permitted external benchmarks for RLLR?",o:["Only Repo","Repo or T-Bill yields","Any bank's choice","Only AAA bond yield"],a:1,e:"Repo Rate, 3-month or 6-month T-Bill yield (FBIL), or any other FBIL benchmark."},
+{q:"RLLR reset frequency?",o:["Monthly","Every 3 months minimum","Every 6 months","Yearly"],a:1,e:"Every 3 months minimum."},
+{q:"CAR (RBI minimum)?",o:["8%","9%","10%","12%"],a:1,e:"RBI: 9% CAR. Basel III: 8%. (Plus CCB 2.5%)."},
+{q:"CET1 minimum?",o:["4.5%","5.5%","6%","7%"],a:1,e:"CET1: 5.5%. Total Tier 1: 7% (CET1 + AT1 1.5%)."},
+{q:"Total Tier 1 minimum?",o:["5.5%","6%","7%","9%"],a:2,e:"Total Tier 1 = CET1 (5.5%) + AT1 (1.5%) = 7%."},
+{q:"Capital Conservation Buffer?",o:["1.5%","2%","2.5%","3%"],a:2,e:"2.5% above regulatory minimum."},
+{q:"LCR minimum?",o:["50%","75%","100%","125%"],a:2,e:"100% — HQLA ≥ 30-day net cash outflow in stress scenario."},
+{q:"NSFR minimum?",o:["80%","90%","100%","110%"],a:2,e:"≥ 100% — Available Stable Funding / Required Stable Funding."},
+{q:"Leverage Ratio for D-SIBs?",o:["3.0%","3.5%","4.0%","5.0%"],a:1,e:"≥ 3.5% for D-SIBs. Others: ≥ 4%."},
+{q:"D-SIBs in India?",o:["SBI only","SBI, HDFC","SBI, HDFC, ICICI","All PSBs"],a:2,e:"SBI, HDFC, ICICI are D-SIBs (Domestic Systemically Important Banks)."},
+{q:"4 primary risk types?",o:["Only Credit","Credit + Market only","Credit, Market, Operational, Liquidity","All risk types"],a:2,e:"The four primary risks: Credit, Market, Operational, Liquidity."},
+{q:"VaR — Value at Risk — for which risk?",o:["Credit","Market","Operational","Legal"],a:1,e:"VaR is a statistical measure primarily for market risk (and sometimes credit risk)."},
+{q:"Investment Fluctuation Reserve minimum?",o:["1%","2%","5%","10%"],a:1,e:"Minimum 2% of HFT + AFS portfolio."},
+{q:"Investment category NEW (post Sep 2024)?",o:["HFT","HTM","FVTPL","All of above"],a:2,e:"FVTPL (Fair Value Through P&L) replaced HFT in new RBI 2024 framework."},
+{q:"Operational Risk measurement models?",o:["Standardised only","VaR","Basic Indicator / Standardised / Advanced Measurement","Internal Models"],a:2,e:"Basel: Basic Indicator Approach, Standardised, Advanced Measurement (AMA)."},
+{q:"Climate Risk Questionnaire threshold?",o:["₹10 Cr","₹25 Cr","₹100 Cr","₹500 Cr"],a:2,e:"Credit proposals ≥ ₹100 Crore require Climate Risk Questionnaire."},
+{q:"ICON Rating range?",o:["1-5","1-7","1-10","1-15"],a:2,e:"ICON 1 (lowest risk) to ICON 10 (highest risk)."},
+{q:"FMR-1 fraud reporting threshold?",o:["₹10 lakh","₹25 lakh","₹1 Cr","₹5 Cr"],a:2,e:"≥ ₹1 Cr in FMR-1 within 21 days."},
+{q:"Risk weight on G-Sec?",o:["0%","20%","50%","100%"],a:0,e:"Govt Securities — 0% risk weight (sovereign)."},
+{q:"Risk weight on housing loan LTV ≤ 80%, ≤ ₹30 lakh?",o:["20%","35%","50%","75%"],a:1,e:"35% risk weight for low LTV, small housing loans."},
+{q:"Risk weight on CRE (standard)?",o:["50%","75%","100%","150%"],a:2,e:"100% risk weight on Commercial Real Estate (standard assets)."},
+{q:"Risk weight on NPAs?",o:["50%","75%","100%","150%"],a:3,e:"150% risk weight on NPAs under Standardised Approach."},
+{q:"Risk weight on unrated corporate (loan > ₹200 Cr)?",o:["50%","100%","150%","200%"],a:2,e:"150% for unrated corporate borrowers above ₹200 Cr."},
+{q:"Risk weight on Corporate AAA?",o:["0%","20%","50%","100%"],a:1,e:"20% risk weight on AAA-rated corporate."},
+{q:"Risk weight on Corporate BBB?",o:["50%","75%","100%","150%"],a:2,e:"100% risk weight on BBB-rated corporate."},
+{q:"ALM Committee (ALCO) meeting frequency?",o:["Daily","Weekly/Fortnightly","Monthly","Quarterly"],a:1,e:"ALCO meets weekly or fortnightly to manage ALM."},
+{q:"CCIL — role?",o:["Rating agency","Clearing + Settlement for G-Sec and Forex","Monetary policy","Regulator"],a:1,e:"Clearing Corporation of India — provides clearing and settlement for G-Sec, Forex, and derivatives."},
+{q:"Number of Primary Dealers in India?",o:["5","11","21","50"],a:2,e:"21 Primary Dealers deal in G-Secs directly with RBI."},
+{q:"Credit Risk measurement models (Basel)?",o:["VaR","Standardised + IRB (Foundation + Advanced)","Standardised only","AMA"],a:1,e:"Credit Risk: Standardised Approach + Internal Ratings Based (Foundation + Advanced) IRB."},
+{q:"EWS framework typical coverage?",o:["All accounts","Accounts > ₹1 Cr","Accounts > ₹25 Cr","Accounts > ₹100 Cr"],a:2,e:"Accounts > ₹25 Cr typically; may vary by bank policy."}
+];
+
+let quizIndex=0;let currentOrder=[];
+function startQuiz(){currentOrder=QUIZ.map((_,i)=>i).sort(()=>Math.random()-0.5);quizIndex=0;document.getElementById('quizIntro').style.display='none';document.getElementById('quizArea').style.display='block';renderQuestion()}
+function renderQuestion(){if(quizIndex>=currentOrder.length){renderResult();return}const qid=currentOrder[quizIndex];const q=QUIZ[qid];const prev=state.quiz.perQuestion[qid];document.getElementById('quizArea').innerHTML=`<div class="quiz-stats"><div class="quiz-stat"><div class="v">${quizIndex+1}/${currentOrder.length}</div><div class="l">Progress</div></div><div class="quiz-stat"><div class="v">${state.quiz.correct}</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v">${state.quiz.attempted?Math.round(state.quiz.correct/state.quiz.attempted*100):0}%</div><div class="l">Accuracy</div></div></div><div class="question-card"><div class="q-num">Question ${quizIndex+1} of ${currentOrder.length}</div><div class="q-text">${q.q}</div>${q.o.map((opt,i)=>`<div class="option" onclick="pickOption(${qid},${i},this)" id="opt-${i}">${String.fromCharCode(65+i)}) ${opt}</div>`).join('')}<div class="explanation" id="exp"><b>💡 ${q.o[q.a]}</b><br>${q.e}</div><div class="nav-btns"><button class="btn-prev" onclick="prevQuestion()">← Prev</button><button class="btn-next" onclick="nextQuestion()">Next →</button></div></div>`;if(prev!==undefined){const sel=prev;document.getElementById('opt-'+sel).classList.add(sel===q.a?'correct':'wrong');if(sel!==q.a)document.getElementById('opt-'+q.a).classList.add('correct');document.getElementById('exp').classList.add('show')}}
+function pickOption(qid,idx,el){const q=QUIZ[qid];if(state.quiz.perQuestion[qid]!==undefined)return;state.quiz.perQuestion[qid]=idx;state.quiz.attempted++;if(idx===q.a){state.quiz.correct++;el.classList.add('correct')}else{el.classList.add('wrong');document.getElementById('opt-'+q.a).classList.add('correct');if(!state.weak.includes(qid))state.weak.push(qid)}document.getElementById('exp').classList.add('show');save();updateStatBoxes()}
+function nextQuestion(){quizIndex++;renderQuestion()}
+function prevQuestion(){if(quizIndex>0)quizIndex--;renderQuestion()}
+function renderResult(){const s=state.quiz.correct,t=state.quiz.attempted,p=t?Math.round(s/t*100):0;let m='Good effort!';if(p>=80)m='🎉 Excellent!';else if(p>=60)m='👍 Solid.';else if(p>=40)m='📚 More practice.';else m='💪 Keep going.';document.getElementById('quizArea').innerHTML=`<div class="result-card"><div style="font-size:50px">${p>=60?'🏆':'📖'}</div><div class="result-score">${p}%</div><div class="result-msg">${m}</div><div class="result-row"><div class="quiz-stat"><div class="v">${s}</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v">${t-s}</div><div class="l">Wrong</div></div></div><div class="action-row"><button class="btn" onclick="resetQuiz()">🔄 Retake</button><button class="btn btn-sec" onclick="reviewWeak()">🎯 Weak</button></div></div>`}
+function resetQuiz(){state.quiz={attempted:0,correct:0,perQuestion:{}};state.weak=[];save();document.getElementById('quizArea').style.display='none';document.getElementById('quizIntro').style.display='block';updateStatBoxes()}
+function reviewWeak(){if(state.weak.length===0){alert('No weak topics yet!');return}currentOrder=[...state.weak];quizIndex=0;document.getElementById('quizIntro').style.display='none';document.getElementById('quizArea').style.display='block';state.weak.forEach(w=>{delete state.quiz.perQuestion[w]});state.quiz.attempted=Math.max(0,state.quiz.attempted-state.weak.length);state.weak=[];save();renderQuestion()}
+function updateStatBoxes(){const a=state.quiz.attempted,c=state.quiz.correct,ac=a?Math.round(c/a*100):0;if(document.getElementById('stAtt'))document.getElementById('stAtt').textContent=a;if(document.getElementById('stCor'))document.getElementById('stCor').textContent=c;if(document.getElementById('stAcc'))document.getElementById('stAcc').textContent=ac+'%'}
+
+const CASES=[
+{t:'1. CRAR Calculation',scenario:'Bank has: Tier 1 Capital = ₹500 Cr. Tier 2 = ₹100 Cr. RWA = ₹6,000 Cr. Calculate CRAR. Is it compliant?',solution:'<b>CRAR formula:</b> (Tier 1 + Tier 2) / RWA × 100<br><b>Calculation:</b> (500 + 100) / 6,000 × 100 = 10.00%<br><b>RBI minimum:</b> 9% (plus CCB 2.5% = effectively 11.5% for full compliance).<br><b>Status:</b><br>• Minimum regulatory CAR: 9% ✓ (met)<br>• With CCB 2.5% (total 11.5%): ✗ (below)<br><b>Issue:</b> Below required CAR + CCB. Bank will face restrictions on distributions (dividends, bonuses).<br><b>Action needed:</b><br>• Raise additional capital.<br>• Reduce RWA (sell off risky assets).<br>• Limit growth of risky portfolio.<br><b>Also check:</b> CET1 (should be 5.5% + 2.5% CCB = 8%).<br><b>Key learning:</b> 9% is minimum; CCB is additional buffer. Below CCB = distribution restrictions.'},
+{t:'2. Housing Loan Risk Weight',scenario:'Housing loans: Loan 1 = ₹25 lakh, LTV 75%. Loan 2 = ₹50 lakh, LTV 85%. Loan 3 = ₹80 lakh, LTV 70%. Compute RW for each.',solution:'<b>Housing Loan Risk Weights:</b><br>• Up to ₹30L, LTV ≤ 80% → 35%.<br>• Up to ₹30L, LTV > 80% → 50%.<br>• ₹30-75L, LTV ≤ 80% → 35%.<br>• ₹30-75L, LTV > 80% → 50%.<br>• > ₹75L, LTV ≤ 75% → 50%.<br>• > ₹75L, LTV > 75% → 75%.<br><br><b>Loan 1 (₹25L, LTV 75%):</b> ≤ ₹30L, LTV ≤ 80% → <b>35%</b>.<br><b>Loan 2 (₹50L, LTV 85%):</b> ₹30-75L, LTV > 80% → <b>50%</b>.<br><b>Loan 3 (₹80L, LTV 70%):</b> > ₹75L, LTV ≤ 75% → <b>50%</b>.<br><br><b>Implications:</b><br>• Lower RW = lower capital requirement = more profitable.<br>• Encourages larger-size, lower-LTV loans.<br><b>Key learning:</b> LTV + loan size determines RW. Optimize both for bank\'s capital efficiency.'},
+{t:'3. CP Issuance Eligibility',scenario:'XYZ Ltd wants to issue CP of ₹10 Cr for 90 days. Net worth = ₹5 Cr. Rating = A2+ (CRISIL short-term). Eligible?',solution:'<b>CP Eligibility Check:</b><br>• Issuer type: Company ✓<br>• Net worth ≥ ₹4 Cr: ₹5 Cr ✓<br>• Rating ≥ A2/A3: A2+ ✓<br>• Tenure 7 days to 1 year: 90 days ✓<br>• Minimum amount ₹5 lakh: ₹10 Cr ✓<br><br><b>Conclusion: ELIGIBLE.</b><br><br><b>Process:</b><br>• Appoint IPA (Issuing & Paying Agent) = Scheduled Bank.<br>• Register with CP Dematerialisation Agency.<br>• Obtain CRISIL/ICRA rating letter.<br>• Issue CP at discount; redeem at face value.<br>• IPA ensures payment at maturity.<br><br><b>Tenure specific:</b> 90 days — if actual date of maturity falls on holiday, next business day.<br><br><b>Investors:</b> Banks, Insurance Companies, Mutual Funds, Corporates.<br><b>Key learning:</b> CP is cheaper than bank loans for highly-rated corporates.'},
+{t:'4. Fraud Reporting',scenario:'Branch detects a ₹5 Cr fraud on 20-Nov-2026 (fake guarantor signature on housing loan). Procedure?',solution:'<b>Step 1 (Day 0 - 20 Nov):</b> Fraud detected.<br><b>Step 2 (Day 0-7):</b> Internal classification as fraud. Confirm with Investigating Officer.<br><b>Step 3 (Day 0-21 = by 11 Dec):</b> Submit <b>FMR-1</b> to RBI (electronic + CFR).<br><b>Step 4:</b> File <b>FIR with Police</b> immediately.<br><b>Step 5:</b> Fraud > ₹25 Cr? NO (only ₹5 Cr) → CBI referral NOT mandatory.<br><b>Step 6:</b> Internal action within 90 days:<br>• Staff accountability examination.<br>• Disciplinary action if any staff complicit.<br>• Initiate recovery from fraudster (civil + criminal).<br><b>Step 7 (Day 21):</b> CRILC daily reporting flag.<br><b>Step 8 (End of quarter):</b> Submit <b>FMR-2</b> quarterly progress.<br><b>Step 9 (End of year):</b> FMR-3 annual review.<br><b>Step 10:</b> Provisioning: 100% in 4 quarters (recent RBI norm).<br><b>Step 11:</b> Report to Fraud Risk Management Committee of Board.<br><b>Key learning:</b> 21 days for FMR-1, 90 days internal action, CBI if > ₹25 Cr.'},
+{t:'5. ALM Mismatch',scenario:'In the 1-14 day bucket, outflows are ₹500 Cr and inflows ₹200 Cr. Mismatch? Tolerance limit?',solution:'<b>Mismatch (Net Cash Outflow):</b> ₹500 Cr - ₹200 Cr = ₹300 Cr.<br><b>Expressed as % of outflows:</b> 300/500 = <b>60%</b>.<br><br><b>Tolerance limit for 1-14 day bucket:</b> ≤ 5% of outflows (cumulative).<br><b>Status:</b> <b>SEVERE BREACH</b> — 60% vs 5% permissible.<br><br><b>Action required by ALCO:</b><br>1. Immediate liquidity infusion:<br>• Call money borrowing.<br>• Repo with RBI (if G-Sec available).<br>• CBLO / tri-party repo.<br>• Short-term deposit campaign.<br>2. Review deposit retention strategies.<br>3. Reduce fresh commitments.<br>4. Report to Board.<br><br><b>Implications:</b><br>• Report to RBI.<br>• Potential supervisory action.<br>• Reputation risk.<br><br><b>LCR check:</b> Required HQLA ≥ 300 Cr × stress scenario %. Must be adequate.<br><b>Key learning:</b> ALM tolerance is tight for shortest buckets. 14-day limit = 5%. Longer buckets more relaxed (28-day = 10%).'}
+];
+function renderCases(){document.getElementById('caseList').innerHTML=CASES.map((c,i)=>`<div class="case-card"><div class="case-head" onclick="this.parentElement.classList.toggle('open')"><span>${c.t}</span><span class="arrow">▼</span></div><div class="case-body"><div class="case-scenario"><b>📍 Scenario:</b> ${c.scenario}</div><button class="reveal-btn" onclick="this.nextElementSibling.classList.add('show'); this.style.display='none'">👁️ Reveal Solution</button><div class="case-solution">${c.solution}</div></div></div>`).join('')}
+
+function init(){document.documentElement.setAttribute('data-theme',state.theme);document.querySelector('.theme-btn').textContent=state.theme==='dark'?'☀️':'🌙';Object.keys(state.topics).forEach(id=>{const el=document.querySelector(`#${id} .topic-check`);if(el&&state.topics[id])el.classList.add('done')});updateProgressBar();renderFlashcards();renderCompare();renderNumbers();renderCases();updateStatBoxes()}
+init();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(e => console.log('SW failed:', e));
+  });
+}
+</script>
+</body>
+</html>

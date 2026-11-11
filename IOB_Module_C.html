@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a2540">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IOB Prep">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Module C: Advances — IOB 2027</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#1a202c;--muted:#64748b;--primary:#0a2540;--primary-light:#1e40af;--accent:#d4a017;--success:#10b981;--warn:#f59e0b;--danger:#ef4444;--border:#e2e8f0;--highlight:#fef3c7;--important:#fee2e2;--info:#dbeafe}
+[data-theme="dark"]{--bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--muted:#94a3b8;--primary:#3b82f6;--accent:#fbbf24;--border:#334155;--highlight:#78350f;--important:#7f1d1d;--info:#1e3a8a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;font-size:14px;padding-bottom:80px}
+.header{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:14px 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.header-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.back-link{color:#fff;text-decoration:none;font-size:13px;padding:4px 8px;background:rgba(255,255,255,.15);border-radius:8px;display:inline-block}
+.header h1{font-size:16px;font-weight:700;margin-top:4px}
+.header-sub{font-size:11px;opacity:.85}
+.theme-btn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:8px 10px;border-radius:8px;font-size:15px;cursor:pointer}
+.progress-strip{height:4px;background:rgba(255,255,255,.2);margin-top:8px;border-radius:10px;overflow:hidden}
+.progress-strip-fill{height:100%;background:linear-gradient(90deg,var(--accent),#fbbf24);transition:width .5s}
+.tabs{background:var(--card);padding:8px;overflow-x:auto;white-space:nowrap;border-bottom:1px solid var(--border);position:sticky;top:85px;z-index:50;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-chip{display:inline-block;padding:8px 14px;margin:0 3px;border-radius:20px;background:var(--bg);color:var(--text);border:1px solid var(--border);font-size:12px;font-weight:600;cursor:pointer}
+.tab-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+[data-theme="dark"] .tab-chip.active{background:var(--accent);color:var(--primary)}
+.container{padding:14px;max-width:900px;margin:0 auto}
+.view{display:none}.view.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.sub-tag{display:inline-block;background:var(--danger);color:#fff;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;margin:12px 0 8px}
+.sub-tag.c2{background:var(--warn)}.sub-tag.c3{background:var(--success)}.sub-tag.c4{background:var(--primary-light)}
+.topic{background:var(--card);border-radius:12px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid var(--border);overflow:hidden}
+.topic-head{padding:12px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(90deg,var(--card),var(--bg));user-select:none}
+.topic-title{font-weight:700;font-size:13.5px;color:var(--primary);display:flex;align-items:center;gap:8px}
+[data-theme="dark"] .topic-title{color:var(--accent)}
+.topic-num{background:var(--primary);color:#fff;width:24px;height:24px;border-radius:50%;text-align:center;line-height:24px;font-size:10px;font-weight:700;flex-shrink:0}
+[data-theme="dark"] .topic-num{background:var(--accent);color:var(--primary)}
+.topic-check{width:22px;height:22px;border:2px solid var(--muted);border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}
+.topic-check.done{background:var(--success);border-color:var(--success)}
+.topic-check.done::after{content:'✓'}
+.topic-body{display:none;padding:0 14px 14px}
+.topic.open .topic-body{display:block;animation:fadeIn .3s ease}
+.topic.open .topic-arrow{transform:rotate(90deg)}
+.topic-arrow{transition:transform .3s;color:var(--muted);font-size:14px}
+h3{margin:14px 0 8px;font-size:14px;color:var(--primary);padding-bottom:4px;border-bottom:2px solid var(--accent)}
+[data-theme="dark"] h3{color:var(--accent)}
+h4{margin:12px 0 6px;font-size:13px;color:var(--primary);font-weight:700}
+[data-theme="dark"] h4{color:#93c5fd}
+p{margin:4px 0 8px}
+ul,ol{margin:4px 0 10px;padding-left:22px}
+li{margin:3px 0}
+.key{background:var(--highlight);padding:2px 6px;border-radius:4px;font-weight:700;color:#92400e;font-size:13px}
+[data-theme="dark"] .key{color:#fde68a}
+.imp{background:var(--important);padding:2px 6px;border-radius:4px;font-weight:600;color:#991b1b}
+[data-theme="dark"] .imp{color:#fecaca}
+.alert{padding:10px 12px;margin:10px 0;border-radius:8px;border-left:3px solid;font-size:13px}
+.alert-info{background:var(--info);border-color:var(--primary-light);color:var(--primary)}
+.alert-danger{background:var(--important);border-color:var(--danger);color:#991b1b}
+.alert-warn{background:var(--highlight);border-color:var(--warn);color:#92400e}
+[data-theme="dark"] .alert-info{color:#dbeafe}
+[data-theme="dark"] .alert-danger{color:#fecaca;background:#7f1d1d}
+[data-theme="dark"] .alert-warn{color:#fde68a;background:#78350f}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12.5px}
+th,td{padding:6px 8px;text-align:left;border:1px solid var(--border)}
+th{background:var(--bg);font-weight:700;color:var(--primary)}
+[data-theme="dark"] th{color:var(--accent)}
+tr:nth-child(even) td{background:var(--bg)}
+.flashcard-deck{display:flex;flex-direction:column;gap:12px}
+.flashcard{perspective:1000px;height:180px;cursor:pointer}
+.flashcard-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}
+.flashcard-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;padding:18px;display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.flashcard-front{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;font-size:15px;font-weight:600}
+.flashcard-back{background:linear-gradient(135deg,var(--accent),#d97706);color:#1a202c;font-size:13px;transform:rotateY(180deg);font-weight:500;overflow-y:auto;line-height:1.5}
+.flashcard-hint{position:absolute;bottom:8px;left:0;right:0;font-size:10px;opacity:.7;text-align:center}
+.compare-card{background:var(--card);border-radius:12px;margin-bottom:10px;border:1px solid var(--border);overflow:hidden}
+.compare-head{padding:12px 14px;background:linear-gradient(90deg,var(--primary),var(--primary-light));color:#fff;font-weight:700;font-size:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.compare-body{display:none;padding:10px;overflow-x:auto}
+.compare-card.open .compare-body{display:block;animation:fadeIn .3s ease}
+.compare-card.open .compare-head .arrow{transform:rotate(180deg)}
+.compare-head .arrow{transition:transform .3s;font-size:14px}
+.num-card{background:var(--card);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.num-badge{background:var(--accent);color:var(--primary);padding:6px 10px;border-radius:8px;font-family:monospace;font-weight:700;font-size:13px;min-width:90px;text-align:center;flex-shrink:0}
+.num-desc{font-size:13px;flex:1}
+.num-cat{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.quiz-intro{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:20px;border-radius:14px;margin-bottom:14px;text-align:center}
+.quiz-intro h2{font-size:20px;margin-bottom:8px}
+.quiz-intro p{font-size:13px;opacity:.9;margin-bottom:14px}
+.quiz-btn{padding:10px 20px;background:var(--accent);color:var(--primary);border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px;font-family:inherit}
+.quiz-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.quiz-stat{background:var(--card);padding:10px;border-radius:10px;text-align:center;border:1px solid var(--border)}
+.quiz-stat .v{font-size:20px;font-weight:700;color:var(--primary)}
+[data-theme="dark"] .quiz-stat .v{color:var(--accent)}
+.quiz-stat .l{font-size:10px;color:var(--muted);text-transform:uppercase}
+.question-card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.q-num{font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:600}
+.q-text{font-size:14px;font-weight:600;margin-bottom:12px;line-height:1.45}
+.option{padding:10px 12px;margin-bottom:6px;background:var(--bg);border-radius:8px;border:2px solid transparent;cursor:pointer;font-size:13px;transition:all .2s}
+.option:hover{background:var(--card);border-color:var(--primary)}
+.option.correct{background:#d1fae5;border-color:var(--success);color:#065f46}
+.option.wrong{background:#fee2e2;border-color:var(--danger);color:#991b1b}
+[data-theme="dark"] .option.correct{background:#065f46;color:#d1fae5}
+[data-theme="dark"] .option.wrong{background:#7f1d1d;color:#fecaca}
+.explanation{background:var(--info);padding:10px 12px;margin-top:10px;border-radius:8px;font-size:12.5px;border-left:3px solid var(--primary-light);display:none}
+.explanation.show{display:block;animation:fadeIn .3s}
+[data-theme="dark"] .explanation{background:#1e3a8a;color:#dbeafe}
+.nav-btns{display:flex;gap:8px;margin-top:14px}
+.nav-btns button{flex:1;padding:10px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit}
+.btn-prev{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.btn-next{background:var(--primary);color:#fff}
+[data-theme="dark"] .btn-next{background:var(--accent);color:var(--primary)}
+.case-card{background:var(--card);border-radius:14px;margin-bottom:14px;border:1px solid var(--border);overflow:hidden}
+.case-head{padding:12px 14px;background:linear-gradient(135deg,var(--accent),#d97706);color:#1a202c;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:700}
+.case-body{display:none;padding:14px}
+.case-card.open .case-body{display:block;animation:fadeIn .3s}
+.case-card.open .case-head .arrow{transform:rotate(180deg)}
+.case-scenario{background:var(--info);padding:10px 12px;border-radius:8px;margin-bottom:10px;font-size:13px;border-left:3px solid var(--primary-light)}
+[data-theme="dark"] .case-scenario{background:#1e3a8a;color:#dbeafe}
+.case-solution{background:var(--highlight);padding:10px 12px;border-radius:8px;font-size:13px;border-left:3px solid var(--accent);display:none}
+.case-solution.show{display:block;animation:fadeIn .3s}
+[data-theme="dark"] .case-solution{background:#78350f;color:#fde68a}
+.reveal-btn{padding:8px 14px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;margin-top:8px}
+.result-card{background:var(--card);padding:20px;border-radius:14px;text-align:center;border:1px solid var(--border)}
+.result-score{font-size:44px;font-weight:800;color:var(--primary);margin:10px 0}
+[data-theme="dark"] .result-score{color:var(--accent)}
+.result-msg{font-size:14px;color:var(--muted);margin-bottom:16px}
+.result-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.float-btn{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;width:48px;height:48px;border-radius:50%;font-size:22px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:200}
+[data-theme="dark"] .float-btn{background:var(--accent);color:var(--primary)}
+.search-box{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px;margin-bottom:10px;font-family:inherit}
+.btn{padding:10px 14px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;background:var(--primary);color:#fff;font-family:inherit}
+.btn-sec{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.sub-nav{display:flex;gap:6px;margin:10px 0;flex-wrap:wrap}
+.sub-nav a{padding:6px 10px;background:var(--card);border:1px solid var(--border);border-radius:16px;font-size:11px;text-decoration:none;color:var(--text);font-weight:600}
+.sub-nav a.c1-color{border-color:var(--danger);color:var(--danger)}
+.sub-nav a.c2-color{border-color:var(--warn);color:var(--warn)}
+.sub-nav a.c3-color{border-color:var(--success);color:var(--success)}
+.sub-nav a.c4-color{border-color:var(--primary-light);color:var(--primary-light)}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-row">
+    <div><a href="IOB_Study_Hub.html" class="back-link">← Hub</a><h1>Module C: Advances</h1><div class="header-sub">4 parts: General • MSME • Retail • Agri • 50 MCQs</div></div>
+    <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+  </div>
+  <div class="progress-strip"><div class="progress-strip-fill" id="pbar" style="width:0%"></div></div>
+</div>
+<div class="tabs">
+  <div class="tab-chip active" onclick="showTab('content',this)">📖 Content</div>
+  <div class="tab-chip" onclick="showTab('flash',this)">🎴 Flashcards</div>
+  <div class="tab-chip" onclick="showTab('compare',this)">⚖️ Compare</div>
+  <div class="tab-chip" onclick="showTab('numbers',this)">🔢 Numbers</div>
+  <div class="tab-chip" onclick="showTab('mcq',this)">❓ Quiz</div>
+  <div class="tab-chip" onclick="showTab('cases',this)">📋 Cases</div>
+</div>
+<div class="container">
+
+<div id="content" class="view active">
+<input class="search-box" placeholder="🔍 Search topics..." oninput="filterTopics(this.value)">
+<div class="sub-nav">
+<a href="#part1" class="c1-color">C-1 General</a>
+<a href="#part2" class="c2-color">C-2 MSME</a>
+<a href="#part3" class="c3-color">C-3 Retail</a>
+<a href="#part4" class="c4-color">C-4 Agri</a>
+</div>
+
+<div id="part1" class="sub-tag">PART C-1: GENERAL ADVANCES</div>
+
+<div class="topic" id="t1"><div class="topic-head" onclick="toggleTopic('t1')"><div class="topic-title"><span class="topic-num">1</span>Loan Policy Document (LPD) 2026</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t1',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>LPD is the <b>first and foremost document</b> for credit decisions.</p>
+<h3>Objectives</h3>
+<ul>
+<li>Comply with GOI + RBI guidelines.</li>
+<li>Basel norms, IRAC norms, LEF (Large Exposure Framework), PSL targets.</li>
+<li>Timely credit flow + portfolio diversification.</li>
+<li>Objective credit decisions + post-disbursement follow-up.</li>
+<li>Revive distressed assets.</li>
+</ul>
+<h3>Sanctioning Hierarchy</h3>
+<ul>
+<li>Branch Manager (individual power).</li>
+<li>LPC Head (Loan Processing Centre).</li>
+<li>Regional Credit Committee (RCC).</li>
+<li>Central Credit Committee (CCC).</li>
+<li>Management Committee (MC).</li>
+<li>Board of Directors.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t2"><div class="topic-head" onclick="toggleTopic('t2')"><div class="topic-title"><span class="topic-num">2</span>Priority Sector Lending (PSL)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t2',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>Per RBI Master Directions on PSL (updated Aug 2026).</p>
+
+<h3>Targets (as % of ANBC or CEOBE, whichever higher)</h3>
+<table>
+<tr><th>Category</th><th>Target</th></tr>
+<tr><td>Total Priority Sector</td><td><span class="key">40%</span></td></tr>
+<tr><td>Agriculture</td><td><span class="key">18%</span></td></tr>
+<tr><td>Small & Marginal Farmers</td><td>10% (from FY25)</td></tr>
+<tr><td>Micro Enterprises</td><td>7.5%</td></tr>
+<tr><td>Weaker Sections</td><td>12%</td></tr>
+<tr><td>Non-Corporate Farmers</td><td>13.78% (FY25 benchmark)</td></tr>
+</table>
+
+<h3>PSL Categories</h3>
+<ol>
+<li>Agriculture</li>
+<li>MSME</li>
+<li>Export Credit (up to ₹40 Cr / borrower)</li>
+<li>Education (up to ₹20 lakh)</li>
+<li>Housing (Metro ₹35L for ₹45L property; Non-metro ₹25L for ₹30L)</li>
+<li>Social Infrastructure (up to ₹5 Cr: schools, hospitals in Tier II-VI)</li>
+<li>Renewable Energy (₹30 Cr; individual ₹10L)</li>
+<li>Others (SHG loans, PM SVANidhi, start-ups up to ₹50 Cr)</li>
+<li>Weaker Sections (SC/ST, Small/Marginal Farmers, Artisans, etc.)</li>
+</ol>
+
+<h3>ANBC Computation</h3>
+<p>Adjusted Net Bank Credit = Bank Credit - Bills rediscounted with RBI - Interbank + RIDF outstanding + PSLC - Exemptions</p>
+
+<h3>PSLC (Priority Sector Lending Certificate)</h3>
+<ul>
+<li>4 types: General, Agriculture, SF/MF, Micro.</li>
+<li>Traded on RBI eKuber platform.</li>
+<li>Validity: till 31 March of issue year.</li>
+<li>Minimum ₹25 lakh; multiples of ₹25 lakh.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t3"><div class="topic-head" onclick="toggleTopic('t3')"><div class="topic-title"><span class="topic-num">3</span>Financial Statement Analysis</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t3',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Balance Sheet (Vertical Form per Companies Act Schedule III)</h3>
+<ul>
+<li><b>Sources of Funds:</b> Share Capital + Reserves & Surplus + Secured Loans + Unsecured Loans + Current Liabilities & Provisions.</li>
+<li><b>Application of Funds:</b> Fixed Assets - Depreciation + Investments + Current Assets + Loans & Advances + Misc Exp not written off.</li>
+</ul>
+
+<h3>Profit & Loss Account</h3>
+<ul>
+<li>Revenue from Operations + Other Income = Total Revenue.</li>
+<li>Expenses: COGS + Employee + Finance + Depreciation + Others.</li>
+<li>Total Revenue - Total Expenses = PBT.</li>
+<li>PBT - Tax = PAT.</li>
+</ul>
+
+<h3>Cash Flow Statement</h3>
+<ul>
+<li>Three activities: Operating + Investing + Financing.</li>
+<li>Indirect method: start with PAT, adjust non-cash items.</li>
+</ul>
+
+<h3>Tangible Net Worth (TNW)</h3>
+<p>TNW = Equity Capital + Reserves - Intangibles (goodwill, patents, deferred rev exp, accumulated losses, misc exp).</p>
+</div></div>
+
+<div class="topic" id="t4"><div class="topic-head" onclick="toggleTopic('t4')"><div class="topic-title"><span class="topic-num">4</span>Ratio Analysis</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t4',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Liquidity Ratios</h3>
+<table>
+<tr><th>Ratio</th><th>Formula</th><th>Ideal</th></tr>
+<tr><td>Current Ratio</td><td>CA / CL</td><td><span class="key">≥ 1.33</span></td></tr>
+<tr><td>Quick Ratio</td><td>(CA - Inventory) / CL</td><td>≥ 1</td></tr>
+<tr><td>Cash Ratio</td><td>(Cash + Marketable Sec) / CL</td><td>> 0.5</td></tr>
+</table>
+
+<h3>Solvency / Leverage Ratios</h3>
+<table>
+<tr><th>Ratio</th><th>Formula</th><th>Ideal</th></tr>
+<tr><td>Debt-Equity</td><td>Long Term Debt / TNW</td><td><span class="key">≤ 2:1</span></td></tr>
+<tr><td>TOL/TNW</td><td>Total Outside Liab / TNW</td><td><span class="key">≤ 3-4:1</span></td></tr>
+<tr><td>Interest Coverage</td><td>EBIT / Interest</td><td>> 2</td></tr>
+<tr><td>DSCR</td><td>(PAT + Dep + Int on TL) / (Int on TL + Instalment)</td><td><span class="key">≥ 1.5</span> (for TL appraisal)</td></tr>
+</table>
+
+<h3>Profitability Ratios</h3>
+<table>
+<tr><th>Ratio</th><th>Formula</th></tr>
+<tr><td>Gross Profit Margin</td><td>Gross Profit / Sales × 100</td></tr>
+<tr><td>Operating Profit Margin</td><td>Operating Profit / Sales × 100</td></tr>
+<tr><td>Net Profit Margin</td><td>PAT / Sales × 100</td></tr>
+<tr><td>Return on Capital Employed (ROCE)</td><td>EBIT / Capital Employed × 100</td></tr>
+<tr><td>Return on Equity (ROE)</td><td>PAT / Shareholders' Funds × 100</td></tr>
+</table>
+
+<h3>Activity / Turnover Ratios</h3>
+<table>
+<tr><th>Ratio</th><th>Formula</th><th>What It Shows</th></tr>
+<tr><td>Inventory Turnover</td><td>COGS / Avg Inventory</td><td>How fast inventory sells</td></tr>
+<tr><td>Debtor Turnover</td><td>Credit Sales / Avg Debtors</td><td>Collection speed</td></tr>
+<tr><td>Debtor Days (DSO)</td><td>365 / Debtor Turnover</td><td>Days to collect</td></tr>
+<tr><td>Creditor Turnover</td><td>Credit Purchases / Avg Creditors</td><td>Payment speed</td></tr>
+<tr><td>Asset Turnover</td><td>Sales / Total Assets</td><td>Efficiency of asset use</td></tr>
+</table>
+</div></div>
+
+<div class="topic" id="t5"><div class="topic-head" onclick="toggleTopic('t5')"><div class="topic-title"><span class="topic-num">5</span>Working Capital Assessment</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t5',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Methods</h3>
+
+<h4>1. Turnover Method (Nayak Committee)</h4>
+<ul>
+<li>For MSE loans up to <span class="key">₹5 Crore</span>.</li>
+<li>Working Capital Requirement = <span class="key">25% of projected annual turnover</span>.</li>
+<li>Margin from borrower: 5% of turnover.</li>
+<li>Bank finance: 20% of turnover.</li>
+<li>Simple and quick appraisal for small units.</li>
+</ul>
+
+<h4>2. MPBF (Maximum Permissible Bank Finance) — Tandon Method II</h4>
+<ul>
+<li>For loans above ₹5 Cr (not MSE).</li>
+<li><b>MPBF = 0.75 × (Current Assets - Other Current Liabilities)</b></li>
+<li>Minimum 25% margin from borrower (long-term sources).</li>
+<li>Also Method I: 0.75 × WCG (where WCG = CA - OCL). Note: Method II vs I differ in treatment of margin.</li>
+</ul>
+
+<h4>3. Cash Budget Method</h4>
+<ul>
+<li>Seasonal / project-based industries: tea, sugar, construction.</li>
+<li>Projected monthly cash inflows/outflows → peak funding need = WC requirement.</li>
+</ul>
+
+<h3>Operating Cycle (Working Capital Cycle)</h3>
+<p>RM → WIP → FG → Debtors → Cash<br>Cycle (days) = RM holding + WIP + FG + Debtor - Creditor</p>
+<div class="alert alert-info">Shorter cycle = less WC needed. Longer cycle = more WC = higher borrowing.</div>
+</div></div>
+
+<div class="topic" id="t6"><div class="topic-head" onclick="toggleTopic('t6')"><div class="topic-title"><span class="topic-num">6</span>Term Loan Appraisal</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t6',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Project Appraisal — 7 Feasibilities</h3>
+<ol>
+<li><b>Technical</b> — plant & machinery, technology.</li>
+<li><b>Managerial</b> — promoters' credentials, experience.</li>
+<li><b>Commercial</b> — market demand, competition.</li>
+<li><b>Economic</b> — SWOT, government policy.</li>
+<li><b>Financial</b> — projections, IRR, NPV.</li>
+<li><b>Environmental</b> — EIA clearance if applicable.</li>
+<li><b>Social</b> — benefit to community.</li>
+</ol>
+
+<h3>Key Financial Metrics</h3>
+<ul>
+<li><b>DSCR:</b> Min 1.5× (project-level); 1.2× (bank's comfort).</li>
+<li><b>IRR:</b> Internal Rate of Return ≥ cost of capital + risk premium.</li>
+<li><b>NPV:</b> Must be positive.</li>
+<li><b>Payback Period:</b> Ideally &lt; 7 years.</li>
+<li><b>Sensitivity Analysis:</b> Sales ↓10%, cost ↑10%; DSCR still ≥ 1.</li>
+<li><b>Break-Even Analysis:</b> BEP (% of capacity) &lt; actual capacity.</li>
+<li>Moratorium: 6-24 months typical (depends on gestation).</li>
+</ul>
+
+<h3>Repayment Schedule</h3>
+<ul>
+<li>EMI (Equated Monthly Instalment) or EQI (Quarterly).</li>
+<li>Ballooning repayments permitted for project viability.</li>
+<li>Door-to-Door tenor includes moratorium + repayment period.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t7"><div class="topic-head" onclick="toggleTopic('t7')"><div class="topic-title"><span class="topic-num">7</span>Manual of Documentation 2019</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t7',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Key Charge Types</h3>
+<ul>
+<li><b>Hypothecation:</b> Equitable charge on movables; possession with borrower. Governed by Transfer of Property Act + SARFAESI.</li>
+<li><b>Pledge:</b> Possession with bank (lender). Indian Contract Act Sec 172-181. Example: gold loan.</li>
+<li><b>Lien:</b> Right to retain possession until debt is paid. Example: securities deposit.</li>
+<li><b>Mortgage:</b> Charge on immovable property. Transfer of Property Act 1882.
+<ul>
+<li>Equitable Mortgage (EM): Deposit of title deeds. No registration. Only at notified towns.</li>
+<li>Registered Mortgage: With Sub-Registrar; higher stamp duty.</li>
+<li>English Mortgage: Absolute transfer with re-conveyance clause on repayment.</li>
+<li>Usufructuary: Possession to mortgagee, enjoys income till debt repaid.</li>
+<li>Simple Mortgage: No transfer of possession; right to sell on default.</li>
+<li>Anomalous: Combination.</li>
+</ul></li>
+<li><b>Assignment:</b> Transfer of right (LIC policy, book debts).</li>
+<li><b>Guarantee:</b> Personal guarantee — Indian Contract Act Sec 126-147.</li>
+</ul>
+
+<h3>Limitation Period (Limitation Act 1963)</h3>
+<table>
+<tr><th>Document</th><th>Period</th></tr>
+<tr><td>Promissory Note / Simple Debt</td><td><span class="key">3 years</span> from date of acknowledgment</td></tr>
+<tr><td>Hypothecation Deed</td><td>3 years</td></tr>
+<tr><td>Equitable Mortgage</td><td><span class="key">12 years</span></td></tr>
+<tr><td>Decree of Court</td><td>12 years</td></tr>
+<tr><td>Guarantee</td><td>3 years from due date</td></tr>
+</table>
+
+<h3>Revival Letter (Acknowledgment)</h3>
+<ul>
+<li>Before expiry of 3 years — obtain fresh acknowledgment of debt.</li>
+<li>Resets limitation period.</li>
+<li>Also balance confirmation letter.</li>
+</ul>
+
+<h3>Stamp Duty</h3>
+<ul>
+<li>State-specific (Schedule I of Indian Stamp Act + State Schedules).</li>
+<li>Must be adequately stamped at execution.</li>
+<li>Insufficient stamp = document inadmissible in court until impounded + penalty paid.</li>
+</ul>
+
+<h3>CERSAI Registration (30 days)</h3>
+<p>All security interests to be registered within 30 days (late with additional fee).</p>
+</div></div>
+
+<div class="topic" id="t8"><div class="topic-head" onclick="toggleTopic('t8')"><div class="topic-title"><span class="topic-num">8</span>Delegated Financial Powers</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t8',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>Powers delegated by Board for sanctioning loans/advances based on:</p>
+<ul>
+<li>Scale of officer (II to VIII).</li>
+<li>Type of loan (Secured/Unsecured).</li>
+<li>Borrower rating (ICON).</li>
+<li>Sector (Retail/MSME/Corporate/Agri).</li>
+</ul>
+
+<h3>Indicative Delegated Powers (verify latest IOB matrix)</h3>
+<table>
+<tr><th>Authority</th><th>Fund Based Limit (Indicative)</th></tr>
+<tr><td>BM Scale II</td><td>Up to ₹10 lakh (Retail), ₹25L (secured)</td></tr>
+<tr><td>BM Scale III</td><td>Up to ₹25 lakh (Retail), ₹50L (secured)</td></tr>
+<tr><td>BM Scale IV</td><td>Up to ₹1 Cr</td></tr>
+<tr><td>CM-RO / LPC Head</td><td>Up to ₹5 Cr</td></tr>
+<tr><td>Regional Credit Committee</td><td>Up to ₹25 Cr</td></tr>
+<tr><td>Central Credit Committee</td><td>Up to ₹100 Cr</td></tr>
+<tr><td>Management Committee</td><td>Beyond ₹100 Cr</td></tr>
+<tr><td>Board</td><td>Beyond ₹500 Cr or as per LPD</td></tr>
+</table>
+
+<div class="alert alert-danger">⚠️ Exam often asks: who sanctions what limit. Refer actual LPD 2026 matrix in the book for precise limits.</div>
+
+<h3>Exceptions to Delegated Powers</h3>
+<ul>
+<li>Exposure to a borrower above Large Exposure Framework (LEF).</li>
+<li>Loans to directors/relatives — Board approval only.</li>
+<li>Unsecured advances above specific limits.</li>
+<li>Restructuring — different matrix.</li>
+</ul>
+</div></div>
+
+<div id="part2" class="sub-tag c2">PART C-2: MSME</div>
+
+<div class="topic" id="t9"><div class="topic-head" onclick="toggleTopic('t9')"><div class="topic-title"><span class="topic-num">9</span>MSME Classification</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t9',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>Per MSMED Amendment 2025 (effective April 2025) — composite criterion.</p>
+
+<h3>Revised Classification</h3>
+<table>
+<tr><th>Enterprise</th><th>Investment in P&M/Equipment</th><th>Annual Turnover</th></tr>
+<tr><td><b>Micro</b></td><td><span class="key">≤ ₹2.5 Crore</span></td><td><span class="key">≤ ₹10 Crore</span></td></tr>
+<tr><td><b>Small</b></td><td>≤ ₹25 Crore</td><td>≤ ₹100 Crore</td></tr>
+<tr><td><b>Medium</b></td><td>≤ ₹125 Crore</td><td>≤ ₹500 Crore</td></tr>
+</table>
+
+<div class="alert alert-danger">⚠️ Composite — BOTH investment AND turnover must be within limits. If either exceeds → higher category.</div>
+
+<h3>Registration — Udyam</h3>
+<ul>
+<li>Online, self-declaration, Aadhaar-based.</li>
+<li>Permanent registration — no renewal.</li>
+<li>Updates based on IT returns / GST returns.</li>
+<li><b>Udyam registration mandatory</b> for all MSME benefits.</li>
+<li>No fee for registration.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t10"><div class="topic-head" onclick="toggleTopic('t10')"><div class="topic-title"><span class="topic-num">10</span>CGTMSE Scheme</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t10',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p><b>Credit Guarantee Fund Trust for Micro & Small Enterprises</b> — set up by GoI + SIDBI.</p>
+
+<h3>Coverage</h3>
+<ul>
+<li>Credit facility (fund-based + non-fund-based) up to <span class="key">₹5 Crore</span> (revised from ₹2 Cr, Jan 2023) per MSE borrower.</li>
+<li><b>Without collateral & third-party guarantee.</b></li>
+<li>Both new and existing MSEs eligible.</li>
+</ul>
+
+<h3>Guarantee Cover %</h3>
+<table>
+<tr><th>Category</th><th>Cover %</th></tr>
+<tr><td>Micro units up to ₹5 lakh</td><td><span class="key">85%</span></td></tr>
+<tr><td>Women / SC/ST / NE Region / ZED-certified / Aspirational Districts</td><td><span class="key">85%</span></td></tr>
+<tr><td>Others (Micro & Small up to ₹50 lakh)</td><td>75%</td></tr>
+<tr><td>Credit > ₹50 lakh to ₹5 Cr</td><td>75%</td></tr>
+<tr><td>MSE Retail Trade</td><td>50%</td></tr>
+</table>
+
+<h3>Annual Guarantee Fee (AGF)</h3>
+<ul>
+<li>Slab-wise:
+<ul>
+<li>Up to ₹10 lakh: 0.37% - 0.45%.</li>
+<li>₹10L - ₹50L: 0.55% - 0.75%.</li>
+<li>₹50L - ₹2 Cr: 0.85% - 1.10%.</li>
+<li>₹2 Cr - ₹5 Cr: 1.20% - 1.35%.</li>
+</ul></li>
+<li>+ Risk premium (up to 50% above standard rate).</li>
+</ul>
+
+<h3>Lock-in & Claim</h3>
+<ul>
+<li>Lock-in: 18 months from last disbursement/approval.</li>
+<li>Claim settlement: 75% in 1st instalment (on NPA + legal action); 25% balance on conclusion of recovery.</li>
+</ul>
+
+<h3>CGFMU (Credit Guarantee Fund for Micro Units)</h3>
+<ul>
+<li>For PMMY (Mudra) loans up to ₹10 lakh.</li>
+<li>Covers PSBs, Private Banks, RRBs, Co-op Banks.</li>
+<li>Guarantee: 85% for first ₹50,000; 75% for next ₹50,000 to ₹1 lakh; 50% above ₹1 lakh up to ₹10 lakh (indicative).</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t11"><div class="topic-head" onclick="toggleTopic('t11')"><div class="topic-title"><span class="topic-num">11</span>Key MSME Schemes</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t11',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+
+<h3>PMEGP — PM Employment Generation Programme</h3>
+<ul>
+<li>Nodal agency: KVIC. Max project cost: Manufacturing <span class="key">₹50 lakh</span>; Service <span class="key">₹20 lakh</span>.</li>
+<li>Age: 18+. Education: VIII pass (for Mfg > ₹10L / Service > ₹5L).</li>
+<li>Beneficiary contribution: General 10%; Special 5%.</li>
+<li>Subsidy (margin money):
+<ul>
+<li>Urban General: 15%.</li>
+<li>Rural General: 25%.</li>
+<li>Urban Special (SC/ST/W/Minorities/NE): 25%.</li>
+<li>Rural Special: 35%.</li>
+</ul></li>
+<li>Repayment: 3-7 years.</li>
+<li>2nd loan under PMEGP (upgradation): up to ₹1 Cr Mfg / ₹25L Service after 3 years with full repayment.</li>
+</ul>
+
+<h3>Stand-Up India</h3>
+<ul>
+<li>For SC/ST/Women entrepreneurs.</li>
+<li>Loan: <span class="key">₹10 lakh to ₹1 Crore</span>.</li>
+<li>Greenfield only (not upgradation).</li>
+<li>Sector: Manufacturing/Service/Trading.</li>
+<li>Margin: 15%; Repayment: 7 years (18 month moratorium).</li>
+<li>Rate: MCLR + 3% (max).</li>
+<li>Combined loan: Term loan + WC.</li>
+</ul>
+
+<h3>Mudra Loan (PMMY)</h3>
+<table>
+<tr><th>Variant</th><th>Loan Amount</th></tr>
+<tr><td><b>Shishu</b></td><td>Up to ₹50,000</td></tr>
+<tr><td><b>Kishore</b></td><td>₹50,001 to ₹5 lakh</td></tr>
+<tr><td><b>Tarun</b></td><td>₹5 lakh to ₹10 lakh</td></tr>
+<tr><td><b>Tarun Plus</b></td><td>₹10 lakh to ₹20 lakh (repeat borrowers only)</td></tr>
+</table>
+<ul>
+<li>No collateral. CGFMU covered.</li>
+<li>For non-farm income-generating activities.</li>
+</ul>
+
+<h3>PM Vishwakarma Scheme (Sep 2023)</h3>
+<ul>
+<li>For 18 traditional trades: carpenter, blacksmith, barber, mason, potter, goldsmith, etc.</li>
+<li>Loan: 1st tranche ₹1 lakh (18 months); 2nd tranche ₹2 lakh (30 months).</li>
+<li>Rate: <span class="key">5%</span>; subvention by GoI.</li>
+<li>Toolkit incentive: ₹15,000.</li>
+<li>Stipend during training: ₹500/day.</li>
+<li>No collateral; covered by CGFMU/CGTMSE.</li>
+</ul>
+
+<h3>TReDS (Trade Receivables Discounting System)</h3>
+<ul>
+<li>Electronic platform for MSME invoice financing.</li>
+<li>Three TReDS: RXIL, M1xchange, Invoicemart.</li>
+<li>Reverse auction — buyer's bank/other finance lenders bid.</li>
+<li>Instant liquidity for MSME suppliers.</li>
+</ul>
+
+<h3>Cluster Based Financing</h3>
+<ul>
+<li>For units in same geography + similar activity (e.g., Tirupur garments).</li>
+<li>Common infrastructure, bulk procurement, shared assets.</li>
+<li>Lower risk — cluster synergy.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t12"><div class="topic-head" onclick="toggleTopic('t12')"><div class="topic-title"><span class="topic-num">12</span>IOB MSME Products</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t12',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+
+<h3>IOB MSME SAHAY</h3>
+<ul>
+<li>Composite loan (WC + TL) up to ₹2 Cr.</li>
+<li>For Micro & Small manufacturing/service/trading.</li>
+<li>CGTMSE-covered.</li>
+<li>Simplified appraisal.</li>
+</ul>
+
+<h3>IOB Mahila Samriddhi</h3>
+<ul>
+<li>For women MSE (min 51% women shareholding).</li>
+<li>Loan: ₹20 lakh to ₹10 Cr (CGTMSE-covered up to ₹5 Cr post-amendment; verify latest).</li>
+<li>Prime Security: Assets created.</li>
+<li>Margin: TL 20%, WC Stocks 20%, Book Debts 25%.</li>
+<li>Repayment: TL max 84 months with moratorium up to 12 months.</li>
+<li>0.50% interest concession for women + young (18-35).</li>
+<li>Additional TL (3% of main) for annual CGTMSE fee payment first 3 years.</li>
+</ul>
+
+<h3>IOB GST Advantage</h3>
+<ul>
+<li>Loan against GST returns (reported turnover).</li>
+<li>Simplified documentation.</li>
+<li>Working capital-focused.</li>
+</ul>
+
+<h3>IOB MSME Mortgage Loan (LAP)</h3>
+<ul>
+<li>Against mortgage of commercial/residential property.</li>
+<li>LTV: 60-70% of market value.</li>
+<li>Working capital or expansion.</li>
+</ul>
+</div></div>
+
+<div id="part3" class="sub-tag c3">PART C-3: RETAIL LOANS</div>
+
+<div class="topic" id="t13"><div class="topic-head" onclick="toggleTopic('t13')"><div class="topic-title"><span class="topic-num">13</span>Housing Loan</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t13',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+
+<h3>Eligibility</h3>
+<ul>
+<li>Age: 18-60 (salaried); up to 65 (self-employed/professional).</li>
+<li>Minimum income: ₹20,000/mo (salaried); ₹1.5-3 lakh/yr (self-employed).</li>
+<li>Co-applicants: spouse, parent, earning children.</li>
+<li>CIBIL score ≥ 700 generally.</li>
+</ul>
+
+<h3>LTV (Loan-to-Value) — RBI Guidelines</h3>
+<table>
+<tr><th>Loan Amount</th><th>LTV</th><th>Risk Weight</th></tr>
+<tr><td>Up to ₹30 lakh</td><td><span class="key">90%</span></td><td>35% (LTV ≤ 80%) / 50% (LTV > 80%)</td></tr>
+<tr><td>₹30 lakh to ₹75 lakh</td><td><span class="key">80%</span></td><td>35%</td></tr>
+<tr><td>Above ₹75 lakh</td><td><span class="key">75%</span></td><td>50%</td></tr>
+</table>
+
+<h3>Features</h3>
+<ul>
+<li>Max tenure: <span class="key">30 years</span> or up to 70/75 years of age.</li>
+<li>Moratorium: up to 36 months (under-construction).</li>
+<li>Prepayment: <b>No charges on floating rate housing loans</b> (RBI).</li>
+<li>Takeover from other banks: no penalty.</li>
+<li>Top-up loan: available after 2 years of regular EMI.</li>
+</ul>
+
+<h3>Interest Rate</h3>
+<ul>
+<li>Linked to Repo (RLLR) — mandatory for retail/MSE from Oct 2019.</li>
+<li>Reset: minimum every 3 months.</li>
+</ul>
+
+<h3>Documents Required</h3>
+<ul>
+<li>KYC + income proof (salary slips 3 months, Form 16, ITR 2 years).</li>
+<li>Property documents: sale deed, approved plan, EC (13 years), tax receipts, NOC.</li>
+<li>Builder documents (if under construction): approval, commencement certificate.</li>
+</ul>
+
+<h3>Tax Benefits</h3>
+<ul>
+<li>Sec 24(b): Interest deduction up to ₹2 lakh/yr (self-occupied).</li>
+<li>Sec 80C: Principal repayment up to ₹1.5 lakh/yr.</li>
+<li>Sec 80EE: Additional ₹50,000 for first-time home buyers (loan ≤ ₹35L, property ≤ ₹50L).</li>
+<li>Sec 80EEA: Additional ₹1.5 lakh (affordable housing).</li>
+</ul>
+
+<h3>PMAY-U (Pradhan Mantri Awas Yojana — Urban)</h3>
+<table>
+<tr><th>Category</th><th>HH Income</th><th>Loan Limit</th><th>Subsidy</th><th>Max Carpet Area</th></tr>
+<tr><td>EWS</td><td>≤ ₹3 lakh</td><td>₹6 lakh</td><td>6.5% (max ₹2.67L)</td><td>30 sqm → 60 sqm</td></tr>
+<tr><td>LIG</td><td>₹3-6 lakh</td><td>₹6 lakh</td><td>6.5% (max ₹2.67L)</td><td>60 sqm</td></tr>
+<tr><td>MIG-I</td><td>₹6-12 lakh</td><td>₹9 lakh</td><td>4% (max ₹2.35L)</td><td>160 sqm</td></tr>
+<tr><td>MIG-II</td><td>₹12-18 lakh</td><td>₹12 lakh</td><td>3% (max ₹2.30L)</td><td>200 sqm</td></tr>
+</table>
+</div></div>
+
+<div class="topic" id="t14"><div class="topic-head" onclick="toggleTopic('t14')"><div class="topic-title"><span class="topic-num">14</span>Education Loan</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t14',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>Per <b>IBA Model Education Loan Scheme</b> (revised).</p>
+
+<h3>Loan Amount</h3>
+<ul>
+<li>Domestic studies: up to <span class="key">₹10 lakh</span>. No collateral up to ₹7.5 lakh (<b>CGFSEL</b> — Credit Guarantee Fund for Education Loans).</li>
+<li>Abroad studies: up to <span class="key">₹20 lakh</span> (or higher for premier institutions).</li>
+</ul>
+
+<h3>Margin</h3>
+<ul>
+<li>Up to ₹4 lakh: <b>Nil</b>.</li>
+<li>Above ₹4 lakh — Domestic: 5%; Abroad: 15%.</li>
+</ul>
+
+<h3>Repayment & Moratorium</h3>
+<ul>
+<li>Moratorium: Course period + 1 year OR 6 months after job, whichever earlier.</li>
+<li>Repayment: Up to <span class="key">15 years</span> after moratorium.</li>
+<li>No pre-payment penalty.</li>
+</ul>
+
+<h3>Interest Subsidy (CSIS — Central Scheme of Interest Subsidy)</h3>
+<ul>
+<li>Family income &lt; ₹4.5 lakh/yr.</li>
+<li>Interest subsidy during moratorium — full interest.</li>
+<li>For professional/technical courses at approved institutions.</li>
+<li>Processed via Vidya Lakshmi Portal.</li>
+</ul>
+
+<h3>Padho Pardesh</h3>
+<ul>
+<li>For minority community students pursuing abroad studies.</li>
+<li>Interest subsidy during moratorium.</li>
+</ul>
+
+<h3>Co-borrower & Security</h3>
+<ul>
+<li>Co-borrower: Parent/guardian mandatory.</li>
+<li>Up to ₹4 lakh: No collateral.</li>
+<li>₹4-7.5 lakh: No collateral (CGFSEL cover).</li>
+<li>Above ₹7.5 lakh: Third-party guarantee OR tangible collateral.</li>
+</ul>
+
+<h3>Interest Rate</h3>
+<ul>
+<li>RLLR + spread.</li>
+<li>Simple interest during moratorium.</li>
+<li>0.5% concession if interest serviced during moratorium.</li>
+</ul>
+
+<h3>IOB Scholar</h3>
+<ul>
+<li>Education loan scheme for premier institutions (IIT, IIM, AIIMS, etc.).</li>
+<li>Higher loan limits, lower rates.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t15"><div class="topic-head" onclick="toggleTopic('t15')"><div class="topic-title"><span class="topic-num">15</span>Vehicle Loan</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t15',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>New Vehicle</h3>
+<ul>
+<li>2-Wheeler: Margin 10-15%. Max tenure 5 years.</li>
+<li>4-Wheeler: Margin 10-15%. Max tenure 7 years.</li>
+<li>Commercial Vehicle: Separate scheme.</li>
+</ul>
+
+<h3>Used Vehicle</h3>
+<ul>
+<li>Vehicle age ≤ 7 years (at end of loan).</li>
+<li>Margin: 25-30%.</li>
+<li>Max tenure: 5 years or till vehicle is 10 years, whichever earlier.</li>
+</ul>
+
+<h3>Common Features</h3>
+<ul>
+<li>Hypothecation to bank (noted in RC).</li>
+<li>Comprehensive insurance mandatory.</li>
+<li>Bank's name as loss payee.</li>
+<li>CIBIL 700+.</li>
+<li>EMI/Income ratio ≤ 50%.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t16"><div class="topic-head" onclick="toggleTopic('t16')"><div class="topic-title"><span class="topic-num">16</span>Personal Loan</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t16',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Unsecured — for any legitimate personal need.</li>
+<li>Max loan: 20× net monthly salary (typical).</li>
+<li>Tenure: up to 60 months.</li>
+<li>EMI/Income ratio ≤ 50%.</li>
+<li>Rate: higher than secured loans (RLLR + 3-4%).</li>
+<li>CIBIL 700+; employer stability important.</li>
+<li>Processing fee: 1-2% of loan amount.</li>
+<li>Prepayment charges may apply.</li>
+</ul>
+
+<h3>IOB Specific Personal Loans</h3>
+<ul>
+<li><b>IOB Clean Loan:</b> For salaried in reputed organisations.</li>
+<li><b>IOB Pensioner Loan:</b> For pensioners up to 65 years.</li>
+<li><b>Loan Against FD:</b> Up to 90% of FD, lower rate.</li>
+<li><b>Loan Against LIC Policy:</b> Up to 85-90% of surrender value.</li>
+</ul>
+</div></div>
+
+<div id="part4" class="sub-tag c4">PART C-4: AGRI & GOVT SCHEMES</div>
+
+<div class="topic" id="t17"><div class="topic-head" onclick="toggleTopic('t17')"><div class="topic-title"><span class="topic-num">17</span>Kisan Credit Card (KCC)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t17',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>Single credit instrument for all agri credit needs.</p>
+
+<h3>Credit Components</h3>
+<ul>
+<li>Short-term crop loan (seasonal needs).</li>
+<li>Consumption needs.</li>
+<li>Domestic needs.</li>
+<li>Post-harvest expenses + marketing.</li>
+<li>Consumer durables (10%).</li>
+<li>Term loan for farm equipment/development.</li>
+<li>Allied activities: dairy, poultry, fisheries (new addition).</li>
+</ul>
+
+<h3>Credit Limit Calculation</h3>
+<ul>
+<li>Scale of Finance × Area + 10% post-harvest + 20% consumption + Farm maintenance.</li>
+<li>Annually increase 10% increment.</li>
+</ul>
+
+<h3>Collateral & Hypothecation</h3>
+<ul>
+<li><b>No collateral up to ₹1.60 lakh</b> (as per RBI).</li>
+<li>With tied-up marketing arrangement: no collateral up to ₹3 lakh.</li>
+<li>Hypothecation of crops + lien on insurance.</li>
+</ul>
+
+<h3>Interest Rate (Short-term)</h3>
+<ul>
+<li>Base rate: 9% (indicative, varies by bank).</li>
+<li>Interest Subvention: <span class="key">2%</span> to bank from GoI.</li>
+<li>Effective rate for farmer: 7%.</li>
+<li>Prompt Repayment Incentive: Additional <span class="key">3%</span>.</li>
+<li>Effective: <span class="key">4% for farmer on prompt repayment</span>.</li>
+<li>Subvention cap raised to <span class="key">₹5 lakh</span> KCC loans (RBI Dir 2026, up from ₹3 lakh).</li>
+</ul>
+
+<h3>Validity</h3>
+<ul>
+<li>5 years with annual review.</li>
+<li>Repayment: coincide with harvest + marketing period.</li>
+</ul>
+
+<h3>Insurance</h3>
+<ul>
+<li>PAIS (Personal Accident Insurance Scheme): ₹50,000 (death/disability).</li>
+<li>PMFBY: compulsory for loanee farmers on notified crops.</li>
+</ul>
+
+<h3>KCC Digital Lending (RBI 2026)</h3>
+<ul>
+<li>Aadhaar-based onboarding.</li>
+<li>Simplified application.</li>
+<li>Enhanced coverage: crops + allied activities + fisheries (through KCC-A).</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t18"><div class="topic-head" onclick="toggleTopic('t18')"><div class="topic-title"><span class="topic-num">18</span>PMFBY (Fasal Bima Yojana)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t18',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>Launched Feb 2016; crop insurance scheme.</p>
+
+<h3>Premium Paid by Farmer</h3>
+<table>
+<tr><th>Season/Type</th><th>Premium</th></tr>
+<tr><td>Kharif</td><td><span class="key">2%</span></td></tr>
+<tr><td>Rabi</td><td><span class="key">1.5%</span></td></tr>
+<tr><td>Horticultural / Commercial</td><td><span class="key">5%</span></td></tr>
+</table>
+<p>Balance premium: shared by Centre + State (50-50; 90-10 for NE/hilly).</p>
+
+<h3>Compulsory / Voluntary</h3>
+<ul>
+<li>Compulsory for <b>loanee farmers</b> on notified crops.</li>
+<li>Voluntary for non-loanee farmers.</li>
+<li>Voluntary scheme (opt-out) introduced 2020.</li>
+</ul>
+
+<h3>Coverage</h3>
+<ul>
+<li>All stages: Pre-sowing to Post-harvest.</li>
+<li>Risks: natural fire, lightning, storms, hailstorms, cyclones, drought, flood, pest attack, landslide.</li>
+<li>Localised calamity + Post-harvest losses covered.</li>
+</ul>
+
+<h3>Loss Assessment</h3>
+<ul>
+<li>Crop Cutting Experiments (CCE) + weather parameters.</li>
+<li>Technology-based: satellite imagery, drones (pilot).</li>
+</ul>
+
+<h3>Sum Insured</h3>
+<p>Sum Insured = Scale of Finance (based on crop + district + area).</p>
+
+<h3>Claim Settlement</h3>
+<ul>
+<li>Within 2 months of yield data submission.</li>
+<li>Through insurer; bank credits to farmer's account.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t19"><div class="topic-head" onclick="toggleTopic('t19')"><div class="topic-title"><span class="topic-num">19</span>SHG / JLG / NRLM / NULM</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t19',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+
+<h3>Self Help Group (SHG)</h3>
+<ul>
+<li>10-20 members (same socio-economic background; mostly women).</li>
+<li>Formed by NGO/BC/village head; promoted by NABARD.</li>
+<li>Savings account opened first — 6 months internal savings/lending.</li>
+<li>Bank credit linkage: 1st credit = 4× savings (mature: 10×).</li>
+<li>Peer guarantee; no physical collateral.</li>
+</ul>
+
+<h3>Joint Liability Group (JLG)</h3>
+<ul>
+<li>4-10 members (same village, similar occupation).</li>
+<li>Mutually trusted; peer guarantee only.</li>
+<li>Loan: up to ₹10 lakh per JLG; ₹1 lakh indicative per member.</li>
+<li>Grading after 6 months of group formation.</li>
+<li>Promoted by NABARD.</li>
+</ul>
+
+<h3>DAY-NRLM (Deendayal Antyodaya Yojana — National Rural Livelihoods Mission)</h3>
+<ul>
+<li>Formerly Aajeevika.</li>
+<li>Focus: rural poor women + SHGs.</li>
+<li>Interest Subvention: 7% effective (base rate reduced).</li>
+<li>Additional 3% prompt repayment incentive for women SHGs = <b>4% effective</b>.</li>
+<li>Revolving Fund: ₹20,000 after 3 months of savings.</li>
+<li>Community Investment Fund (CIF): ₹2.5 lakh per SHG.</li>
+<li>Vulnerability Reduction Fund (VRF).</li>
+</ul>
+
+<h3>DAY-NULM (Urban)</h3>
+<ul>
+<li>Urban equivalent of NRLM.</li>
+<li>SEP (Self Employment Programme) — individual loan up to ₹2 lakh (group: ₹10 lakh).</li>
+<li>Subsidy: 5% to beneficiary, 7% subvention.</li>
+<li>Slum-dwellers, urban homeless, street vendors.</li>
+<li>PM SVANidhi — for street vendors (₹10K → ₹20K → ₹50K tranches).</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t20"><div class="topic-head" onclick="toggleTopic('t20')"><div class="topic-title"><span class="topic-num">20</span>DRI / SRMS / Other Govt Schemes</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t20',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+
+<h3>DRI (Differential Rate of Interest Scheme)</h3>
+<ul>
+<li>For weaker sections — poorest of poor.</li>
+<li>Rate: <span class="key">4%</span> (flat).</li>
+<li>Loan: up to ₹15,000 + ₹5,000 (housing).</li>
+<li>Family annual income cap:
+<ul>
+<li>Rural: ₹18,000.</li>
+<li>Urban/Semi-urban: ₹24,000.</li>
+</ul></li>
+<li>Minimum 2/3rd of DRI advances to SC/ST.</li>
+<li>Branch target: 1% of previous year's advances under DRI.</li>
+</ul>
+
+<h3>SRMS (Self-Employment Scheme for Rehabilitation of Manual Scavengers)</h3>
+<ul>
+<li>One-time cash assistance: ₹40,000.</li>
+<li>Skill training with ₹3,000/mo stipend + tool kit.</li>
+<li>Capital subsidy: up to ₹3.25 lakh.</li>
+<li>For manual scavengers + dependants.</li>
+</ul>
+
+<h3>NSFDC (National SC Finance Dev Corporation)</h3>
+<ul>
+<li>For SC community (BPL + 2× DPL).</li>
+<li>Term loan, education, Mahila Samridhi, Micro Credit Finance.</li>
+<li>Loan: up to ₹30 lakh (TL).</li>
+<li>Rate: 4-8% (concessional).</li>
+</ul>
+
+<h3>Jewel Loan</h3>
+<ul>
+<li>Pledge of gold ornaments (18-22 carat preferred).</li>
+<li>Margin: minimum 25% (LTV max 75%).</li>
+<li>Valuation by empanelled appraiser.</li>
+<li>Agri Jewel Loan: eligible for interest subvention if up to ₹3 lakh.</li>
+<li>Tenure: 12 months (agri); 36 months (non-agri).</li>
+<li>Reserve Price at auction = outstanding + interest + charges.</li>
+<li>Auction after 2 notices (15 days each).</li>
+</ul>
+
+<h3>Financial Inclusion Initiatives</h3>
+<ul>
+<li>PMJDY (Pradhan Mantri Jan Dhan Yojana) — zero-balance SB with RuPay card.</li>
+<li>BSBDA framework.</li>
+<li>BC/BF network.</li>
+<li>Financial Literacy Centres (FLC).</li>
+<li>Village adoption scheme.</li>
+</ul>
+</div></div>
+
+</div>
+
+<div id="flash" class="view">
+<div class="alert alert-info"><b>💡 Tap to flip.</b></div>
+<div class="flashcard-deck" id="flashDeck"></div>
+</div>
+<div id="compare" class="view">
+<div class="alert alert-info"><b>⚖️ Tap to compare.</b></div>
+<div id="compareList"></div>
+</div>
+<div id="numbers" class="view">
+<div class="alert alert-warn"><b>🔢 Memorize.</b></div>
+<input class="search-box" placeholder="🔍 Search..." oninput="filterNums(this.value)">
+<div id="numList"></div>
+</div>
+<div id="mcq" class="view">
+<div id="quizIntro">
+<div class="quiz-intro"><h2>📝 Module C Quiz</h2><p>50 questions • Advances deep drill</p><button class="quiz-btn" onclick="startQuiz()">▶️ Start</button></div>
+<div class="quiz-stats"><div class="quiz-stat"><div class="v" id="stAtt">0</div><div class="l">Attempted</div></div><div class="quiz-stat"><div class="v" id="stCor">0</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v" id="stAcc">0%</div><div class="l">Accuracy</div></div></div>
+<div class="action-row"><button class="btn btn-sec" onclick="reviewWeak()" style="flex:1">🎯 Review Weak</button></div>
+</div>
+<div id="quizArea" style="display:none"></div>
+</div>
+<div id="cases" class="view">
+<div class="alert alert-info"><b>📋 Branch scenarios.</b></div>
+<div id="caseList"></div>
+</div>
+</div>
+
+<button class="float-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const MOD_KEY='iob_mod_C_v1';
+let state=JSON.parse(localStorage.getItem(MOD_KEY)||'{}');
+if(!state.topics)state.topics={};if(!state.quiz)state.quiz={attempted:0,correct:0,perQuestion:{}};if(!state.weak)state.weak=[];if(!state.theme)state.theme='light';
+function save(){localStorage.setItem(MOD_KEY,JSON.stringify(state))}
+function toggleTheme(){state.theme=state.theme==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',state.theme);document.querySelector('.theme-btn').textContent=state.theme==='dark'?'☀️':'🌙';save()}
+function showTab(id,el){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.tab-chip').forEach(c=>c.classList.remove('active'));document.getElementById(id).classList.add('active');el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+function toggleTopic(id){document.getElementById(id).classList.toggle('open')}
+function toggleDone(id,el){state.topics[id]=!state.topics[id];if(state.topics[id])el.classList.add('done');else el.classList.remove('done');save();updateProgressBar()}
+function updateProgressBar(){const done=Object.keys(state.topics).filter(k=>state.topics[k]).length;document.getElementById('pbar').style.width=Math.round(done/20*100)+'%'}
+function filterTopics(q){q=q.toLowerCase();document.querySelectorAll('.topic').forEach(t=>{const text=t.innerText.toLowerCase();t.style.display=(!q||text.includes(q))?'':'none';if(q&&text.includes(q))t.classList.add('open')})}
+
+const FLASHCARDS=[
+{q:"Priority Sector overall target (as % of ANBC)?",a:"40%"},
+{q:"Agriculture PSL target?",a:"18%"},
+{q:"Small & Marginal Farmers target (from FY25)?",a:"10%"},
+{q:"Micro Enterprises PSL target?",a:"7.5%"},
+{q:"Weaker Sections target?",a:"12%"},
+{q:"Current Ratio ideal benchmark?",a:"≥ 1.33 (except NFBC where 1.25 may be accepted)"},
+{q:"Quick Ratio (Acid Test) ideal?",a:"≥ 1"},
+{q:"Debt-Equity ratio typical benchmark?",a:"≤ 2:1 (industry-specific)"},
+{q:"TOL/TNW benchmark?",a:"≤ 3:1 to 4:1"},
+{q:"DSCR minimum for Term Loan appraisal?",a:"≥ 1.5 (project level)"},
+{q:"Working Capital — Turnover (Nayak) method applicability?",a:"MSE loans up to ₹5 Cr. WC = 25% of projected annual turnover; bank finance 20% (5% margin)."},
+{q:"MPBF Tandon Method II formula?",a:"MPBF = 0.75 × (Current Assets - Other Current Liabilities); min 25% margin from long-term sources"},
+{q:"Equitable Mortgage limitation period?",a:"12 years"},
+{q:"Promissory Note limitation period?",a:"3 years from acknowledgment"},
+{q:"CERSAI registration timeline?",a:"Within 30 days of creation of security interest"},
+{q:"MSME Micro — investment and turnover limits?",a:"Investment ≤ ₹2.5 Cr AND Turnover ≤ ₹10 Cr"},
+{q:"MSME Small — investment and turnover limits?",a:"Investment ≤ ₹25 Cr AND Turnover ≤ ₹100 Cr"},
+{q:"MSME Medium — investment and turnover limits?",a:"Investment ≤ ₹125 Cr AND Turnover ≤ ₹500 Cr"},
+{q:"CGTMSE coverage maximum per MSE borrower?",a:"₹5 Crore (revised from ₹2 Cr, Jan 2023)"},
+{q:"CGTMSE guarantee % for Women / SC/ST / NE Region / ZED-certified?",a:"85%"},
+{q:"CGTMSE guarantee % for others (up to ₹50 lakh)?",a:"75%"},
+{q:"CGTMSE Lock-in period?",a:"18 months from last disbursement/GC approval"},
+{q:"PMEGP — max project cost Manufacturing?",a:"₹50 lakh"},
+{q:"PMEGP — max project cost Service?",a:"₹20 lakh"},
+{q:"PMEGP Subsidy for Urban Special category?",a:"25% (General Urban: 15%)"},
+{q:"PMEGP Subsidy for Rural Special category?",a:"35% (General Rural: 25%)"},
+{q:"Stand-Up India — target beneficiaries?",a:"SC/ST/Women entrepreneurs. ₹10L-₹1Cr greenfield loans."},
+{q:"Mudra Shishu loan limit?",a:"Up to ₹50,000"},
+{q:"Mudra Kishore loan range?",a:"₹50,001 to ₹5 lakh"},
+{q:"Mudra Tarun loan range?",a:"₹5 lakh to ₹10 lakh"},
+{q:"Mudra Tarun Plus loan range?",a:"₹10 lakh to ₹20 lakh (repeat borrowers)"},
+{q:"PM Vishwakarma — number of trades covered?",a:"18 traditional trades (carpenter, blacksmith, barber, mason, etc.)"},
+{q:"PM Vishwakarma — 1st tranche loan?",a:"₹1 lakh for 18 months at 5%"},
+{q:"PM Vishwakarma — 2nd tranche loan?",a:"₹2 lakh for 30 months"},
+{q:"Housing Loan LTV for loan ≤ ₹30 lakh?",a:"90%"},
+{q:"Housing Loan LTV for ₹30-75 lakh?",a:"80%"},
+{q:"Housing Loan LTV for > ₹75 lakh?",a:"75%"},
+{q:"Housing Loan max tenure?",a:"30 years or up to age 70/75"},
+{q:"Prepayment charges on floating rate housing loan?",a:"NIL (RBI directive)"},
+{q:"Section 24(b) — housing loan interest deduction (self-occupied)?",a:"Up to ₹2 lakh per year"},
+{q:"Section 80C — principal repayment deduction?",a:"Up to ₹1.5 lakh per year"},
+{q:"PMAY-U EWS/LIG subsidy?",a:"6.5% (max ₹2.67 lakh)"},
+{q:"PMAY-U MIG-I subsidy?",a:"4% (max ₹2.35 lakh)"},
+{q:"Education Loan — domestic ceiling?",a:"₹10 lakh. No collateral up to ₹7.5 lakh (CGFSEL cover)."},
+{q:"Education Loan — abroad ceiling?",a:"₹20 lakh (higher for premier institutes)"},
+{q:"Education Loan margin — up to ₹4 lakh?",a:"Nil (zero margin)"},
+{q:"Education Loan — moratorium rule?",a:"Course period + 1 year OR 6 months after job, whichever earlier"},
+{q:"CSIS (Interest Subsidy) — family income cap?",a:"< ₹4.5 lakh/yr (full interest subsidy during moratorium)"},
+{q:"Vehicle Loan — new 4-wheeler max tenure?",a:"7 years"},
+{q:"Vehicle Loan — used vehicle age cap at loan closure?",a:"Vehicle age ≤ 10 years at loan closure"},
+{q:"KCC — no collateral limit?",a:"₹1.60 lakh (₹3 lakh with tied-up marketing)"},
+{q:"KCC — effective interest rate (with full subvention + PRI)?",a:"4%"},
+{q:"KCC — subvention cap (revised)?",a:"₹5 lakh (up from ₹3 lakh, RBI Dir 2026)"},
+{q:"KCC — validity?",a:"5 years with annual review"},
+{q:"PMFBY — Kharif premium (farmer share)?",a:"2%"},
+{q:"PMFBY — Rabi premium (farmer share)?",a:"1.5%"},
+{q:"PMFBY — Horticulture premium (farmer share)?",a:"5%"},
+{q:"SHG — members per group?",a:"10-20 members (mostly women)"},
+{q:"JLG — members per group?",a:"4-10 members (same village, similar occupation)"},
+{q:"DAY-NRLM — effective rate with subvention + PRI?",a:"4% for women SHGs on prompt repayment"},
+{q:"DRI — interest rate?",a:"4% flat"},
+{q:"DRI — loan limit?",a:"₹15,000 + ₹5,000 (housing)"},
+{q:"DRI — rural income cap?",a:"₹18,000 per annum"},
+{q:"Jewel Loan — minimum margin?",a:"25% (LTV max 75%)"},
+{q:"SRMS — one-time cash assistance?",a:"₹40,000"}
+];
+function renderFlashcards(){document.getElementById('flashDeck').innerHTML=FLASHCARDS.map((c,i)=>`<div class="flashcard" onclick="this.classList.toggle('flipped')"><div class="flashcard-inner"><div class="flashcard-face flashcard-front">${c.q}<div class="flashcard-hint">Tap to flip • Card ${i+1}/${FLASHCARDS.length}</div></div><div class="flashcard-face flashcard-back">${c.a}</div></div></div>`).join('')}
+
+const COMPARE=[
+{title:'Hypothecation vs Pledge vs Mortgage',rows:[['Governed By','SARFAESI + TPA','Contract Act Sec 172-181','Transfer of Property Act 1882'],['Possession','With borrower','With lender','With mortgagor'],['Asset','Movables (stocks, vehicles)','Movables (gold, securities)','Immovables (land, building)'],['Enforcement','Convert to pledge, then sell','Direct sale with notice','SARFAESI / Court sale']]},
+{title:'Turnover Method vs MPBF',rows:[['Applicability','MSE loans ≤ ₹5 Cr','Loans > ₹5 Cr'],['WC Calculation','25% of annual turnover','0.75 × (CA - OCL)'],['Bank Finance','20% of turnover','75% of WC gap'],['Margin','5% from borrower','25% from long-term sources'],['Complexity','Simple, quick','Detailed appraisal']]},
+{title:'MSME: Micro vs Small vs Medium',rows:[['Investment in P&M','≤ ₹2.5 Cr','≤ ₹25 Cr','≤ ₹125 Cr'],['Annual Turnover','≤ ₹10 Cr','≤ ₹100 Cr','≤ ₹500 Cr'],['Udyam','Mandatory','Mandatory','Mandatory'],['CGTMSE eligible','Yes','Yes','No (MSE only)']]},
+{title:'PMEGP: Urban vs Rural / General vs Special',rows:[['Urban General','15% subsidy','',''],['Urban Special','25% subsidy','',''],['Rural General','25% subsidy','',''],['Rural Special','35% subsidy','','']]},
+{title:'Mudra Shishu / Kishore / Tarun / Tarun Plus',rows:[['Shishu','Up to ₹50,000'],['Kishore','₹50,001 to ₹5 lakh'],['Tarun','₹5 lakh to ₹10 lakh'],['Tarun Plus','₹10 lakh to ₹20 lakh (repeat)']]},
+{title:'Housing Loan LTV Slabs',rows:[['Up to ₹30 lakh','90% LTV'],['₹30-75 lakh','80% LTV'],['Above ₹75 lakh','75% LTV']]},
+{title:'PMAY-U Categories',rows:[['EWS (HH ≤ ₹3L)','6.5% subsidy','Max ₹2.67L'],['LIG (HH ₹3-6L)','6.5% subsidy','Max ₹2.67L'],['MIG-I (HH ₹6-12L)','4% subsidy','Max ₹2.35L'],['MIG-II (HH ₹12-18L)','3% subsidy','Max ₹2.30L']]},
+{title:'SHG vs JLG',rows:[['Members','10-20','4-10'],['Composition','Same socio-economic (mostly women)','Same village, similar occupation'],['Guarantee','Peer + mutual','Peer only'],['Promoted by','NABARD/NGO','NABARD'],['Savings first','Yes, 6 months','Not mandatory']]},
+{title:'KCC Effective Rate Build-up',rows:[['Base Rate','9% (indicative)'],['- Interest Subvention','2% (to bank from GoI)'],['Effective Rate for Farmer','7%'],['- Prompt Repayment Incentive','3% additional'],['Final Effective Rate','4%']]}
+];
+function renderCompare(){document.getElementById('compareList').innerHTML=COMPARE.map(c=>`<div class="compare-card"><div class="compare-head" onclick="this.parentElement.classList.toggle('open')"><span>${c.title}</span><span class="arrow">▼</span></div><div class="compare-body"><table>${c.rows.map(r=>`<tr>${r.map((cell,idx)=>idx===0?`<td><b>${cell}</b></td>`:`<td>${cell}</td>`).join('')}</tr>`).join('')}</table></div></div>`).join('')}
+
+const NUMBERS=[
+{v:'40%',d:'Total Priority Sector target',cat:'PSL'},
+{v:'18%',d:'Agriculture PSL target',cat:'PSL'},
+{v:'10%',d:'Small & Marginal Farmers target (FY25)',cat:'PSL'},
+{v:'7.5%',d:'Micro Enterprises target',cat:'PSL'},
+{v:'12%',d:'Weaker Sections target',cat:'PSL'},
+{v:'₹20 lakh',d:'Education Loan PSL ceiling',cat:'PSL'},
+{v:'₹35L/₹25L',d:'Housing PSL (Metro/Non-metro property ₹45L/₹30L)',cat:'PSL'},
+{v:'₹40 Cr',d:'Export credit per borrower PSL',cat:'PSL'},
+{v:'₹25 lakh',d:'PSLC minimum lot size',cat:'PSL'},
+{v:'₹2.5 Cr',d:'MSME Micro — investment cap',cat:'MSME'},
+{v:'₹10 Cr',d:'MSME Micro — turnover cap',cat:'MSME'},
+{v:'₹25 Cr',d:'MSME Small — investment cap',cat:'MSME'},
+{v:'₹100 Cr',d:'MSME Small — turnover cap',cat:'MSME'},
+{v:'₹125 Cr',d:'MSME Medium — investment cap',cat:'MSME'},
+{v:'₹500 Cr',d:'MSME Medium — turnover cap',cat:'MSME'},
+{v:'₹5 Crore',d:'CGTMSE maximum coverage per MSE',cat:'CGTMSE'},
+{v:'85%',d:'CGTMSE cover — Women/SC/ST/NE/ZED',cat:'CGTMSE'},
+{v:'75%',d:'CGTMSE cover — Others ≤ ₹50L',cat:'CGTMSE'},
+{v:'18 months',d:'CGTMSE lock-in from last disbursement',cat:'CGTMSE'},
+{v:'₹50 lakh',d:'PMEGP Manufacturing max project cost',cat:'PMEGP'},
+{v:'₹20 lakh',d:'PMEGP Service max project cost',cat:'PMEGP'},
+{v:'15%/25%',d:'PMEGP Urban General/Special subsidy',cat:'PMEGP'},
+{v:'25%/35%',d:'PMEGP Rural General/Special subsidy',cat:'PMEGP'},
+{v:'10%/5%',d:'PMEGP beneficiary contribution (Gen/Special)',cat:'PMEGP'},
+{v:'₹10L to ₹1Cr',d:'Stand-Up India loan range (SC/ST/Women)',cat:'Stand-Up'},
+{v:'15%',d:'Stand-Up India margin',cat:'Stand-Up'},
+{v:'₹50,000',d:'Mudra Shishu limit',cat:'Mudra'},
+{v:'₹5 lakh',d:'Mudra Kishore upper limit',cat:'Mudra'},
+{v:'₹10 lakh',d:'Mudra Tarun upper limit',cat:'Mudra'},
+{v:'₹20 lakh',d:'Mudra Tarun Plus upper limit',cat:'Mudra'},
+{v:'₹1 lakh',d:'PM Vishwakarma 1st tranche (18 months)',cat:'Vishwakarma'},
+{v:'₹2 lakh',d:'PM Vishwakarma 2nd tranche (30 months)',cat:'Vishwakarma'},
+{v:'5%',d:'PM Vishwakarma concessional rate',cat:'Vishwakarma'},
+{v:'₹15,000',d:'PM Vishwakarma toolkit incentive',cat:'Vishwakarma'},
+{v:'₹500/day',d:'PM Vishwakarma training stipend',cat:'Vishwakarma'},
+{v:'90%',d:'Housing LTV ≤ ₹30 lakh',cat:'Housing'},
+{v:'80%',d:'Housing LTV ₹30-75 lakh',cat:'Housing'},
+{v:'75%',d:'Housing LTV > ₹75 lakh',cat:'Housing'},
+{v:'30 years',d:'Max housing loan tenure',cat:'Housing'},
+{v:'36 months',d:'Housing loan moratorium (under-construction)',cat:'Housing'},
+{v:'₹2 lakh',d:'Sec 24(b) housing interest deduction',cat:'Housing'},
+{v:'₹1.5 lakh',d:'Sec 80C housing principal deduction',cat:'Housing'},
+{v:'₹50,000',d:'Sec 80EE additional first-timer deduction',cat:'Housing'},
+{v:'₹1.5 lakh',d:'Sec 80EEA affordable housing',cat:'Housing'},
+{v:'6.5%',d:'PMAY-U EWS/LIG subsidy',cat:'PMAY'},
+{v:'₹2.67 lakh',d:'PMAY-U EWS/LIG max subsidy value',cat:'PMAY'},
+{v:'4%',d:'PMAY-U MIG-I subsidy',cat:'PMAY'},
+{v:'3%',d:'PMAY-U MIG-II subsidy',cat:'PMAY'},
+{v:'₹10 lakh',d:'Education Loan domestic ceiling',cat:'Edu'},
+{v:'₹7.5 lakh',d:'Education Loan — no collateral (CGFSEL)',cat:'Edu'},
+{v:'₹20 lakh',d:'Education Loan abroad ceiling',cat:'Edu'},
+{v:'5%/15%',d:'Edu Loan margin above ₹4L (Domestic/Abroad)',cat:'Edu'},
+{v:'15 years',d:'Education Loan max repayment',cat:'Edu'},
+{v:'₹4.5 lakh',d:'CSIS family income cap',cat:'Edu'},
+{v:'₹1.60 lakh',d:'KCC no-collateral limit',cat:'KCC'},
+{v:'₹3 lakh',d:'KCC no-collateral with tied-up marketing',cat:'KCC'},
+{v:'₹5 lakh',d:'KCC interest subvention cap (RBI 2026)',cat:'KCC'},
+{v:'2%',d:'KCC interest subvention from GoI',cat:'KCC'},
+{v:'3%',d:'KCC prompt repayment incentive',cat:'KCC'},
+{v:'4%',d:'KCC effective rate for farmer (full subvention + PRI)',cat:'KCC'},
+{v:'5 years',d:'KCC validity (annual review)',cat:'KCC'},
+{v:'2%',d:'PMFBY Kharif premium (farmer)',cat:'PMFBY'},
+{v:'1.5%',d:'PMFBY Rabi premium (farmer)',cat:'PMFBY'},
+{v:'5%',d:'PMFBY Horticulture/Commercial premium',cat:'PMFBY'},
+{v:'10-20',d:'SHG members range',cat:'SHG'},
+{v:'4-10',d:'JLG members range',cat:'JLG'},
+{v:'₹20,000',d:'NRLM revolving fund (after 3 months)',cat:'NRLM'},
+{v:'₹2.5 lakh',d:'CIF (Community Investment Fund) per SHG',cat:'NRLM'},
+{v:'4%',d:'DRI flat interest rate',cat:'DRI'},
+{v:'₹15,000',d:'DRI loan limit (+ ₹5,000 housing)',cat:'DRI'},
+{v:'₹18,000',d:'DRI rural income cap',cat:'DRI'},
+{v:'₹24,000',d:'DRI urban/semi-urban income cap',cat:'DRI'},
+{v:'₹40,000',d:'SRMS one-time cash assistance',cat:'SRMS'},
+{v:'₹3.25 lakh',d:'SRMS capital subsidy',cat:'SRMS'},
+{v:'₹30 lakh',d:'NSFDC max TL',cat:'NSFDC'},
+{v:'25%',d:'Jewel loan minimum margin (LTV 75%)',cat:'Jewel'},
+{v:'₹10,000/₹20,000/₹50,000',d:'PM SVANidhi 3 tranches for street vendors',cat:'SVANidhi'},
+{v:'12 years',d:'EM limitation period',cat:'Docs'},
+{v:'3 years',d:'PN limitation period',cat:'Docs'},
+{v:'30 days',d:'CERSAI registration',cat:'Docs'},
+{v:'1.5',d:'DSCR minimum (TL appraisal)',cat:'Ratio'},
+{v:'1.33',d:'Current Ratio ideal',cat:'Ratio'},
+{v:'2:1',d:'Debt-Equity ideal',cat:'Ratio'},
+{v:'3-4:1',d:'TOL/TNW ideal',cat:'Ratio'}
+];
+function renderNumbers(f=''){f=f.toLowerCase();const items=NUMBERS.filter(n=>!f||n.v.toLowerCase().includes(f)||n.d.toLowerCase().includes(f)||n.cat.toLowerCase().includes(f));document.getElementById('numList').innerHTML=items.map(n=>`<div class="num-card"><div class="num-badge">${n.v}</div><div class="num-desc"><div class="num-cat">${n.cat}</div>${n.d}</div></div>`).join('')||'<p style="text-align:center;padding:30px;color:var(--muted)">No matches</p>'}
+function filterNums(v){renderNumbers(v)}
+
+const QUIZ=[
+{q:"Priority Sector overall target?",o:["30%","35%","40%","50%"],a:2,e:"40% of ANBC or CEOBE, whichever higher."},
+{q:"Agriculture target under PSL?",o:["15%","18%","20%","25%"],a:1,e:"18% of ANBC is agriculture target."},
+{q:"Small & Marginal Farmers target from FY25?",o:["8%","9%","10%","12%"],a:2,e:"10% from FY25 onwards (revised from 9.5%)."},
+{q:"Micro Enterprises PSL target?",o:["5%","7.5%","10%","12%"],a:1,e:"7.5% of ANBC to micro enterprises."},
+{q:"Weaker Sections target?",o:["10%","12%","15%","20%"],a:1,e:"12% to weaker sections (includes SC/ST, SF/MF, Artisans, PWD, etc.)."},
+{q:"Education Loan PSL ceiling?",o:["₹10 lakh","₹15 lakh","₹20 lakh","₹25 lakh"],a:2,e:"Education loans up to ₹20 lakh qualify for PSL."},
+{q:"MSME Micro — investment cap (revised 2025)?",o:["₹1 Cr","₹2 Cr","₹2.5 Cr","₹5 Cr"],a:2,e:"₹2.5 Cr investment AND ₹10 Cr turnover (composite)."},
+{q:"MSME Small — turnover cap?",o:["₹50 Cr","₹75 Cr","₹100 Cr","₹250 Cr"],a:2,e:"Small: investment ≤ ₹25 Cr AND turnover ≤ ₹100 Cr."},
+{q:"MSME Medium — turnover cap?",o:["₹200 Cr","₹250 Cr","₹500 Cr","₹1,000 Cr"],a:2,e:"Medium: investment ≤ ₹125 Cr AND turnover ≤ ₹500 Cr."},
+{q:"CGTMSE maximum coverage (revised Jan 2023)?",o:["₹2 Cr","₹3 Cr","₹5 Cr","₹10 Cr"],a:2,e:"₹5 Crore per MSE borrower, revised from ₹2 Cr."},
+{q:"CGTMSE guarantee % for women / SC/ST / NE region?",o:["65%","75%","85%","95%"],a:2,e:"85% for women, SC/ST, NE Region, ZED-certified, Aspirational Districts."},
+{q:"CGTMSE lock-in period from last disbursement?",o:["6 months","12 months","18 months","24 months"],a:2,e:"18 months from last disbursement/GC approval."},
+{q:"PMEGP Manufacturing max project cost?",o:["₹25 lakh","₹35 lakh","₹50 lakh","₹1 Cr"],a:2,e:"Manufacturing: ₹50 lakh; Service: ₹20 lakh."},
+{q:"PMEGP Rural Special category subsidy?",o:["15%","25%","35%","45%"],a:2,e:"Rural Special (SC/ST/W/Minority/NE): 35%. Rural General: 25%."},
+{q:"Stand-Up India loan range?",o:["₹5L to ₹50L","₹10L to ₹1 Cr","₹25L to ₹2 Cr","₹50L to ₹5 Cr"],a:1,e:"₹10 lakh to ₹1 Crore for SC/ST/Women entrepreneurs for greenfield."},
+{q:"Mudra Shishu loan limit?",o:["₹25,000","₹50,000","₹1 lakh","₹2 lakh"],a:1,e:"Up to ₹50,000. Kishore: ₹50,001-₹5L. Tarun: ₹5L-₹10L. Tarun Plus: ₹10L-₹20L."},
+{q:"PM Vishwakarma 1st tranche loan?",o:["₹50,000","₹1 lakh","₹1.5 lakh","₹2 lakh"],a:1,e:"₹1 lakh for 18 months. 2nd tranche: ₹2 lakh for 30 months. Rate: 5%."},
+{q:"PM Vishwakarma — number of traditional trades?",o:["12","15","18","21"],a:2,e:"18 traditional trades: carpenter, blacksmith, barber, mason, potter, goldsmith, etc."},
+{q:"Housing Loan LTV for loan ≤ ₹30 lakh?",o:["75%","80%","85%","90%"],a:3,e:"90% LTV for loans up to ₹30 lakh."},
+{q:"Housing Loan LTV for ₹30-75 lakh?",o:["70%","75%","80%","85%"],a:2,e:"80% LTV for ₹30-75 lakh. Above ₹75L: 75%."},
+{q:"Prepayment charges on floating rate housing loan?",o:["1%","2%","0.5%","NIL"],a:3,e:"RBI directive: Nil prepayment charges on floating rate housing loans."},
+{q:"Section 24(b) housing loan interest deduction (self-occupied)?",o:["₹1 lakh","₹1.5 lakh","₹2 lakh","₹3 lakh"],a:2,e:"Up to ₹2 lakh/yr for self-occupied property."},
+{q:"Section 80C principal repayment max deduction?",o:["₹1 lakh","₹1.5 lakh","₹2 lakh","₹2.5 lakh"],a:1,e:"₹1.5 lakh/yr under Sec 80C (shared with other 80C investments)."},
+{q:"PMAY-U EWS subsidy rate?",o:["3%","4%","6.5%","7%"],a:2,e:"EWS & LIG: 6.5% subsidy, max benefit ₹2.67 lakh."},
+{q:"Education Loan domestic ceiling (PSL)?",o:["₹7.5 lakh","₹10 lakh","₹15 lakh","₹20 lakh"],a:1,e:"₹10 lakh domestic. CGFSEL covers up to ₹7.5 lakh (no collateral)."},
+{q:"Education Loan margin up to ₹4 lakh?",o:["5%","10%","15%","Nil"],a:3,e:"Nil margin up to ₹4 lakh. Above: 5% (domestic), 15% (abroad)."},
+{q:"CSIS income cap for interest subsidy?",o:["₹3 lakh","₹4.5 lakh","₹6 lakh","₹8 lakh"],a:1,e:"Family income < ₹4.5 lakh/yr; full interest subsidy during moratorium."},
+{q:"KCC — no collateral limit?",o:["₹1 lakh","₹1.60 lakh","₹2 lakh","₹3 lakh"],a:1,e:"₹1.60 lakh (₹3 lakh with tied-up marketing arrangement)."},
+{q:"KCC effective rate for farmer (with full subvention + prompt repayment)?",o:["3%","4%","5%","7%"],a:1,e:"Base 9% - 2% subvention - 3% PRI = 4% effective rate."},
+{q:"KCC subvention cap revised (RBI 2026)?",o:["₹3 lakh","₹5 lakh","₹7.5 lakh","₹10 lakh"],a:1,e:"Enhanced to ₹5 lakh from ₹3 lakh."},
+{q:"PMFBY Kharif premium paid by farmer?",o:["1.5%","2%","3%","5%"],a:1,e:"Kharif 2%; Rabi 1.5%; Horticultural/Commercial 5%."},
+{q:"SHG — members per group?",o:["5-10","10-20","15-25","20-30"],a:1,e:"10-20 members (mostly women; same socio-economic background)."},
+{q:"JLG — members per group?",o:["2-5","4-10","5-15","10-20"],a:1,e:"4-10 members (same village, similar occupation)."},
+{q:"DRI Rate of Interest?",o:["3%","4%","5%","7%"],a:1,e:"4% flat rate under Differential Rate of Interest scheme."},
+{q:"DRI Rural family income cap?",o:["₹12,000","₹18,000","₹24,000","₹36,000"],a:1,e:"Rural: ₹18,000/yr; Urban/Semi-urban: ₹24,000/yr."},
+{q:"Jewel Loan minimum margin?",o:["15%","20%","25%","30%"],a:2,e:"Minimum 25% margin; LTV maximum 75%."},
+{q:"CERSAI registration must be done within?",o:["7 days","15 days","30 days","60 days"],a:2,e:"Within 30 days of creation of security interest."},
+{q:"Equitable Mortgage limitation period?",o:["3 years","6 years","12 years","20 years"],a:2,e:"12 years under Limitation Act 1963."},
+{q:"Minimum DSCR for Term Loan appraisal?",o:["1.0","1.25","1.5","2.0"],a:2,e:"1.5x minimum project-level DSCR for term loan comfort."},
+{q:"Ideal Current Ratio for industrial units?",o:["0.75","1.00","1.33","2.00"],a:2,e:"1.33 is the benchmark CR (except NBFC where 1.25 may be accepted)."},
+{q:"Working Capital — Turnover (Nayak) method — applicability?",o:["All MSME","MSE up to ₹5 Cr","All Retail","All sectors"],a:1,e:"MSE loans up to ₹5 Crore. WC = 25% of projected turnover; bank finance 20%; margin 5% from borrower."},
+{q:"MPBF Method II formula (Tandon)?",o:["0.75 × CA","CA - CL","0.75 × (CA - OCL)","CA - WC Gap"],a:2,e:"MPBF = 0.75 × (Current Assets - Other Current Liabilities). Min 25% margin from long-term sources."},
+{q:"NRLM — revolving fund after 3 months of savings?",o:["₹10,000","₹15,000","₹20,000","₹25,000"],a:2,e:"₹20,000 revolving fund after 3 months of regular savings by SHG."},
+{q:"NRLM Community Investment Fund per SHG?",o:["₹1 lakh","₹2 lakh","₹2.5 lakh","₹5 lakh"],a:2,e:"₹2.5 lakh CIF per SHG."},
+{q:"SRMS — one-time cash assistance to manual scavengers?",o:["₹25,000","₹30,000","₹40,000","₹50,000"],a:2,e:"₹40,000 one-time cash assistance + skill training + capital subsidy up to ₹3.25 lakh."},
+{q:"TReDS — electronic platform for?",o:["Term loans","MSME invoice financing","Bond trading","Forex deals"],a:1,e:"Trade Receivables Discounting System — invoice financing for MSME suppliers via reverse auction."},
+{q:"MSME Mahila Samriddhi — min women shareholding?",o:["26%","33%","51%","75%"],a:2,e:"Minimum 51% women shareholding to qualify as women MSE."},
+{q:"Which committee gave the Turnover method for WC?",o:["Tandon","Chore","Nayak","Marathe"],a:2,e:"Nayak Committee (1991) — simplified WC assessment for MSE based on 25% turnover."},
+{q:"Which committee introduced MPBF method?",o:["Tandon","Chore","Nayak","Karve"],a:0,e:"Tandon Committee (1974) — MPBF Methods I, II, III."}
+];
+
+let quizIndex=0;let currentOrder=[];
+function startQuiz(){currentOrder=QUIZ.map((_,i)=>i).sort(()=>Math.random()-0.5);quizIndex=0;document.getElementById('quizIntro').style.display='none';document.getElementById('quizArea').style.display='block';renderQuestion()}
+function renderQuestion(){if(quizIndex>=currentOrder.length){renderResult();return}const qid=currentOrder[quizIndex];const q=QUIZ[qid];const prev=state.quiz.perQuestion[qid];document.getElementById('quizArea').innerHTML=`<div class="quiz-stats"><div class="quiz-stat"><div class="v">${quizIndex+1}/${currentOrder.length}</div><div class="l">Progress</div></div><div class="quiz-stat"><div class="v">${state.quiz.correct}</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v">${state.quiz.attempted?Math.round(state.quiz.correct/state.quiz.attempted*100):0}%</div><div class="l">Accuracy</div></div></div><div class="question-card"><div class="q-num">Question ${quizIndex+1} of ${currentOrder.length}</div><div class="q-text">${q.q}</div>${q.o.map((opt,i)=>`<div class="option" onclick="pickOption(${qid},${i},this)" id="opt-${i}">${String.fromCharCode(65+i)}) ${opt}</div>`).join('')}<div class="explanation" id="exp"><b>💡 ${q.o[q.a]}</b><br>${q.e}</div><div class="nav-btns"><button class="btn-prev" onclick="prevQuestion()">← Prev</button><button class="btn-next" onclick="nextQuestion()">Next →</button></div></div>`;if(prev!==undefined){const sel=prev;document.getElementById('opt-'+sel).classList.add(sel===q.a?'correct':'wrong');if(sel!==q.a)document.getElementById('opt-'+q.a).classList.add('correct');document.getElementById('exp').classList.add('show')}}
+function pickOption(qid,idx,el){const q=QUIZ[qid];if(state.quiz.perQuestion[qid]!==undefined)return;state.quiz.perQuestion[qid]=idx;state.quiz.attempted++;if(idx===q.a){state.quiz.correct++;el.classList.add('correct')}else{el.classList.add('wrong');document.getElementById('opt-'+q.a).classList.add('correct');if(!state.weak.includes(qid))state.weak.push(qid)}document.getElementById('exp').classList.add('show');save();updateStatBoxes()}
+function nextQuestion(){quizIndex++;renderQuestion()}
+function prevQuestion(){if(quizIndex>0)quizIndex--;renderQuestion()}
+function renderResult(){const s=state.quiz.correct,t=state.quiz.attempted,p=t?Math.round(s/t*100):0;let m='Good effort!';if(p>=80)m='🎉 Excellent!';else if(p>=60)m='👍 Solid.';else if(p>=40)m='📚 More practice.';else m='💪 Keep going.';document.getElementById('quizArea').innerHTML=`<div class="result-card"><div style="font-size:50px">${p>=60?'🏆':'📖'}</div><div class="result-score">${p}%</div><div class="result-msg">${m}</div><div class="result-row"><div class="quiz-stat"><div class="v">${s}</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v">${t-s}</div><div class="l">Wrong</div></div></div><div class="action-row"><button class="btn" onclick="resetQuiz()">🔄 Retake</button><button class="btn btn-sec" onclick="reviewWeak()">🎯 Weak</button></div></div>`}
+function resetQuiz(){state.quiz={attempted:0,correct:0,perQuestion:{}};state.weak=[];save();document.getElementById('quizArea').style.display='none';document.getElementById('quizIntro').style.display='block';updateStatBoxes()}
+function reviewWeak(){if(state.weak.length===0){alert('No weak topics yet!');return}currentOrder=[...state.weak];quizIndex=0;document.getElementById('quizIntro').style.display='none';document.getElementById('quizArea').style.display='block';state.weak.forEach(w=>{delete state.quiz.perQuestion[w]});state.quiz.attempted=Math.max(0,state.quiz.attempted-state.weak.length);state.weak=[];save();renderQuestion()}
+function updateStatBoxes(){const a=state.quiz.attempted,c=state.quiz.correct,ac=a?Math.round(c/a*100):0;if(document.getElementById('stAtt'))document.getElementById('stAtt').textContent=a;if(document.getElementById('stCor'))document.getElementById('stCor').textContent=c;if(document.getElementById('stAcc'))document.getElementById('stAcc').textContent=ac+'%'}
+
+const CASES=[
+{t:'1. Working Capital for a Small Textile Trader',scenario:'Mr. Rajan runs a textile wholesale business with projected annual turnover of ₹2 Crore. He approaches your branch for working capital finance. Which method applies and what is the WC and bank finance?',solution:'<b>Method:</b> Nayak Committee Turnover Method (applicable for MSE up to ₹5 Cr).<br><b>Calculation:</b><br>Working Capital requirement = 25% of ₹2 Cr = <b>₹50 lakh</b><br>Bank finance = 20% of turnover = ₹40 lakh<br>Margin by borrower = 5% = ₹10 lakh (from long-term sources).<br><b>Documentation:</b><br>• Udyam Registration (mandatory)<br>• ITR, Financials, Bank statements (6 months)<br>• Stock + Book Debts projections<br>• CGTMSE coverage (if collateral not offered)<br><b>Key learning:</b> Nayak = simple, quick appraisal for small units.'},
+{t:'2. CGTMSE — Woman Entrepreneur',scenario:'Ms. Priya (woman entrepreneur, Dindigul district) seeks ₹60 lakh loan for her packaging unit. She has no collateral. Her project is viable, Udyam registered.',solution:'<b>Step 1:</b> Eligible under CGTMSE — Micro/Small, no collateral.<br><b>Step 2:</b> Loan ₹60 lakh fits within CGTMSE ₹5 Cr ceiling.<br><b>Step 3:</b> Guarantee cover = <b>85% (Women category)</b>.<br><b>Step 4:</b> AGF (Annual Guarantee Fee): approx 0.85-1.10% for ₹50L-₹2Cr slab.<br><b>Step 5:</b> Dindigul is NOT Aspirational District typically — but women is standalone qualifier for 85% cover.<br><b>Step 6:</b> Interest concession: IOB Mahila Samriddhi offers 0.50% concession for women.<br><b>Step 7:</b> Lock-in: 18 months from last disbursement.<br><b>Key learning:</b> Women MSE = 85% CGTMSE cover + 0.50% rate concession.'},
+{t:'3. Housing Loan Eligibility',scenario:'Mr. Kannan, 35 yrs, govt school teacher, net salary ₹45,000/month. Property: ₹60 lakh in Dindigul (new flat). He wants max possible housing loan. How much can he get?',solution:'<b>Step 1:</b> Property value ₹60 lakh falls in ₹30-75 lakh slab.<br><b>LTV cap:</b> 80% = ₹48 lakh.<br><b>Step 2:</b> EMI affordability check:<br>Assume 20-year loan @ 8.5% → EMI on ₹48L = ~₹41,641<br>EMI/Net salary = 41,641/45,000 = 92% — <b>NOT viable</b>.<br><b>Step 3:</b> Keep EMI/Income ≤ 50% → max EMI ₹22,500 → max loan ₹26 lakh (20 yrs @ 8.5%).<br><b>Step 4:</b> Suggest: co-applicant (spouse income) to increase eligibility, OR longer tenure (30 yrs), OR lower loan amount.<br><b>Step 5:</b> Benefits:<br>• PMAY-U MIG-I if HH income ≤ ₹12 lakh/yr → 4% subsidy up to ₹2.35L.<br>• Sec 24(b): ₹2 lakh interest deduction.<br>• Sec 80C: ₹1.5 lakh principal deduction.<br><b>Key learning:</b> LTV cap and EMI/Income ratio both must be met. Lower of two wins.'},
+{t:'4. KCC Interest Calculation',scenario:'Mr. Perumal (farmer, 2 acres paddy, Thadikombu) has KCC with ₹2 lakh outstanding for the paddy crop season. He repays on time by the due date. Interest payable by him?',solution:'<b>Step 1:</b> Base rate (indicative): 9%.<br><b>Step 2:</b> Loan ≤ ₹5 lakh — eligible for 2% subvention (RBI Dir 2026 enhanced cap).<br>Rate after subvention: 9% - 2% = 7%.<br><b>Step 3:</b> Prompt repayment by due date → additional 3% incentive.<br>Rate after PRI: 7% - 3% = <b>4%</b>.<br><b>Step 4:</b> Interest payable = 4% of ₹2 lakh for period.<br>(Prorated for actual period; typically one crop season 6 months — approx ₹4,000 interest).<br><b>Step 5:</b> If delayed → loses PRI → rate becomes 7%.<br><b>Also:</b> No collateral required (up to ₹1.60L; ₹3L with tied marketing). His ₹2L needs collateral typically but if under tied-up arrangement, no collateral.<br><b>Key learning:</b> Prompt repayment = 300 bps saving on interest.'},
+{t:'5. SHG Credit Linkage',scenario:'An SHG "Priya Mahila Mandal" (18 women, Dindigul district) has saved ₹30,000 over 6 months. They approach your branch for first bank linkage loan. How much can they get?',solution:'<b>Step 1:</b> SHG qualifies (18 members within 10-20 range; women; 6 months savings).<br><b>Step 2:</b> First credit linkage: typically 4× savings = ₹30,000 × 4 = <b>₹1.20 lakh</b>.<br><b>Step 3:</b> Rate under DAY-NRLM: 7% effective (after subvention); further 3% PRI → <b>4% effective</b>.<br><b>Step 4:</b> No collateral; peer/mutual guarantee of all members.<br><b>Step 5:</b> Documentation:<br>• Group books (minutes, savings, loan ledger)<br>• Bank mandate with 3 authorised signatories<br>• NRLM authorization letter<br><b>Step 6:</b> Monitor:<br>• Attendance, meetings, savings regularity<br>• On-time repayment history<br>• As group matures: next loan 10× of savings possible.<br><b>Step 7:</b> Revolving Fund of ₹20,000 also available (if not received).<br><b>Key learning:</b> First linkage = 4× savings; matured SHGs = up to 10×.'},
+{t:'6. Mudra Loan Classification',scenario:'Mr. Arun wants a loan to set up his first business — a small tailoring shop. Projected cost: ₹3 lakh (machines + fit-out + working capital). Which Mudra category?',solution:'<b>Step 1:</b> ₹3 lakh fits in <b>Kishore</b> category (₹50,001 - ₹5 lakh).<br><b>Step 2:</b> Features:<br>• No collateral (CGFMU cover).<br>• Flexible tenure (typically 3-5 years).<br>• No processing fee under Mudra typically.<br><b>Step 3:</b> Documents:<br>• KYC + Aadhaar<br>• Quotations for machines<br>• Business plan / projected cash flows<br>• No prior business loan dishonour.<br><b>Step 4:</b> Subsidy: No direct subsidy under Mudra (it\'s a refinance scheme).<br><b>Step 5:</b> Shishu (up to ₹50K) → use for smaller start.<br>Tarun (₹5L-10L) or Tarun Plus (₹10L-20L for repeat) → for expansion later.<br><b>Key learning:</b> Mudra = ₹10 lakh (now ₹20L via Tarun Plus) non-farm enterprise loans. CGFMU-backed.'},
+{t:'7. Education Loan Abroad',scenario:'Mr. Ganesh\'s daughter Divya is admitted to a 2-year MS in USA. Total cost (incl. fees + living) ~ ₹30 lakh. Family income: ₹8 lakh/yr. What education loan is she eligible for?',solution:'<b>Step 1:</b> Abroad studies ceiling: ₹20 lakh base; higher for premier institutes.<br><b>Step 2:</b> IOB Scholar scheme — higher limits for ranked universities.<br><b>Step 3:</b> Margin for abroad > ₹4 lakh = 15% → She needs margin of ~₹4.5 lakh (15% of ₹30L).<br><b>Step 4:</b> Bank loan portion: ~₹25 lakh (if premier institute and approved).<br><b>Step 5:</b> Collateral:<br>• Up to ₹7.5L (CGFSEL) — no collateral.<br>• ₹7.5L-₹20L — third-party guarantee OR tangible collateral.<br>• ₹20L+ — tangible collateral (usually property).<br><b>Step 6:</b> Co-borrower: Father Mr. Ganesh mandatory.<br><b>Step 7:</b> Moratorium: course + 1 year (OR 6 months post-job, whichever earlier).<br><b>Step 8:</b> CSIS not applicable (family income > ₹4.5L); Padho Pardesh only if minority.<br><b>Step 9:</b> Repayment: Up to 15 years after moratorium.<br><b>Key learning:</b> Abroad = ₹20L baseline + property for larger amounts.'}
+];
+function renderCases(){document.getElementById('caseList').innerHTML=CASES.map((c,i)=>`<div class="case-card"><div class="case-head" onclick="this.parentElement.classList.toggle('open')"><span>${c.t}</span><span class="arrow">▼</span></div><div class="case-body"><div class="case-scenario"><b>📍 Scenario:</b> ${c.scenario}</div><button class="reveal-btn" onclick="this.nextElementSibling.classList.add('show'); this.style.display='none'">👁️ Reveal Solution</button><div class="case-solution">${c.solution}</div></div></div>`).join('')}
+
+function init(){document.documentElement.setAttribute('data-theme',state.theme);document.querySelector('.theme-btn').textContent=state.theme==='dark'?'☀️':'🌙';Object.keys(state.topics).forEach(id=>{const el=document.querySelector(`#${id} .topic-check`);if(el&&state.topics[id])el.classList.add('done')});updateProgressBar();renderFlashcards();renderCompare();renderNumbers();renderCases();updateStatBoxes()}
+init();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(e => console.log('SW failed:', e));
+  });
+}
+</script>
+</body>
+</html>

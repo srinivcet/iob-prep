@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a2540">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IOB Prep">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Module G: Forex — IOB 2027</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#1a202c;--muted:#64748b;--primary:#0a2540;--primary-light:#1e40af;--accent:#d4a017;--success:#10b981;--warn:#f59e0b;--danger:#ef4444;--border:#e2e8f0;--highlight:#fef3c7;--important:#fee2e2;--info:#dbeafe}
+[data-theme="dark"]{--bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--muted:#94a3b8;--primary:#3b82f6;--accent:#fbbf24;--border:#334155;--highlight:#78350f;--important:#7f1d1d;--info:#1e3a8a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;font-size:14px;padding-bottom:80px}
+.header{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:14px 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.header-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.back-link{color:#fff;text-decoration:none;font-size:13px;padding:4px 8px;background:rgba(255,255,255,.15);border-radius:8px;display:inline-block}
+.header h1{font-size:16px;font-weight:700;margin-top:4px}.header-sub{font-size:11px;opacity:.85}
+.theme-btn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:8px 10px;border-radius:8px;font-size:15px;cursor:pointer}
+.progress-strip{height:4px;background:rgba(255,255,255,.2);margin-top:8px;border-radius:10px;overflow:hidden}
+.progress-strip-fill{height:100%;background:linear-gradient(90deg,var(--accent),#fbbf24);transition:width .5s}
+.tabs{background:var(--card);padding:8px;overflow-x:auto;white-space:nowrap;border-bottom:1px solid var(--border);position:sticky;top:85px;z-index:50;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-chip{display:inline-block;padding:8px 14px;margin:0 3px;border-radius:20px;background:var(--bg);color:var(--text);border:1px solid var(--border);font-size:12px;font-weight:600;cursor:pointer}
+.tab-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+[data-theme="dark"] .tab-chip.active{background:var(--accent);color:var(--primary)}
+.container{padding:14px;max-width:900px;margin:0 auto}.view{display:none}.view.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.topic{background:var(--card);border-radius:12px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid var(--border);overflow:hidden}
+.topic-head{padding:12px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(90deg,var(--card),var(--bg));user-select:none}
+.topic-title{font-weight:700;font-size:14px;color:var(--primary);display:flex;align-items:center;gap:8px}
+[data-theme="dark"] .topic-title{color:var(--accent)}
+.topic-num{background:var(--primary);color:#fff;width:24px;height:24px;border-radius:50%;text-align:center;line-height:24px;font-size:11px;font-weight:700;flex-shrink:0}
+[data-theme="dark"] .topic-num{background:var(--accent);color:var(--primary)}
+.topic-check{width:22px;height:22px;border:2px solid var(--muted);border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}
+.topic-check.done{background:var(--success);border-color:var(--success)}.topic-check.done::after{content:'✓'}
+.topic-body{display:none;padding:0 14px 14px}.topic.open .topic-body{display:block;animation:fadeIn .3s ease}
+.topic.open .topic-arrow{transform:rotate(90deg)}.topic-arrow{transition:transform .3s;color:var(--muted);font-size:14px}
+h3{margin:14px 0 8px;font-size:14px;color:var(--primary);padding-bottom:4px;border-bottom:2px solid var(--accent)}
+[data-theme="dark"] h3{color:var(--accent)}
+h4{margin:12px 0 6px;font-size:13px;color:var(--primary);font-weight:700}[data-theme="dark"] h4{color:#93c5fd}
+p{margin:4px 0 8px}ul,ol{margin:4px 0 10px;padding-left:22px}li{margin:3px 0}
+.key{background:var(--highlight);padding:2px 6px;border-radius:4px;font-weight:700;color:#92400e;font-size:13px}[data-theme="dark"] .key{color:#fde68a}
+.alert{padding:10px 12px;margin:10px 0;border-radius:8px;border-left:3px solid;font-size:13px}
+.alert-info{background:var(--info);border-color:var(--primary-light);color:var(--primary)}
+.alert-danger{background:var(--important);border-color:var(--danger);color:#991b1b}
+.alert-warn{background:var(--highlight);border-color:var(--warn);color:#92400e}
+[data-theme="dark"] .alert-info{color:#dbeafe}[data-theme="dark"] .alert-danger{color:#fecaca;background:#7f1d1d}[data-theme="dark"] .alert-warn{color:#fde68a;background:#78350f}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12.5px}
+th,td{padding:6px 8px;text-align:left;border:1px solid var(--border)}
+th{background:var(--bg);font-weight:700;color:var(--primary)}[data-theme="dark"] th{color:var(--accent)}
+tr:nth-child(even) td{background:var(--bg)}
+.flashcard-deck{display:flex;flex-direction:column;gap:12px}
+.flashcard{perspective:1000px;height:180px;cursor:pointer}
+.flashcard-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}
+.flashcard-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;padding:18px;display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.flashcard-front{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;font-size:15px;font-weight:600}
+.flashcard-back{background:linear-gradient(135deg,var(--accent),#d97706);color:#1a202c;font-size:13px;transform:rotateY(180deg);font-weight:500;overflow-y:auto;line-height:1.5}
+.flashcard-hint{position:absolute;bottom:8px;left:0;right:0;font-size:10px;opacity:.7;text-align:center}
+.compare-card{background:var(--card);border-radius:12px;margin-bottom:10px;border:1px solid var(--border);overflow:hidden}
+.compare-head{padding:12px 14px;background:linear-gradient(90deg,var(--primary),var(--primary-light));color:#fff;font-weight:700;font-size:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.compare-body{display:none;padding:10px;overflow-x:auto}
+.compare-card.open .compare-body{display:block;animation:fadeIn .3s ease}
+.compare-card.open .compare-head .arrow{transform:rotate(180deg)}.compare-head .arrow{transition:transform .3s;font-size:14px}
+.num-card{background:var(--card);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.num-badge{background:var(--accent);color:var(--primary);padding:6px 10px;border-radius:8px;font-family:monospace;font-weight:700;font-size:13px;min-width:90px;text-align:center;flex-shrink:0}
+.num-desc{font-size:13px;flex:1}.num-cat{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.quiz-intro{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:20px;border-radius:14px;margin-bottom:14px;text-align:center}
+.quiz-intro h2{font-size:20px;margin-bottom:8px}.quiz-intro p{font-size:13px;opacity:.9;margin-bottom:14px}
+.quiz-btn{padding:10px 20px;background:var(--accent);color:var(--primary);border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px;font-family:inherit}
+.quiz-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.quiz-stat{background:var(--card);padding:10px;border-radius:10px;text-align:center;border:1px solid var(--border)}
+.quiz-stat .v{font-size:20px;font-weight:700;color:var(--primary)}[data-theme="dark"] .quiz-stat .v{color:var(--accent)}
+.quiz-stat .l{font-size:10px;color:var(--muted);text-transform:uppercase}
+.question-card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.q-num{font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:600}
+.q-text{font-size:14px;font-weight:600;margin-bottom:12px;line-height:1.45}
+.option{padding:10px 12px;margin-bottom:6px;background:var(--bg);border-radius:8px;border:2px solid transparent;cursor:pointer;font-size:13px;transition:all .2s}
+.option:hover{background:var(--card);border-color:var(--primary)}
+.option.correct{background:#d1fae5;border-color:var(--success);color:#065f46}
+.option.wrong{background:#fee2e2;border-color:var(--danger);color:#991b1b}
+[data-theme="dark"] .option.correct{background:#065f46;color:#d1fae5}[data-theme="dark"] .option.wrong{background:#7f1d1d;color:#fecaca}
+.explanation{background:var(--info);padding:10px 12px;margin-top:10px;border-radius:8px;font-size:12.5px;border-left:3px solid var(--primary-light);display:none}
+.explanation.show{display:block;animation:fadeIn .3s}[data-theme="dark"] .explanation{background:#1e3a8a;color:#dbeafe}
+.nav-btns{display:flex;gap:8px;margin-top:14px}
+.nav-btns button{flex:1;padding:10px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;font-family:inherit}
+.btn-prev{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.btn-next{background:var(--primary);color:#fff}[data-theme="dark"] .btn-next{background:var(--accent);color:var(--primary)}
+.case-card{background:var(--card);border-radius:14px;margin-bottom:14px;border:1px solid var(--border);overflow:hidden}
+.case-head{padding:12px 14px;background:linear-gradient(135deg,var(--accent),#d97706);color:#1a202c;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:700}
+.case-body{display:none;padding:14px}.case-card.open .case-body{display:block;animation:fadeIn .3s}
+.case-card.open .case-head .arrow{transform:rotate(180deg)}
+.case-scenario{background:var(--info);padding:10px 12px;border-radius:8px;margin-bottom:10px;font-size:13px;border-left:3px solid var(--primary-light)}
+[data-theme="dark"] .case-scenario{background:#1e3a8a;color:#dbeafe}
+.case-solution{background:var(--highlight);padding:10px 12px;border-radius:8px;font-size:13px;border-left:3px solid var(--accent);display:none}
+.case-solution.show{display:block;animation:fadeIn .3s}[data-theme="dark"] .case-solution{background:#78350f;color:#fde68a}
+.reveal-btn{padding:8px 14px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;margin-top:8px}
+.result-card{background:var(--card);padding:20px;border-radius:14px;text-align:center;border:1px solid var(--border)}
+.result-score{font-size:44px;font-weight:800;color:var(--primary);margin:10px 0}[data-theme="dark"] .result-score{color:var(--accent)}
+.result-msg{font-size:14px;color:var(--muted);margin-bottom:16px}.result-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.float-btn{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;width:48px;height:48px;border-radius:50%;font-size:22px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:200}
+[data-theme="dark"] .float-btn{background:var(--accent);color:var(--primary)}
+.search-box{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px;margin-bottom:10px;font-family:inherit}
+.btn{padding:10px 14px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;background:var(--primary);color:#fff;font-family:inherit}
+.btn-sec{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="header"><div class="header-row"><div><a href="IOB_Study_Hub.html" class="back-link">← Hub</a><h1>Module G: Forex</h1><div class="header-sub">FEMA • LRS • Export/Import • UCPDC • 50 MCQs</div></div><button class="theme-btn" onclick="toggleTheme()">🌙</button></div><div class="progress-strip"><div class="progress-strip-fill" id="pbar" style="width:0%"></div></div></div>
+<div class="tabs"><div class="tab-chip active" onclick="showTab('content',this)">📖 Content</div><div class="tab-chip" onclick="showTab('flash',this)">🎴 Flashcards</div><div class="tab-chip" onclick="showTab('compare',this)">⚖️ Compare</div><div class="tab-chip" onclick="showTab('numbers',this)">🔢 Numbers</div><div class="tab-chip" onclick="showTab('mcq',this)">❓ Quiz</div><div class="tab-chip" onclick="showTab('cases',this)">📋 Cases</div></div>
+<div class="container">
+<div id="content" class="view active">
+<input class="search-box" placeholder="🔍 Search..." oninput="filterTopics(this.value)">
+
+<div class="topic" id="t1"><div class="topic-head" onclick="toggleTopic('t1')"><div class="topic-title"><span class="topic-num">1</span>FEMA 1999</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t1',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p><b>Foreign Exchange Management Act, 1999</b> — replaced FERA 1973.</p>
+<h3>Features</h3>
+<ul>
+<li>Objective: Facilitate external trade + promote orderly development of forex market.</li>
+<li>Civil law (vs FERA which was criminal).</li>
+<li>Effective June 2000.</li>
+<li>Administered by: RBI (forex) + Dept of Economic Affairs + DGFT (trade policy).</li>
+</ul>
+<h3>Current vs Capital Account Transactions</h3>
+<ul>
+<li><b>Current Account:</b> Generally allowed (import/export, travel, education, medical, gifts).</li>
+<li><b>Capital Account:</b> Regulated — permitted only as per FEMA regulations.</li>
+</ul>
+<h3>Resident vs Non-Resident</h3>
+<ul>
+<li><b>Resident:</b> In India > 182 days in preceding FY.</li>
+<li><b>Non-Resident:</b> Otherwise.</li>
+<li>FEMA definition differs from Income Tax Act.</li>
+</ul>
+<h3>Authorised Dealer (AD) Categories</h3>
+<ul>
+<li>AD Cat-I: Full range of forex transactions (main banks).</li>
+<li>AD Cat-II: Money changing + specified non-trade current.</li>
+<li>AD Cat-III: Full-fledged money changers.</li>
+</ul>
+<h3>Key Agencies</h3>
+<ul>
+<li>FEDAI: Foreign Exchange Dealers' Association of India.</li>
+<li>Enforcement Directorate (ED): Investigates FEMA contraventions.</li>
+<li>CBIC: Customs.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t2"><div class="topic-head" onclick="toggleTopic('t2')"><div class="topic-title"><span class="topic-num">2</span>Accounts by Resident Indians (Foreign Currency)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t2',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>EEFC — Exchange Earners' Foreign Currency</h3>
+<ul>
+<li>For: Exporters, foreign exchange earners.</li>
+<li>Can credit 100% of forex earnings.</li>
+<li>Current account — no interest.</li>
+<li>Can use for own imports / permissible uses.</li>
+</ul>
+<h3>RFC — Resident Foreign Currency</h3>
+<ul>
+<li>For: Returning NRIs.</li>
+<li>Funds inherit character from NRE/FCNR.</li>
+<li>Interest tax-free initially (for 1 year of return).</li>
+</ul>
+<h3>RFC(D) — Resident Foreign Currency (Domestic)</h3>
+<ul>
+<li>Residents can hold forex received as:
+<ul>
+<li>Gifts, inheritance, honorarium.</li>
+<li>Unused forex from foreign travel.</li>
+</ul></li>
+<li>Current account; no interest.</li>
+</ul>
+<h3>DDA — Diamond Dollar Account</h3>
+<ul>
+<li>Diamond exporters with turnover > ₹3 Cr.</li>
+<li>Max 5 accounts per firm.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t3"><div class="topic-head" onclick="toggleTopic('t3')"><div class="topic-title"><span class="topic-num">3</span>Accounts by Non-Residents</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t3',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>NRE — Non-Resident External Rupee Account</h3>
+<ul>
+<li>Currency: INR. Fully repatriable.</li>
+<li>Source: Foreign inward only.</li>
+<li>Tax-free (principal + interest).</li>
+<li>Types: SB, CA, FD, RD.</li>
+<li>TD tenure: 1-10 years.</li>
+<li>Joint: With another NRI OR resident close relative on E/S only.</li>
+</ul>
+<h3>NRO — Non-Resident Ordinary</h3>
+<ul>
+<li>Currency: INR. For Indian income (rent, pension, dividends).</li>
+<li>Repatriation: <span class="key">USD 1 million / FY</span> for principal (current income freely repatriable).</li>
+<li>Interest: TDS @ 30%.</li>
+<li>Can be joint with NRI or Resident on E/S or F/S.</li>
+</ul>
+<h3>FCNR(B) — Foreign Currency Non-Resident (Bank)</h3>
+<ul>
+<li>Currencies: <span class="key">USD, GBP, EUR, JPY, CAD, AUD</span>.</li>
+<li>Only Term Deposit: 1-5 years.</li>
+<li>Tax-free, fully repatriable, exchange-risk immune for depositor.</li>
+<li>Joint: With NRI only (variant allows close relative resident).</li>
+</ul>
+<h3>SNRR — Special Non-Resident Rupee</h3>
+<ul>
+<li>For specific business: trade, investment, ECB.</li>
+<li>Max 7 years tenure; no interest.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t4"><div class="topic-head" onclick="toggleTopic('t4')"><div class="topic-title"><span class="topic-num">4</span>Vostro / Nostro / Loro Accounts</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t4',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li><b>Nostro:</b> "Our account" — Indian bank's account maintained with foreign bank (in foreign currency).</li>
+<li><b>Vostro:</b> "Your account" — Foreign bank's account maintained with Indian bank (in INR).</li>
+<li><b>Loro:</b> "Their account" — third party's account.</li>
+</ul>
+<h3>Special Rupee Vostro Account (SRVA)</h3>
+<ul>
+<li>For international trade settlement in INR.</li>
+<li>Permits use of INR as settlement currency in cross-border trade.</li>
+<li>RBI framework July 2022.</li>
+</ul>
+<h3>Reconciliation</h3>
+<ul>
+<li>Nostro reconciliation: daily/weekly.</li>
+<li>Monthly R-Returns to RBI (summary of forex business).</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t5"><div class="topic-head" onclick="toggleTopic('t5')"><div class="topic-title"><span class="topic-num">5</span>FEDAI Rules (10th Edition)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t5',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>Foreign Exchange Dealers' Association of India — self-regulatory body for AD banks.</p>
+<h3>Key Rules</h3>
+<ul>
+<li>Forex business hours: 9 AM to 5 PM (interbank).</li>
+<li>Cash: Same day settlement.</li>
+<li>TOM: Next business day settlement.</li>
+<li>Spot: T+2 (standard) settlement.</li>
+<li>Forward: Beyond spot.</li>
+</ul>
+<h3>Export Bill Handling</h3>
+<ul>
+<li>Purchase vs Negotiation: Different handling.</li>
+<li>Bills on crystallisation: due date + <span class="key">30 days</span> if not realised.</li>
+</ul>
+<h3>Import Bill Handling</h3>
+<ul>
+<li>Payment on due date.</li>
+<li>Crystallisation: after 10 days of due date (if not paid).</li>
+</ul>
+<h3>Charges</h3>
+<ul>
+<li>Flat rate for small transactions.</li>
+<li>Negotiated for larger.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t6"><div class="topic-head" onclick="toggleTopic('t6')"><div class="topic-title"><span class="topic-num">6</span>Export of Goods & Services</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t6',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Governing Framework</h3>
+<ul>
+<li>FEMA 1999 + Master Directions on Export of Goods and Services.</li>
+<li>Foreign Trade Policy (FTP).</li>
+<li>Customs Act.</li>
+</ul>
+<h3>Export Documentation</h3>
+<ul>
+<li><b>EDF (Export Declaration Form):</b> Replaced GR Form; required for goods.</li>
+<li><b>SOFTEX:</b> For software/services export.</li>
+<li>Bill of Lading / Airway Bill.</li>
+<li>Commercial Invoice.</li>
+<li>Packing List.</li>
+<li>Certificate of Origin.</li>
+<li>Insurance policy.</li>
+<li>Letter of Credit (if applicable).</li>
+</ul>
+<h3>Realisation Period</h3>
+<ul>
+<li>Goods: <span class="key">9 months</span> from date of export.</li>
+<li>Software/services: 9 months.</li>
+<li>SEZ/EOU: Specific extensions may apply.</li>
+</ul>
+<h3>EDPMS</h3>
+<ul>
+<li>Export Data Processing and Monitoring System — RBI portal.</li>
+<li>Tracks: Shipment vs Realisation.</li>
+<li>Non-realisation > 2 years → Caution List.</li>
+</ul>
+<h3>Caution List</h3>
+<ul>
+<li>Non-realisation of export proceeds > 2 years = Caution.</li>
+<li>Bank to inform exporter.</li>
+<li>Future exports require advance payment / LC.</li>
+<li>De-cautioning on realisation or satisfactory explanation.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t7"><div class="topic-head" onclick="toggleTopic('t7')"><div class="topic-title"><span class="topic-num">7</span>Export Credit (Packing Credit)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t7',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Pre-Shipment Credit</h3>
+<ul>
+<li>"Packing Credit" — working capital for export processing.</li>
+<li>Against: LC, confirmed order, firm export contract.</li>
+<li>Tenure: Max 180 days (extendable 90 days).</li>
+<li>Rate: Concessional (RLLR - spread).</li>
+<li>Must be liquidated from export proceeds.</li>
+</ul>
+<h3>Post-Shipment Credit</h3>
+<ul>
+<li>After shipment, before realisation.</li>
+<li>Types:
+<ul>
+<li>Bills Purchased / Discounted.</li>
+<li>Advance against collection.</li>
+<li>Export bills negotiated under LC.</li>
+</ul></li>
+<li>Tenure: 6 months (goods); 9 months with RBI extension.</li>
+</ul>
+<h3>Interest Equalisation Scheme (IES)</h3>
+<ul>
+<li>Up to <span class="key">3%</span> for all MSME exports.</li>
+<li>2% for non-MSME in specified HS codes (identified sectors).</li>
+<li>Reduces effective interest to exporter.</li>
+</ul>
+<h3>PCFC — Packing Credit in Foreign Currency</h3>
+<ul>
+<li>At LIBOR/SOFR + spread.</li>
+<li>Avoids forex risk for borrower.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t8"><div class="topic-head" onclick="toggleTopic('t8')"><div class="topic-title"><span class="topic-num">8</span>Import of Goods & Services</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t8',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Required Documents</h3>
+<ul>
+<li><b>IEC (Importer Exporter Code):</b> 10-digit from DGFT.</li>
+<li>Bill of Entry (BoE): Customs proof.</li>
+<li>Commercial Invoice.</li>
+<li>Bill of Lading / Airway Bill.</li>
+<li>Letter of Credit (if applicable).</li>
+<li>Insurance.</li>
+</ul>
+<h3>Payment Timeline</h3>
+<ul>
+<li>Within 6 months of shipment (extendable by RBI).</li>
+<li>Advance Remittance: up to USD 2 lakh without BG.</li>
+<li>Above USD 2 lakh: BG from international bank required.</li>
+<li>Advance for services: up to USD 5,00,000 without BG.</li>
+</ul>
+<h3>IDPMS</h3>
+<ul>
+<li>Import Data Processing and Monitoring System — RBI portal.</li>
+<li>Tracks BoE submission + payment.</li>
+</ul>
+<h3>Merchanting Trade</h3>
+<ul>
+<li>Both legs (export + import) are by Indian resident, goods don't enter India.</li>
+<li>Complete within 9 months.</li>
+<li>Export value ≥ Import value.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t9"><div class="topic-head" onclick="toggleTopic('t9')"><div class="topic-title"><span class="topic-num">9</span>UCPDC 600 (Letter of Credit)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t9',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p><b>Uniform Customs and Practice for Documentary Credits</b> — ICC Publication 600 (effective 2007).</p>
+<h3>Features</h3>
+<ul>
+<li>39 Articles.</li>
+<li>Standard rules for LC operations worldwide.</li>
+<li>Strict compliance required — discrepancies lead to dishonour.</li>
+</ul>
+<h3>Key Articles</h3>
+<ul>
+<li><b>Art 2:</b> Definitions.</li>
+<li><b>Art 3:</b> Interpretations.</li>
+<li><b>Art 4:</b> Credit vs Contract — LC is separate from underlying contract.</li>
+<li><b>Art 5:</b> Documents, not goods.</li>
+<li><b>Art 14:</b> Standard for examination of documents (5 banking days).</li>
+<li><b>Art 16:</b> Discrepant documents, waiver, notice.</li>
+<li><b>Art 29:</b> Extension of last day for presentation.</li>
+<li><b>Art 38:</b> Transferable Credits (one transfer only; original + 1).</li>
+<li><b>Art 39:</b> Assignment of proceeds.</li>
+</ul>
+<h3>Timelines</h3>
+<ul>
+<li>Documents must be presented within <span class="key">21 days</span> of shipment date OR by LC expiry date (whichever earlier).</li>
+<li>Banks: <b>5 banking days</b> to examine documents.</li>
+</ul>
+<h3>Types of LC</h3>
+<ul>
+<li><b>Revocable vs Irrevocable:</b> Default is Irrevocable under UCPDC 600.</li>
+<li><b>Confirmed vs Unconfirmed:</b> Confirming bank adds its undertaking.</li>
+<li><b>Sight vs Usance (Term):</b> Sight = immediate payment; Usance = deferred.</li>
+<li><b>Revolving LC:</b> Automatically reinstates after use.</li>
+<li><b>Red Clause LC:</b> Advance to beneficiary.</li>
+<li><b>Green Clause:</b> Advance + storage financing.</li>
+<li><b>Back-to-Back LC:</b> Second LC based on first LC as collateral.</li>
+<li><b>Standby LC:</b> Similar to BG, backing performance/payment.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t10"><div class="topic-head" onclick="toggleTopic('t10')"><div class="topic-title"><span class="topic-num">10</span>Incoterms® 2020</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t10',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<p>By ICC — standardized trade terms defining responsibilities of buyer and seller.</p>
+<h3>Any Mode of Transport (7)</h3>
+<table>
+<tr><th>Code</th><th>Full Form</th><th>Responsibility</th></tr>
+<tr><td>EXW</td><td>Ex Works</td><td>Buyer collects from seller's premises; min responsibility of seller</td></tr>
+<tr><td>FCA</td><td>Free Carrier</td><td>Seller delivers to carrier at agreed place</td></tr>
+<tr><td>CPT</td><td>Carriage Paid To</td><td>Seller pays freight; risk passes at origin</td></tr>
+<tr><td>CIP</td><td>Carriage + Insurance Paid To</td><td>CPT + insurance (new 2020: higher insurance cover)</td></tr>
+<tr><td>DAP</td><td>Delivered at Place</td><td>Seller delivers; buyer unloads</td></tr>
+<tr><td>DPU</td><td>Delivered at Place Unloaded</td><td>Seller unloads at named place (new in 2020, replaces DAT)</td></tr>
+<tr><td>DDP</td><td>Delivered Duty Paid</td><td>Seller pays all duties; max responsibility of seller</td></tr>
+</table>
+<h3>Sea / Inland Waterway Only (4)</h3>
+<table>
+<tr><th>Code</th><th>Full Form</th></tr>
+<tr><td>FAS</td><td>Free Alongside Ship</td></tr>
+<tr><td>FOB</td><td>Free On Board</td></tr>
+<tr><td>CFR</td><td>Cost and Freight</td></tr>
+<tr><td>CIF</td><td>Cost, Insurance, Freight</td></tr>
+</table>
+<h3>Key Changes 2020</h3>
+<ul>
+<li>DAT (Delivered at Terminal) → replaced by DPU.</li>
+<li>CIP now requires higher insurance (Clause A); CIF continues with minimum.</li>
+<li>Security requirements more clearly defined.</li>
+<li>FCA — enables Bill of Lading issuance.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t11"><div class="topic-head" onclick="toggleTopic('t11')"><div class="topic-title"><span class="topic-num">11</span>LRS — Liberalised Remittance Scheme</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t11',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>For resident individuals (incl. minors via guardian).</li>
+<li>Annual limit: <span class="key">USD 2.5 lakh per financial year</span>.</li>
+</ul>
+<h3>Permitted Purposes</h3>
+<ul>
+<li>Private travel (except Nepal, Bhutan).</li>
+<li>Gift / donation.</li>
+<li>Employment abroad.</li>
+<li>Emigration.</li>
+<li>Maintenance of close relatives abroad.</li>
+<li>Education abroad.</li>
+<li>Medical treatment abroad.</li>
+<li>Investment in shares / debt / immovable property abroad.</li>
+</ul>
+<h3>Not Permitted</h3>
+<ul>
+<li>Lottery tickets / sweepstakes.</li>
+<li>Foreign exchange trading / stock speculation.</li>
+<li>Transactions with FATF-designated non-cooperative countries.</li>
+<li>Remittance for purchase of FCCBs of Indian cos abroad.</li>
+</ul>
+<h3>TCS on LRS (from 1 Oct 2023)</h3>
+<table>
+<tr><th>Purpose</th><th>TCS</th></tr>
+<tr><td>Education (via loan)</td><td>Nil up to ₹7L; 0.5% above</td></tr>
+<tr><td>Education (self-funded)</td><td>Nil up to ₹7L; 5% above</td></tr>
+<tr><td>Medical</td><td>Nil up to ₹7L; 5% above</td></tr>
+<tr><td>Other LRS</td><td>Nil up to ₹7L; <span class="key">20%</span> above</td></tr>
+</table>
+</div></div>
+
+<div class="topic" id="t12"><div class="topic-head" onclick="toggleTopic('t12')"><div class="topic-title"><span class="topic-num">12</span>Foreign Trade Policy (FTP) 2023</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t12',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Effective 1 April 2023; ongoing.</li>
+<li>Replaces FTP 2015-20.</li>
+</ul>
+<h3>Thrust Areas</h3>
+<ul>
+<li>Trade Facilitation (ease of doing business).</li>
+<li>E-commerce exports.</li>
+<li>Districts as Export Hubs.</li>
+<li>Streamlining SCOMET (dual-use goods).</li>
+</ul>
+<h3>Key Schemes</h3>
+<ul>
+<li><b>RoDTEP:</b> Remission of Duties and Taxes on Exported Products.</li>
+<li><b>EPCG:</b> Export Promotion Capital Goods — 0% customs duty on capital goods with export obligation = 6× duty saved in 6 years.</li>
+<li><b>Advance Authorisation:</b> Duty-free import of inputs with export obligation.</li>
+<li><b>DFIA:</b> Duty Free Import Authorisation.</li>
+<li>Towns of Export Excellence.</li>
+</ul>
+<h3>Status Holder</h3>
+<ul>
+<li>Star Export House based on export value.</li>
+<li>1 Star / 2 / 3 / 4 / 5 Stars.</li>
+<li>Privileges: self-certification, ease of procedures, concessional fees.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t13"><div class="topic-head" onclick="toggleTopic('t13')"><div class="topic-title"><span class="topic-num">13</span>Foreign Investment in India</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t13',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Routes</h3>
+<ul>
+<li><b>Automatic Route:</b> No prior approval; sector-wise cap.</li>
+<li><b>Government Route:</b> Prior approval from FIFP (Foreign Investment Facilitation Portal).</li>
+</ul>
+<h3>Key Sector Caps (FDI)</h3>
+<table>
+<tr><th>Sector</th><th>Cap</th><th>Route</th></tr>
+<tr><td>Agriculture (specific)</td><td>100%</td><td>Automatic</td></tr>
+<tr><td>Insurance</td><td>74%</td><td>Auto</td></tr>
+<tr><td>Private Banking</td><td>74%</td><td>Auto 49%, Govt beyond</td></tr>
+<tr><td>Defence</td><td>74%</td><td>Auto 74%, Govt beyond</td></tr>
+<tr><td>Print Media (news)</td><td>26%</td><td>Govt</td></tr>
+<tr><td>Space</td><td>100%</td><td>Auto 74%, Govt beyond</td></tr>
+<tr><td>Multi-Brand Retail</td><td>51%</td><td>Govt</td></tr>
+<tr><td>Single-Brand Retail</td><td>100%</td><td>Auto</td></tr>
+<tr><td>LIC</td><td>20%</td><td>Auto</td></tr>
+<tr><td>Public Sector Banking</td><td>20%</td><td>Govt</td></tr>
+</table>
+<h3>FDI Prohibited</h3>
+<ul>
+<li>Lottery & gambling.</li>
+<li>Chit funds.</li>
+<li>Nidhi companies.</li>
+<li>TDRs (Transferable Development Rights).</li>
+<li>Real Estate (except construction development — 100% auto).</li>
+<li>Manufacturing of cigars, cigarettes, tobacco products.</li>
+<li>Atomic energy.</li>
+</ul>
+<h3>Instruments</h3>
+<ul>
+<li>Equity shares, Fully & Compulsorily Convertible Debentures (FCCD), Preference Shares.</li>
+<li>FDI compliant instruments.</li>
+<li>Non-compliant instruments: External Commercial Borrowing (ECB) rules.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t14"><div class="topic-head" onclick="toggleTopic('t14')"><div class="topic-title"><span class="topic-num">14</span>Derivatives & Forex Risk Hedging</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t14',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<h3>Types of Derivatives</h3>
+<ul>
+<li><b>Forward:</b> OTC, custom-tailored, no exchange.</li>
+<li><b>Futures:</b> Exchange-traded, standardised.</li>
+<li><b>Options:</b> Right (not obligation) to buy/sell.</li>
+<li><b>Swaps:</b> Exchange of cash flows (IRS, CCS).</li>
+</ul>
+<h3>Currency Derivatives in India</h3>
+<ul>
+<li>Exchange-traded: NSE, BSE, MCX-SX.</li>
+<li>Pairs: USD/INR, EUR/INR, GBP/INR, JPY/INR, Cross-currency pairs.</li>
+</ul>
+<h3>Hedging Products</h3>
+<ul>
+<li>Forward Rate Agreement (FRA).</li>
+<li>Currency Swaps (Cross Currency Swap - CCS).</li>
+<li>Interest Rate Swaps (IRS).</li>
+<li>Options.</li>
+</ul>
+<h3>RBI Rules</h3>
+<ul>
+<li>Hedging allowed for corporates with underlying exposure.</li>
+<li>Speculative positions restricted.</li>
+<li>USD/INR pair: contract size ~USD 1,000 (exchange-traded).</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t15"><div class="topic-head" onclick="toggleTopic('t15')"><div class="topic-title"><span class="topic-num">15</span>External Commercial Borrowings (ECB)</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t15',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li>Borrowings in forex by Indian entities.</li>
+<li>Sources: International banks, capital markets, suppliers, foreign parent.</li>
+<li>Framework: Automatic Route (up to sectoral caps) + Approval Route.</li>
+</ul>
+<h3>Key Limits</h3>
+<ul>
+<li>Automatic Route: up to USD 750 million (manufacturing, services).</li>
+<li>Specific sectors: Different caps.</li>
+<li>Minimum Average Maturity (MAM): 3 years (generally).</li>
+<li>All-in-Cost Ceiling: Benchmark (SOFR) + 450 bps for most.</li>
+</ul>
+<h3>End-Use Restrictions</h3>
+<ul>
+<li>Not for: Real estate, capital market, equity investment in subsidiaries.</li>
+<li>Permitted: Capex, working capital (restrictions apply), refinancing existing ECB.</li>
+</ul>
+</div></div>
+
+<div class="topic" id="t16"><div class="topic-head" onclick="toggleTopic('t16')"><div class="topic-title"><span class="topic-num">16</span>Important Forex Numbers Snapshot</div><div style="display:flex;gap:8px;align-items:center"><span class="topic-check" onclick="event.stopPropagation(); toggleDone('t16',this)"></span><span class="topic-arrow">▸</span></div></div>
+<div class="topic-body">
+<ul>
+<li><b>LRS:</b> USD 2.5 lakh / FY.</li>
+<li><b>NRO Repatriation:</b> USD 1 million / FY.</li>
+<li><b>Export Realisation:</b> 9 months.</li>
+<li><b>Pre-shipment Credit tenure:</b> 180 + 90 days.</li>
+<li><b>Post-shipment Credit tenure:</b> 6 months (goods) / 9 months.</li>
+<li><b>LC Doc Presentation:</b> 21 days of shipment OR LC expiry (whichever earlier).</li>
+<li><b>LC Doc Examination:</b> 5 banking days.</li>
+<li><b>Advance Remittance Import:</b> USD 2 lakh without BG.</li>
+<li><b>Merchanting Trade:</b> 9 months completion.</li>
+<li><b>Caution List trigger:</b> Non-realisation > 2 years.</li>
+<li><b>CBWTR threshold:</b> ₹5 lakh.</li>
+</ul>
+</div></div>
+
+</div>
+
+<div id="flash" class="view"><div class="alert alert-info"><b>💡 Tap to flip.</b></div><div class="flashcard-deck" id="flashDeck"></div></div>
+<div id="compare" class="view"><div class="alert alert-info"><b>⚖️ Compare.</b></div><div id="compareList"></div></div>
+<div id="numbers" class="view"><div class="alert alert-warn"><b>🔢 Memorize.</b></div><input class="search-box" placeholder="🔍 Search..." oninput="filterNums(this.value)"><div id="numList"></div></div>
+<div id="mcq" class="view">
+<div id="quizIntro">
+<div class="quiz-intro"><h2>📝 Module G Quiz</h2><p>50 questions • Forex deep drill</p><button class="quiz-btn" onclick="startQuiz()">▶️ Start</button></div>
+<div class="quiz-stats"><div class="quiz-stat"><div class="v" id="stAtt">0</div><div class="l">Attempted</div></div><div class="quiz-stat"><div class="v" id="stCor">0</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v" id="stAcc">0%</div><div class="l">Accuracy</div></div></div>
+<div class="action-row"><button class="btn btn-sec" onclick="reviewWeak()" style="flex:1">🎯 Review Weak</button></div>
+</div>
+<div id="quizArea" style="display:none"></div>
+</div>
+<div id="cases" class="view"><div class="alert alert-info"><b>📋 Scenarios.</b></div><div id="caseList"></div></div>
+</div>
+<button class="float-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const MOD_KEY='iob_mod_G_v1';
+let state=JSON.parse(localStorage.getItem(MOD_KEY)||'{}');
+if(!state.topics)state.topics={};if(!state.quiz)state.quiz={attempted:0,correct:0,perQuestion:{}};if(!state.weak)state.weak=[];if(!state.theme)state.theme='light';
+function save(){localStorage.setItem(MOD_KEY,JSON.stringify(state))}
+function toggleTheme(){state.theme=state.theme==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',state.theme);document.querySelector('.theme-btn').textContent=state.theme==='dark'?'☀️':'🌙';save()}
+function showTab(id,el){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.tab-chip').forEach(c=>c.classList.remove('active'));document.getElementById(id).classList.add('active');el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+function toggleTopic(id){document.getElementById(id).classList.toggle('open')}
+function toggleDone(id,el){state.topics[id]=!state.topics[id];if(state.topics[id])el.classList.add('done');else el.classList.remove('done');save();updateProgressBar()}
+function updateProgressBar(){const done=Object.keys(state.topics).filter(k=>state.topics[k]).length;document.getElementById('pbar').style.width=Math.round(done/16*100)+'%'}
+function filterTopics(q){q=q.toLowerCase();document.querySelectorAll('.topic').forEach(t=>{const text=t.innerText.toLowerCase();t.style.display=(!q||text.includes(q))?'':'none';if(q&&text.includes(q))t.classList.add('open')})}
+
+const FLASHCARDS=[
+{q:"FEMA 1999 replaced which Act?",a:"FERA 1973 (Foreign Exchange Regulation Act)"},
+{q:"FEMA — nature of law?",a:"Civil law (vs FERA which was criminal)"},
+{q:"Resident definition under FEMA?",a:"In India > 182 days in preceding Financial Year"},
+{q:"NRE account — tax treatment?",a:"Tax-free (principal + interest); fully repatriable"},
+{q:"NRO repatriation limit per FY?",a:"USD 1 million (current income freely repatriable)"},
+{q:"FCNR(B) currencies?",a:"USD, GBP, EUR, JPY, CAD, AUD (6 currencies)"},
+{q:"FCNR(B) tenure range?",a:"1 to 5 years (Term Deposit only)"},
+{q:"EEFC — who can open?",a:"Exporters and foreign exchange earners; 100% credit of forex earnings; no interest"},
+{q:"RFC vs RFC(D)?",a:"RFC: returning NRIs. RFC(D): residents for gifts/inheritance/honorarium/travel leftover"},
+{q:"Nostro vs Vostro?",a:"Nostro: our account with foreign bank (in foreign currency). Vostro: foreign bank's account with us (in INR)"},
+{q:"LRS annual limit?",a:"USD 2.5 lakh per Financial Year (resident individual)"},
+{q:"LRS for minors?",a:"Allowed through guardian"},
+{q:"TCS on LRS other purposes above ₹7 lakh?",a:"20% (from 1 Oct 2023)"},
+{q:"TCS on education loan above ₹7 lakh?",a:"0.5%"},
+{q:"TCS on self-funded education / medical above ₹7 lakh?",a:"5%"},
+{q:"Export realisation period (goods)?",a:"9 months from date of export"},
+{q:"EDPMS tracks?",a:"Export Data Processing and Monitoring System (shipment vs realisation)"},
+{q:"Caution List trigger?",a:"Non-realisation of export proceeds > 2 years"},
+{q:"Pre-shipment credit max tenure?",a:"180 days + 90 days extension = 270 days"},
+{q:"Post-shipment credit tenure (goods)?",a:"6 months (9 months with RBI permission)"},
+{q:"Interest Equalisation Scheme (IES) — MSME exports?",a:"3% rebate"},
+{q:"IES — non-MSME in specified HS codes?",a:"2% rebate"},
+{q:"IEC (Importer Exporter Code) — digits?",a:"10-digit issued by DGFT"},
+{q:"Import payment timeline?",a:"6 months from shipment (extendable by RBI)"},
+{q:"Advance Remittance for Import — without BG?",a:"Up to USD 2 lakh (above: BG from international bank)"},
+{q:"Advance Remittance for Services — without BG?",a:"Up to USD 5 lakh"},
+{q:"IDPMS — full form?",a:"Import Data Processing and Monitoring System"},
+{q:"Merchanting Trade completion?",a:"Within 9 months; export value ≥ import value"},
+{q:"UCPDC 600 — number of Articles?",a:"39 Articles"},
+{q:"UCPDC — document presentation timeline?",a:"Within 21 days of shipment OR LC expiry (whichever earlier)"},
+{q:"UCPDC — banks' examination days?",a:"5 banking days (Article 14)"},
+{q:"UCPDC default — Revocable or Irrevocable?",a:"Irrevocable (unless explicitly stated revocable)"},
+{q:"Article 38 UCPDC — pertains to?",a:"Transferable Credits (one transfer only; original + 1)"},
+{q:"Standby LC?",a:"Similar to BG; triggered on default; subject to ISP 98 or UCPDC"},
+{q:"Incoterms 2020 — number of terms?",a:"11 (7 any mode + 4 sea only)"},
+{q:"Incoterms any-mode (7) names?",a:"EXW, FCA, CPT, CIP, DAP, DPU, DDP"},
+{q:"Incoterms sea-only (4) names?",a:"FAS, FOB, CFR, CIF"},
+{q:"EXW — responsibility?",a:"Ex Works — buyer collects from seller's premises; seller minimum responsibility"},
+{q:"DDP — responsibility?",a:"Delivered Duty Paid — seller pays all duties; max responsibility of seller"},
+{q:"DPU — new in 2020?",a:"Delivered at Place Unloaded (replaces DAT); seller unloads at named place"},
+{q:"FOB — Free On Board — meaning?",a:"Seller delivers onto vessel at named port of shipment"},
+{q:"CIF vs CFR?",a:"CIF = Cost + Insurance + Freight (seller pays insurance); CFR = Cost + Freight (no insurance)"},
+{q:"FDI in Insurance — cap and route?",a:"74% automatic route"},
+{q:"FDI in Public Sector Banks — cap?",a:"20% (Govt route)"},
+{q:"FDI in Private Banking — cap?",a:"74% (Auto up to 49%, Govt beyond)"},
+{q:"FDI in Defence — cap?",a:"74% (Auto up to 74%, Govt beyond)"},
+{q:"FDI prohibited sectors?",a:"Lottery, Chit Funds, Nidhi, TDRs, Real Estate (except construction dev), Tobacco, Atomic Energy"},
+{q:"ECB Automatic Route — upper cap?",a:"USD 750 million (manufacturing, services)"},
+{q:"ECB Minimum Average Maturity (MAM)?",a:"3 years generally"},
+{q:"SRVA — full form and purpose?",a:"Special Rupee Vostro Account; for INR-based international trade settlement (RBI July 2022)"}
+];
+function renderFlashcards(){document.getElementById('flashDeck').innerHTML=FLASHCARDS.map((c,i)=>`<div class="flashcard" onclick="this.classList.toggle('flipped')"><div class="flashcard-inner"><div class="flashcard-face flashcard-front">${c.q}<div class="flashcard-hint">Tap to flip • Card ${i+1}/${FLASHCARDS.length}</div></div><div class="flashcard-face flashcard-back">${c.a}</div></div></div>`).join('')}
+
+const COMPARE=[
+{title:'NRE vs NRO vs FCNR(B)',rows:[['Currency','INR','INR','USD/GBP/EUR/JPY/CAD/AUD'],['Source','Foreign inward','Local + foreign','Foreign inward'],['Repatriable','Fully','USD 1M/yr','Fully'],['Interest tax','Free','TDS 30%','Free'],['TD tenure','1-10 yrs','7d-10 yrs','1-5 yrs']]},
+{title:'Nostro vs Vostro vs Loro',rows:[['Nostro','Our a/c with foreign bank (in foreign currency)'],['Vostro','Foreign bank\'s a/c with us (in INR)'],['Loro','Third party a/c (their a/c)']]},
+{title:'Pre-shipment vs Post-shipment Credit',rows:[['Timing','Before export','After shipment'],['Tenure','180+90 days','6 months (goods) / 9 months'],['Security','LC/order/contract','Export bills'],['Purpose','WC for processing','Bridge till realisation']]},
+{title:'Incoterms 2020 — Risk/Cost Transfer',rows:[['EXW','Buyer picks from seller premises'],['FCA','Risk passes at delivery to carrier'],['CPT/CIP','Risk at origin; seller pays freight (+insurance for CIP)'],['DAP','Seller delivers; buyer unloads'],['DPU','Seller unloads at named place (new)'],['DDP','Seller pays all + duties'],['FOB','Risk at vessel loading (sea only)'],['CFR/CIF','Cost + Freight (sea); CIF adds insurance']]},
+{title:'TCS on LRS (from Oct 2023)',rows:[['Education via loan','Nil up to ₹7L; 0.5% above'],['Education self-funded','Nil up to ₹7L; 5% above'],['Medical','Nil up to ₹7L; 5% above'],['Other LRS','Nil up to ₹7L; 20% above']]},
+{title:'IEC — Issued by whom?',rows:[['IEC — 10-digit code','DGFT (Directorate General of Foreign Trade)'],['Required for','All imports/exports'],['Fees','Nominal'],['Validity','Lifetime (periodic update)']]},
+{title:'FDI Sector Caps',rows:[['Insurance','74% Auto'],['Private Banking','74% (Auto 49%, Govt above)'],['Defence','74% (Auto 74%)'],['Multi-Brand Retail','51% Govt'],['Single-Brand Retail','100% Auto'],['Public Sector Banks','20% Govt'],['Space','100% (Auto up to 74%)']]},
+{title:'ECB Framework',rows:[['Automatic cap','USD 750 million'],['Min Avg Maturity','3 years'],['All-in-Cost','SOFR + 450 bps approx'],['Prohibited','Real estate, capital market speculation'],['Permitted','Capex, WC (with restrictions)']]}
+];
+function renderCompare(){document.getElementById('compareList').innerHTML=COMPARE.map(c=>`<div class="compare-card"><div class="compare-head" onclick="this.parentElement.classList.toggle('open')"><span>${c.title}</span><span class="arrow">▼</span></div><div class="compare-body"><table>${c.rows.map(r=>`<tr>${r.map((cell,idx)=>idx===0?`<td><b>${cell}</b></td>`:`<td>${cell}</td>`).join('')}</tr>`).join('')}</table></div></div>`).join('')}
+
+const NUMBERS=[
+{v:'USD 2.5 lakh',d:'LRS annual limit (resident individual)',cat:'LRS'},
+{v:'USD 1 million',d:'NRO repatriation per FY',cat:'NRO'},
+{v:'₹7 lakh',d:'TCS threshold on LRS',cat:'LRS'},
+{v:'20%',d:'TCS on other LRS above ₹7L',cat:'LRS'},
+{v:'5%',d:'TCS on self-funded edu/medical above ₹7L',cat:'LRS'},
+{v:'0.5%',d:'TCS on education via loan above ₹7L',cat:'LRS'},
+{v:'182 days',d:'Resident FEMA threshold',cat:'FEMA'},
+{v:'9 months',d:'Export realisation period',cat:'Export'},
+{v:'180 + 90 days',d:'Pre-shipment credit max tenure',cat:'Export'},
+{v:'6 months',d:'Post-shipment credit tenure (goods)',cat:'Export'},
+{v:'3%',d:'IES — MSME exports',cat:'Export'},
+{v:'2%',d:'IES — non-MSME specified HS',cat:'Export'},
+{v:'2 years',d:'Caution List trigger (non-realisation)',cat:'Export'},
+{v:'10-digit',d:'IEC code length',cat:'Import'},
+{v:'6 months',d:'Import payment timeline',cat:'Import'},
+{v:'USD 2 lakh',d:'Advance Remittance Import without BG',cat:'Import'},
+{v:'USD 5 lakh',d:'Advance Remittance Services without BG',cat:'Import'},
+{v:'9 months',d:'Merchanting Trade completion',cat:'Import'},
+{v:'21 days',d:'LC doc presentation after shipment',cat:'LC'},
+{v:'5 banking days',d:'Bank examination of LC docs',cat:'LC'},
+{v:'39',d:'UCPDC 600 Articles count',cat:'LC'},
+{v:'11',d:'Incoterms 2020 count (7+4)',cat:'Incoterms'},
+{v:'74%',d:'FDI Insurance/Defence/Private Banking cap',cat:'FDI'},
+{v:'100%',d:'FDI Single-Brand Retail/Agri/Space (specific)',cat:'FDI'},
+{v:'51%',d:'FDI Multi-Brand Retail (Govt route)',cat:'FDI'},
+{v:'26%',d:'FDI Print Media (news)',cat:'FDI'},
+{v:'20%',d:'FDI Public Sector Banks + LIC',cat:'FDI'},
+{v:'₹5 lakh',d:'CBWTR threshold',cat:'KYC'},
+{v:'USD 750 million',d:'ECB Automatic Route upper cap',cat:'ECB'},
+{v:'3 years',d:'ECB MAM minimum',cat:'ECB'},
+{v:'SOFR+450 bps',d:'ECB All-in-Cost ceiling',cat:'ECB'},
+{v:'T+2',d:'Spot settlement',cat:'FEDAI'},
+{v:'T+1',d:'TOM settlement',cat:'FEDAI'},
+{v:'T+0',d:'Cash settlement (same day)',cat:'FEDAI'},
+{v:'30 days',d:'Export bill crystallisation after due date',cat:'FEDAI'},
+{v:'10 days',d:'Import bill crystallisation after due date',cat:'FEDAI'},
+{v:'₹3 Cr',d:'DDA (Diamond Dollar) turnover requirement',cat:'DDA'},
+{v:'5',d:'DDA max accounts per firm',cat:'DDA'},
+{v:'EUR/GBP/USD/JPY/CAD/AUD',d:'FCNR(B) currencies',cat:'FCNR'},
+{v:'7 years',d:'SNRR max tenure',cat:'SNRR'},
+{v:'₹2 lakh',d:'Monthly salary cap for NRO - not typical',cat:'Note'}
+];
+function renderNumbers(f=''){f=f.toLowerCase();const items=NUMBERS.filter(n=>!f||n.v.toLowerCase().includes(f)||n.d.toLowerCase().includes(f)||n.cat.toLowerCase().includes(f));document.getElementById('numList').innerHTML=items.map(n=>`<div class="num-card"><div class="num-badge">${n.v}</div><div class="num-desc"><div class="num-cat">${n.cat}</div>${n.d}</div></div>`).join('')||'<p style="text-align:center;padding:30px;color:var(--muted)">No matches</p>'}
+function filterNums(v){renderNumbers(v)}
+
+const QUIZ=[
+{q:"FEMA 1999 replaced?",o:["FERA 1973","FEMA 1986","Banking Act 1949","RBI Act 1934"],a:0,e:"FEMA 1999 replaced Foreign Exchange Regulation Act (FERA) 1973."},
+{q:"FEMA is a?",o:["Criminal law","Civil law","Constitutional law","Ordinance"],a:1,e:"FEMA is civil law (vs FERA which was criminal)."},
+{q:"Resident under FEMA — minimum stay in India?",o:["120 days","150 days","182 days","240 days"],a:2,e:"More than 182 days in preceding Financial Year."},
+{q:"NRE account tax treatment?",o:["TDS 10%","TDS 30%","Tax-free","Taxable at slab"],a:2,e:"NRE: Interest and principal both tax-free; fully repatriable."},
+{q:"NRO account TDS on interest?",o:["10%","20%","30%","40%"],a:2,e:"TDS 30% (plus applicable surcharge/cess)."},
+{q:"NRO repatriation limit per FY?",o:["USD 1 lakh","USD 5 lakh","USD 1 million","USD 10 million"],a:2,e:"USD 1 million per FY (current income is freely repatriable)."},
+{q:"FCNR(B) deposit tenure range?",o:["7 days to 10 yrs","1 to 5 years","1 to 10 years","3 to 7 years"],a:1,e:"FCNR(B) only Term Deposit, 1 to 5 years."},
+{q:"FCNR(B) currencies permitted?",o:["Only USD","USD, GBP, EUR","USD, GBP, EUR, JPY, CAD, AUD","Any convertible"],a:2,e:"6 currencies: USD, GBP, EUR, JPY, CAD, AUD."},
+{q:"EEFC account — who can open?",o:["Any resident","Exporters / forex earners","NRIs only","Foreign nationals"],a:1,e:"Exporters and foreign exchange earners can credit 100% of forex earnings."},
+{q:"RFC account — for whom?",o:["Residents only","Returning NRIs","Foreign nationals","Exporters"],a:1,e:"Resident Foreign Currency — for returning NRIs; funds inherit character from NRE/FCNR."},
+{q:"Nostro account definition?",o:["Our account with foreign bank in foreign currency","Foreign bank's account with us in INR","Third-party account","Resident's forex account"],a:0,e:"Nostro = 'our' account. We maintain with foreign bank in their currency."},
+{q:"Vostro account definition?",o:["Our account abroad","Foreign bank's INR account with us","Nostro reversed","Export account"],a:1,e:"Vostro = 'your' account. Foreign bank's INR account maintained with Indian bank."},
+{q:"SRVA — purpose?",o:["Domestic trade","Settlement of international trade in INR","Only NRIs","Exports only"],a:1,e:"Special Rupee Vostro Account for international trade settlement in INR (RBI July 2022)."},
+{q:"LRS annual limit per individual?",o:["USD 1 lakh","USD 2 lakh","USD 2.5 lakh","USD 5 lakh"],a:2,e:"USD 2.5 lakh per financial year."},
+{q:"LRS NOT permitted for?",o:["Education","Medical","Lottery / sweepstakes","Private travel"],a:2,e:"Prohibited: lottery, sweepstakes, forex trading, stocks speculation, FATF non-cooperative countries."},
+{q:"TCS on other LRS (above ₹7 lakh, from Oct 2023)?",o:["5%","10%","15%","20%"],a:3,e:"20% TCS on other LRS purposes above ₹7 lakh/yr."},
+{q:"TCS on education loan above ₹7 lakh?",o:["0.5%","1%","3%","5%"],a:0,e:"0.5% TCS on education financed by loan, above ₹7 lakh."},
+{q:"TCS on self-funded education above ₹7 lakh?",o:["0.5%","1%","5%","10%"],a:2,e:"5% TCS (vs 0.5% if via loan)."},
+{q:"Export realisation period (goods)?",o:["3 months","6 months","9 months","12 months"],a:2,e:"9 months from date of export for all exports."},
+{q:"Pre-shipment credit — max tenure?",o:["90 days","180 days","180 + 90 days extension","365 days"],a:2,e:"180 days + 90 days extension = 270 days maximum."},
+{q:"Post-shipment credit tenure (goods)?",o:["30 days","90 days","6 months","12 months"],a:2,e:"6 months (9 months with RBI extension)."},
+{q:"Interest Equalisation Scheme — MSME exports?",o:["1%","2%","3%","5%"],a:2,e:"3% rebate for all MSME exports."},
+{q:"Caution List trigger — non-realisation of export proceeds > how long?",o:["6 months","1 year","2 years","3 years"],a:2,e:"Non-realisation > 2 years triggers Caution List entry."},
+{q:"EDPMS — maintained by?",o:["Customs","DGFT","RBI","IBA"],a:2,e:"Export Data Processing and Monitoring System — RBI portal."},
+{q:"IEC code — digits?",o:["8","10","12","14"],a:1,e:"10-digit Importer Exporter Code from DGFT."},
+{q:"IEC issued by?",o:["RBI","Customs","DGFT","Ministry of Commerce"],a:2,e:"Directorate General of Foreign Trade (DGFT), Ministry of Commerce."},
+{q:"Import payment timeline?",o:["3 months","6 months","9 months","12 months"],a:1,e:"6 months from shipment (extendable by RBI)."},
+{q:"Advance Remittance for Import — max without BG?",o:["USD 1 lakh","USD 2 lakh","USD 5 lakh","USD 10 lakh"],a:1,e:"Up to USD 2 lakh without BG; above requires BG from international bank."},
+{q:"Merchanting Trade — completion timeline?",o:["6 months","9 months","12 months","18 months"],a:1,e:"9 months; export value must be ≥ import value."},
+{q:"UCPDC 600 — how many Articles?",o:["29","35","39","45"],a:2,e:"39 Articles in UCPDC 600 (effective 2007)."},
+{q:"LC document presentation — within how many days of shipment?",o:["7 days","14 days","21 days","30 days"],a:2,e:"Within 21 days of shipment OR LC expiry (whichever earlier)."},
+{q:"Banks' examination of LC documents?",o:["3 banking days","5 banking days","7 banking days","10 banking days"],a:1,e:"5 banking days (Article 14 UCPDC 600)."},
+{q:"UCPDC — default presumption Revocable or Irrevocable?",o:["Revocable","Irrevocable","Standby","Back-to-back"],a:1,e:"Irrevocable unless explicitly stated revocable. Article 3 UCPDC 600."},
+{q:"Transferable LC — how many times can it be transferred?",o:["Only once","Twice","Thrice","Multiple times"],a:0,e:"Only once (original + 1 transfer). Article 38 UCPDC."},
+{q:"Incoterms 2020 — total number of terms?",o:["9","10","11","13"],a:2,e:"11 terms: 7 for any mode + 4 for sea only."},
+{q:"Which Incoterm is new in 2020 (replacing DAT)?",o:["DAP","DDP","DPU","CIP"],a:2,e:"DPU (Delivered at Place Unloaded) replaced DAT. Seller unloads at named place."},
+{q:"EXW — Ex Works — meaning?",o:["Buyer collects from seller's premises","Seller delivers to port","Seller pays duties","Seller pays freight"],a:0,e:"Buyer collects; seller minimum responsibility."},
+{q:"DDP — Delivered Duty Paid — responsibility?",o:["Buyer pays all","Seller pays all + duties","Buyer unloads","Seller only to port"],a:1,e:"Seller pays all costs + duties to named destination — maximum responsibility."},
+{q:"FOB applicable to?",o:["Any mode","Air only","Sea / inland waterway only","Road only"],a:2,e:"FOB (Free On Board) = sea / inland waterway only."},
+{q:"CIF vs CFR?",o:["Same","CIF includes insurance, CFR doesn't","CFR includes insurance","Both sea only"],a:1,e:"CIF = Cost + Insurance + Freight. CFR = Cost + Freight (no insurance). Both sea only."},
+{q:"FDI Insurance cap and route?",o:["49% Auto","74% Auto","100% Govt","26% Govt"],a:1,e:"74% through automatic route."},
+{q:"FDI Defence cap?",o:["26%","49%","74%","100%"],a:2,e:"74% (Auto up to 74%, Govt above)."},
+{q:"FDI Public Sector Banks cap?",o:["20%","49%","74%","100%"],a:0,e:"20% through Govt route."},
+{q:"FDI Multi-Brand Retail?",o:["26% Auto","51% Govt","74% Govt","100% Auto"],a:1,e:"51% through Government route."},
+{q:"FDI prohibited sector?",o:["Insurance","Agriculture","Lottery / gambling","Infrastructure"],a:2,e:"Prohibited: lottery, gambling, chit funds, nidhi, TDRs, tobacco, atomic energy."},
+{q:"ECB Automatic Route upper cap?",o:["USD 100 million","USD 500 million","USD 750 million","USD 1 billion"],a:2,e:"USD 750 million for manufacturing/services under Automatic Route."},
+{q:"ECB Minimum Average Maturity (MAM)?",o:["1 year","2 years","3 years","5 years"],a:2,e:"3 years generally (some categories have different MAMs)."},
+{q:"Spot settlement in forex?",o:["T+0","T+1","T+2","T+3"],a:2,e:"T+2 is standard spot settlement. T+0 = Cash. T+1 = TOM."},
+{q:"CBWTR (Cross Border Wire Transfer) threshold?",o:["₹1 lakh","₹5 lakh","₹10 lakh","₹25 lakh"],a:1,e:"Above ₹5 lakh — reported by 15th of succeeding month."},
+{q:"Standby LC — subject to?",o:["Only UCPDC","Only Cos Act","ISP 98 or UCPDC","FEMA only"],a:2,e:"Standby LC subject to ISP 98 (International Standby Practices) or UCPDC — similar to BG."}
+];
+
+let quizIndex=0;let currentOrder=[];
+function startQuiz(){currentOrder=QUIZ.map((_,i)=>i).sort(()=>Math.random()-0.5);quizIndex=0;document.getElementById('quizIntro').style.display='none';document.getElementById('quizArea').style.display='block';renderQuestion()}
+function renderQuestion(){if(quizIndex>=currentOrder.length){renderResult();return}const qid=currentOrder[quizIndex];const q=QUIZ[qid];const prev=state.quiz.perQuestion[qid];document.getElementById('quizArea').innerHTML=`<div class="quiz-stats"><div class="quiz-stat"><div class="v">${quizIndex+1}/${currentOrder.length}</div><div class="l">Progress</div></div><div class="quiz-stat"><div class="v">${state.quiz.correct}</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v">${state.quiz.attempted?Math.round(state.quiz.correct/state.quiz.attempted*100):0}%</div><div class="l">Accuracy</div></div></div><div class="question-card"><div class="q-num">Question ${quizIndex+1} of ${currentOrder.length}</div><div class="q-text">${q.q}</div>${q.o.map((opt,i)=>`<div class="option" onclick="pickOption(${qid},${i},this)" id="opt-${i}">${String.fromCharCode(65+i)}) ${opt}</div>`).join('')}<div class="explanation" id="exp"><b>💡 ${q.o[q.a]}</b><br>${q.e}</div><div class="nav-btns"><button class="btn-prev" onclick="prevQuestion()">← Prev</button><button class="btn-next" onclick="nextQuestion()">Next →</button></div></div>`;if(prev!==undefined){const sel=prev;document.getElementById('opt-'+sel).classList.add(sel===q.a?'correct':'wrong');if(sel!==q.a)document.getElementById('opt-'+q.a).classList.add('correct');document.getElementById('exp').classList.add('show')}}
+function pickOption(qid,idx,el){const q=QUIZ[qid];if(state.quiz.perQuestion[qid]!==undefined)return;state.quiz.perQuestion[qid]=idx;state.quiz.attempted++;if(idx===q.a){state.quiz.correct++;el.classList.add('correct')}else{el.classList.add('wrong');document.getElementById('opt-'+q.a).classList.add('correct');if(!state.weak.includes(qid))state.weak.push(qid)}document.getElementById('exp').classList.add('show');save();updateStatBoxes()}
+function nextQuestion(){quizIndex++;renderQuestion()}
+function prevQuestion(){if(quizIndex>0)quizIndex--;renderQuestion()}
+function renderResult(){const s=state.quiz.correct,t=state.quiz.attempted,p=t?Math.round(s/t*100):0;let m='Good effort!';if(p>=80)m='🎉 Excellent!';else if(p>=60)m='👍 Solid.';else if(p>=40)m='📚 More practice.';else m='💪 Keep going.';document.getElementById('quizArea').innerHTML=`<div class="result-card"><div style="font-size:50px">${p>=60?'🏆':'📖'}</div><div class="result-score">${p}%</div><div class="result-msg">${m}</div><div class="result-row"><div class="quiz-stat"><div class="v">${s}</div><div class="l">Correct</div></div><div class="quiz-stat"><div class="v">${t-s}</div><div class="l">Wrong</div></div></div><div class="action-row"><button class="btn" onclick="resetQuiz()">🔄 Retake</button><button class="btn btn-sec" onclick="reviewWeak()">🎯 Weak</button></div></div>`}
+function resetQuiz(){state.quiz={attempted:0,correct:0,perQuestion:{}};state.weak=[];save();document.getElementById('quizArea').style.display='none';document.getElementById('quizIntro').style.display='block';updateStatBoxes()}
+function reviewWeak(){if(state.weak.length===0){alert('No weak topics yet!');return}currentOrder=[...state.weak];quizIndex=0;document.getElementById('quizIntro').style.display='none';document.getElementById('quizArea').style.display='block';state.weak.forEach(w=>{delete state.quiz.perQuestion[w]});state.quiz.attempted=Math.max(0,state.quiz.attempted-state.weak.length);state.weak=[];save();renderQuestion()}
+function updateStatBoxes(){const a=state.quiz.attempted,c=state.quiz.correct,ac=a?Math.round(c/a*100):0;if(document.getElementById('stAtt'))document.getElementById('stAtt').textContent=a;if(document.getElementById('stCor'))document.getElementById('stCor').textContent=c;if(document.getElementById('stAcc'))document.getElementById('stAcc').textContent=ac+'%'}
+
+const CASES=[
+{t:'1. LRS Remittance',scenario:'Mr. Karthik (resident Indian) wants to remit USD 2 lakh to his son in USA for education fees. He has already remitted USD 60,000 earlier this FY for his own travel. Can you process?',solution:'<b>Step 1:</b> LRS annual cap = USD 2.5 lakh per FY.<br><b>Step 2:</b> Already used: USD 60,000.<br><b>Step 3:</b> Available balance: USD 2,50,000 - USD 60,000 = USD 1,90,000.<br><b>Step 4:</b> Request: USD 2,00,000 → EXCEEDS balance. Can only remit USD 1,90,000 via LRS.<br><b>Step 5:</b> Options:<br>• Remit USD 1,90,000 now.<br>• Rest USD 10,000 → next FY OR via education loan (which has separate rules).<br><b>Step 6:</b> TCS calculation (purpose = education self-funded, assume so):<br>• Up to ₹7 lakh equivalent: No TCS.<br>• Above ₹7 lakh: 5% TCS.<br>• USD 1.9 lakh ≈ ₹1.58 Cr. Minus ₹7 lakh = ₹1.51 Cr. TCS = 5% × ₹1.51 Cr = ₹7.55 lakh.<br><b>Step 7:</b> Required docs:<br>• Form A2 (self-declaration for LRS).<br>• University admission letter + fee demand.<br>• Son\'s passport.<br>• PAN.<br><b>Key learning:</b> LRS = USD 2.5L/FY cumulative; TCS 5% for self-funded education above ₹7L.'},
+{t:'2. Export Realisation Overdue',scenario:'Mr. Shetty\'s textile firm exported goods worth USD 50,000 on 15-Jan-2026 (bill via LC). Today is 15-Dec-2026 (11 months). Payment not yet received. What are the consequences?',solution:'<b>Step 1:</b> Export realisation period = 9 months from date of export.<br><b>Step 2:</b> 9 months expired on 15-Oct-2026.<br><b>Step 3:</b> Current overdue = 2 months.<br><b>Step 4:</b> Bank action:<br>• Report in EDPMS.<br>• Reminder to exporter.<br>• Explore reason — delayed payment, dispute, foreign bank issue.<br><b>Step 5:</b> If overdue extends to > 2 years (15-Jan-2028) → <b>Caution List</b>.<br><b>Step 6:</b> Caution List consequences:<br>• No bank will finance future exports from this exporter without advance payment / LC.<br>• Reported to RBI.<br><b>Step 7:</b> Options:<br>• Pursue with buyer.<br>• Apply to RBI for extension of realisation period.<br>• Write-off with RBI permission if genuinely irrecoverable.<br>• Compromise settlement within FEMA framework.<br><b>Key learning:</b> 9 months → caution list at 2 years → reputation + liquidity hit.'},
+{t:'3. LC Documents Discrepancy',scenario:'Your bank is negotiating an export LC of USD 1 lakh. Documents presented by exporter show shipment date 05-Mar-2026, LC expiry 31-Mar-2026, documents presented 30-Mar-2026. Discrepancy?',solution:'<b>Step 1:</b> UCPDC Article 14 — Presentation must be within 21 days of shipment OR LC expiry (whichever earlier).<br><b>Step 2:</b> Shipment: 05-Mar-2026. 21 days from shipment = 26-Mar-2026.<br><b>Step 3:</b> LC expiry: 31-Mar-2026.<br><b>Step 4:</b> Earlier of two: 26-Mar-2026.<br><b>Step 5:</b> Documents presented: 30-Mar-2026 → <b>LATE by 4 days</b> → DISCREPANCY.<br><b>Step 6:</b> Bank options:<br>• Refuse to negotiate → return documents.<br>• Negotiate under reserve → with recourse to exporter.<br>• Approach issuing bank for waiver of discrepancy.<br><b>Step 7:</b> Issuing bank action:<br>• 5 banking days to examine (Article 14).<br>• Can refuse with Article 16 notice listing discrepancies.<br>• If accepted (waiver by applicant / confirming bank) — pays.<br>• If refused — documents returned; exporter approaches buyer directly.<br><b>Key learning:</b> 21 days from shipment OR LC expiry — earlier wins. Strict compliance.'},
+{t:'4. Choosing Incoterm',scenario:'An Indian jewellery exporter wants to ship to Dubai. Buyer insists seller is responsible for freight but buyer takes insurance. Which Incoterm?',solution:'<b>Analysis:</b><br>• Seller pays freight ✓<br>• Buyer takes insurance ✓<br>• Jewellery → air shipment typical.<br><b>Step 1:</b> Any mode or sea only? Jewellery usually air → any mode Incoterm.<br><b>Step 2:</b> Options with seller paying freight:<br>• CPT: Carriage Paid To (seller pays freight; no insurance).<br>• CIP: Carriage + Insurance Paid To (seller pays both — insurance).<br><b>Step 3:</b> Since buyer takes insurance → <b>CPT</b> is the match.<br><b>Step 4:</b> Risk under CPT: passes at origin when seller hands goods to carrier (not at destination).<br><b>Step 5:</b> Alternatively, if by sea only: CFR (Cost + Freight, no insurance).<br><b>Key learning:</b> CPT = seller pays freight. CIP = + insurance. CFR = sea only equivalent of CPT. CIF = sea only equivalent of CIP.'},
+{t:'5. FDI Scenario',scenario:'An Indian private bank (BankCorp Ltd) wants to receive 55% FDI from a Singapore-based holding company. Can it be processed under Automatic Route?',solution:'<b>Step 1:</b> Private Banking FDI cap: 74%.<br><b>Step 2:</b> Routes:<br>• <b>Up to 49% — Automatic Route.</b><br>• Above 49% up to 74% — Government Route.<br><b>Step 3:</b> Request 55% → EXCEEDS 49% Automatic limit.<br><b>Step 4:</b> Processing required:<br>• Application to Government through FIFP (Foreign Investment Facilitation Portal).<br>• Approval from DIPP + RBI.<br>• Compliance with sectoral conditions.<br><b>Step 5:</b> Documents needed:<br>• Target company details.<br>• Investment structure.<br>• Business plan.<br>• Source of funds (from investor).<br>• Fit and Proper criteria for investor.<br><b>Step 6:</b> Post-approval:<br>• Allocation of shares as per approval.<br>• Reporting to RBI via Form FC-GPR within 30 days of allotment.<br><b>Key learning:</b> Private Banking: Auto up to 49%, Govt beyond. Public Sector Banks: 20% Govt only.'}
+];
+function renderCases(){document.getElementById('caseList').innerHTML=CASES.map((c,i)=>`<div class="case-card"><div class="case-head" onclick="this.parentElement.classList.toggle('open')"><span>${c.t}</span><span class="arrow">▼</span></div><div class="case-body"><div class="case-scenario"><b>📍 Scenario:</b> ${c.scenario}</div><button class="reveal-btn" onclick="this.nextElementSibling.classList.add('show'); this.style.display='none'">👁️ Reveal Solution</button><div class="case-solution">${c.solution}</div></div></div>`).join('')}
+
+function init(){document.documentElement.setAttribute('data-theme',state.theme);document.querySelector('.theme-btn').textContent=state.theme==='dark'?'☀️':'🌙';Object.keys(state.topics).forEach(id=>{const el=document.querySelector(`#${id} .topic-check`);if(el&&state.topics[id])el.classList.add('done')});updateProgressBar();renderFlashcards();renderCompare();renderNumbers();renderCases();updateStatBoxes()}
+init();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(e => console.log('SW failed:', e));
+  });
+}
+</script>
+</body>
+</html>
